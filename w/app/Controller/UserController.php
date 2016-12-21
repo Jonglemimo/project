@@ -4,6 +4,7 @@ namespace Controller;
 
 use W\Controller\Controller;
 use W\Model\UsersModel;
+use \W\Security\AuthentificationModel;
 
 class UserController extends Controller
 {
@@ -13,16 +14,16 @@ class UserController extends Controller
 
         if (isset($_POST['signin'])) {
 
-            $authModel = new AuthentificationModel();
             $userModel = new UsersModel();
+            $authModel = new AuthentificationModel();
             $errors = array();
 
             //vérification du pseudo/mail
 
-            if (empty($_POST['emailorPseudo'])) {
-                $errors['email'] = true;
+            if (empty($_POST['emailOrUsername'])) {
+                $errors['emailOrUsername'] = true;
             } else {
-                $emailorPseudo = trim($_POST['emailorPseudo']);
+                $emailOrUsername = trim($_POST['emailOrUsername']);
             }
 
             //vérification du password
@@ -35,28 +36,36 @@ class UserController extends Controller
 
             //vérification on vérifie qu'il existe en base de donné
 
-            $userId = $authModel->isValidLoginInfo($emailorPseudo, $password);
+           if(!empty($password) && !empty($emailOrUsername)){
+               $userId = $authModel->isValidLoginInfo($emailOrUsername, $password);
+           }
 
-            if($userId == 0){
-                $errors['login']['wrong'] = true;
-            }
+           if(isset($userId)){
 
-            if ($userId > 0 && count($errors == 0)) {
+               if($userId == 0){
+                   $errors['echec'] = true;
+                   $this->show('user/signin', ['errors' => $errors]);
+               }
 
-                // Connexion
-                $user = $userModel->find($userId);
+               if ($userId != 0 && count($errors == 0)) {
 
-                // Placer user en session : $_SESSION['user'] = $user
-                $authModel->logUserIn($user);
-                $this->redirectToRoute('default_home');
-            } else {
-                // Echec de la connexion
-                $errors['echec'] = true;
-                $this->show('user/login', ['errors' => $errors]);
-            }
-        } else {
+                   // Connexion
+                   $user = $userModel->find($userId);
+
+                   // Placer user en session : $_SESSION['user'] = $user
+                   $authModel->logUserIn($user);
+
+                   if(isset($_SESSION['user'])){
+                       $data = array('last_connection' => date('Y-m-d H:i:s'));
+                       $userModel->update($data,$_SESSION['user']['id']);
+                   }
+                   $this->redirectToRoute('default_home');
+               }
+           }else{
+               $this->show('user/signin', ['errors' => $errors]);
+           }
+        }else {
             $this->show('user/signin');
-
         }
     }
 
@@ -64,22 +73,11 @@ class UserController extends Controller
     {
         if(isset($_POST['signup'])) {
 
+
             $userModel = new UsersModel();
             $authModel = new AuthentificationModel();
             $errors = array();
 
-            //vérification du pseudo
-
-            if (empty($_POST['pseudo'])) {
-                $errors['pseudo']['empty'] = true;
-            } else {
-                $pseudo = trim($_POST['pseudo']);
-                $pseudo = htmlspecialchars($pseudo, ENT_QUOTES);
-
-                if ($userModel->usernameExists($_POST['pseudo'])) {
-                    $errors['pseudo']['exist'] = true;
-                }
-            }
 
             //vérification firstname
 
@@ -103,6 +101,20 @@ class UserController extends Controller
                 $lastname = $_POST['lastname'];
             }
 
+            //vérification du pseudo
+
+            if (empty($_POST['username'])) {
+                $errors['username']['empty'] = true;
+            } else {
+                $username = trim($_POST['username']);
+                $username = htmlspecialchars($username, ENT_QUOTES);
+
+                if ($userModel->usernameExists($_POST['username'])) {
+                    $errors['username']['exist'] = true;
+                }
+            }
+
+
             //vérification password
 
             if (empty($_POST['password'])) {
@@ -124,6 +136,7 @@ class UserController extends Controller
 
             } else {
                 $email = $_POST['email'];
+
                 if($userModel->emailExists($email)){
                     $errors['email']['exist'] = true;
                 }
@@ -131,26 +144,38 @@ class UserController extends Controller
 
             //si aucune erreur, on ajoute en BDD
 
-            if(count($errors > 0)){
+            if(count($errors) === 0){
+
+                $userModel->setTable('users');
 
                 $password = $authModel -> hashPassword($password,PASSWORD_DEFAULT);
+
                 $userModel ->insert([
                     'firstname'=> $firstname,
                     'lastname' => $lastname,
                     'email'    => $email,
-                    'pseudo' => $pseudo,
-                    'password' => $password,
-
-
+                    'username' => $username,
+                    'password' => $password
                 ]);
 
                 // On redirige sur une page sucess afin d'afficher les informations du compte de l'utilisateur
+                $this->redirectToRoute('user_success');
 
-                $this->redirect('user/sucess');
+            }else{
+                $this->show('user/signup', ['errors' => $errors]);
             }
 
         }else {
             $this->show('user/signup');
+        }
+    }
+
+    function sucess(){
+        $authModel = new AuthentificationModel();
+        if($authModel->getLoggedUser()) {
+            $this->show('user/sucess');
+        }else{
+            $this->redirectToRoute('default_home');
         }
     }
 }

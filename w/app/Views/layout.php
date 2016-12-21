@@ -12,7 +12,7 @@
 			<h1>W :: <?= $this->e($title) ?></h1>
 		</header>
 
-		<section>
+		<section class=" container">
 			<?= $this->section('main_content') ?>
 		</section>
 
