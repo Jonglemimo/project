@@ -25,7 +25,7 @@ class VideoController extends Controller
 		}
 
 		
-		$this->show('video/displayVideo', ['videos' => $result , 'search' => $search]);
+		$this->show('video/displayVideo', ['videos' => $result]);
 
 	}
 }

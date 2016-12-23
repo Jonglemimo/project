@@ -25,9 +25,6 @@ jQuery(document).ready(function() {
 		})
 		.fail(function() {
 			console.log("error");
-		})
-		.always(function(r) {
-			console.log(r);
 		});
 		
 	})
