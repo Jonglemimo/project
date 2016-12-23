@@ -1,5 +1,4 @@
 <?php 
-	print_r($videos);
 	echo "<br>";
 	foreach ($videos as $video) {
 		echo "<img src='".$video['url']."'>";
