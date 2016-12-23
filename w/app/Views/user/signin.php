@@ -18,6 +18,7 @@ $this->start('main_content');?>
             <?php if(isset($errors['echec'])):?>
                 <p>Les identifiants sont incorrects</p>
             <?php endif; ?>
+            <a href="<?=$this->url('user_lostpass')?>">Mot de passe oublié ?</a>
         </form>
     </section>
 
