@@ -11,8 +11,8 @@
 
         //Reset password
 
-        ['GET|POST',            '/signin/lost_pass',              'User#lostPassword',      'user_lostpass'],
-        ['GET|POST',            '/signin/reset_pass/[:token]',     'User#resetPassword',     'user_resetpass'],
+        ['GET|POST',            '/signin/lost_pass',              'RecoveryToken#lostPassword',      'user_lostpass'],
+        ['GET|POST',            '/signin/reset_pass/[:token]',     'RecoveryToken#resetPassword',    'user_resetpass'],
 
         //Administration
         ['GET|POST',            '/mapage',                         'User#userAdministration', 'user_admin'],
