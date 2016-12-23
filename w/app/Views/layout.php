@@ -7,7 +7,7 @@
 			<h1><?= $this->e($title) ?></h1>
 		</header>
 
-		<section>
+		<section class=" container">
 			<?= $this->section('main_content') ?>
 		</section>
 	</div>
