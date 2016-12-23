@@ -9,12 +9,8 @@ jQuery(document).ready(function() {
 	})
 	.fail(function() {
 		console.log("error");
-	})
-	.always(function(r) {
-		console.log(r);
-		$('#video').html(r);
 	});
-	$('#btnSearch').on('click', function(e){
+	$('.btnSearch').on('click', function(e){
 		e.preventDefault();
 		$.ajax({
 			url: $('#ajax_search_route').val() ,
@@ -32,8 +28,22 @@ jQuery(document).ready(function() {
 		})
 		.always(function(r) {
 			console.log(r);
-			$('#video').html(r);
 		});
 		
 	})
+});
+
+$(function() {
+
+
+	$('#search-form-mobile').on('show.bs.collapse', function () {
+			$('#login-buttons-mobile').collapse('hide');
+	})
+	$('#login-buttons-mobile').on('show.bs.collapse', function () {
+			$('#search-form-mobile').collapse('hide');
+	})
+	
+	$( window ).resize(function() {
+		$('#login-buttons-mobile, #search-form-mobile').collapse('hide');
+	});
 });
