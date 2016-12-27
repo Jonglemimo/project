@@ -86,6 +86,9 @@ class UserController extends Controller
 
     public function signup ()
     {
+        if(isset($_SESSION['user'])){
+            $this->redirectToRoute('default_home');
+        }
         if(isset($_POST['signup'])) {
 
 

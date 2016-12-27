@@ -5,7 +5,6 @@
     <nav><a href="<?=$this->url('default_home')?>">< Retour à la galerie</a></nav>
 
     <form method="POST">
-        <?php print_r($user) ?>
         Prénom : <input class="form-control" type="text" name="firstname"><br>
         <?php if(isset($errors['firstname']['empty'])) : ?>
             <p>Le prénom est vide</p>;

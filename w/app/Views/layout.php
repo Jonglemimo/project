@@ -3,7 +3,7 @@
 
 
 
-	<div class="container">
+	<section class="body body-padding">
 		<header>
 			<h1><?= $this->e($title) ?></h1>
 
@@ -12,7 +12,7 @@
 		<section>
 			<?= $this->section('main_content') ?>
 		</section>
-	</div>
+	</section>
 
 <?php include ('footer.php'); ?>
 		

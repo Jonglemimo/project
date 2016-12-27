@@ -1,4 +1,3 @@
-
 /*==================================
 =            NAVIGATION            =
 ==================================*/
@@ -11,20 +10,31 @@
 
 //2.0 - HEADER
 //2.1 - Header Bar
-//2.2 - Navigation bar
+//2.2 - Navigation Bar
+
+//3.0 - BODY
+//3.1 - Body Padding
+
+//4.0 - FOOTER
 
 
 /*========  0.1 - COLORS  =========*/
 
-@2B : #2B2B2B;
-@47 : #473D3E;
-@73 : #73434B;
-@A3 : #A32C44;
-@E6 : #E61C44;
+@grey1 : #333333;
+@grey2 : #404242;
+@grey3 : #4e5352;
+@grey4 : #5b6160;
+@grey5 : #6a7975;
+
+@turquoise1 : #458c7a;
+@turquoise2 : #3ac39f;
+@turquoise3 : #2be9b9;
+
+@white : #FFF;
 
 body {
-	background-color: @2B;
-	color: #FFF;
+	background-color: @grey1;
+	color: @white;
 }
 
 /*========  0.2 - FONTS  ==========*/
@@ -46,21 +56,27 @@ body {
 
 /*========  1.1 - Buttons  ========*/
 
-#buttons {
-	background-color: @47;
-	border-color: @A3;
-	color: #FFF;
+.btn.buttons {
+	background-color: @grey3;
+	border-color: @grey5;
+	color: @white;
 
 	&:hover {
-		background-color: @73;
-		border-color: @E6;
-		color: #FFF;
+		background-color: @grey3;
+		border-color: @turquoise2;
+		color: @white;
 	}
 
 	&:focus {
-		background-color: @73;
-		border-color: @E6;
-		color: #FFF;
+		background-color: @grey3;
+		border-color: @turquoise2;
+		color: @white;
+	}
+
+	&:active {
+		background-color: @grey4;
+		border-color: @turquoise3;
+		color: @white;
 	}
 }
 
@@ -70,26 +86,34 @@ body {
 
 /*=======  2.1 - Header Bar  =======*/
 
-header nav#header-bar {
-	background-color: @47;
+header nav.header-bar {
 	height: 50px;
 	margin-bottom: 0px;
+	background-color: @grey2;
+	border-bottom: 1px solid @grey3;
 
-	#nav-bar-button-col.navbar-header.col-xs-2.visible-xs {
-		background-color: red;
+	.nav-bar-button-col.navbar-header.col-xs-2.visible-xs {
+		padding: 0px;
 
-		#buttons {
-			width: 50px;
+		.buttons {
+			padding: 7px;
+			width: 40px;
+			margin-left: 10px;
+			float: none;
+
+			span {
+				color: @white;
+			}
 		}
 	}
 
-	#website-title {
-		color: @E6;
+	.website-title {
+		color: @turquoise3;
 		font-family: @title-font;
 		font-size: @main-title-size;
 	}
 	
-	#header-buttons-mobile {
+	.header-buttons-mobile {
 	  	transform: translateY(40%); 
 	}
 
@@ -107,11 +131,11 @@ header nav#header-bar {
 	transform: translateY(-3%);
 }
 
-#search-form-mobile, #login-buttons-mobile {
+.search-form-mobile, .login-buttons-mobile {
 	margin-top: 49px;
 	padding: 10px 10px 15px 10px;
 	z-index: 1030;
-	background-color: #473D3E;
+	background-color: @grey2;
 
 	.form-control {
 		display: inline-block;
@@ -126,18 +150,156 @@ header nav#header-bar {
 	}
 
 	.login-signin-button {
-		width: 47%;
+		width: 45%;
 		margin: 0px 5px;
 	}
 }
 
-/*======  2.2 - Navigation bar ======*/
+/*======  2.2 - Navigation Bar ======*/
 
-.side-nav {
+.sidenav {
+    height: 100%;
+    position: fixed;
 	z-index: 1020;
 	padding-top: 80px;
-	width: 200px;
 	height: 100vh;
-	background-color: #E5E5E5;
+    transition: 0.4s;
+    overflow-x: hidden;
+    width: 0px;
+	background-color: @grey2;
+	border-right: 1px solid @grey3;
 
+    .buttons {
+    	margin-bottom: 10px;
+    }
+
+    .panel {
+	background-color: @grey2;
+	border-color: @grey5;
+	color: @white;
+
+		.panel-heading {
+			background-color: @grey3;
+			border-color: @grey4;
+			color: @white;
+		}
+
+		.panel-body {
+			ul {
+				padding-left: 20px;
+				margin-bottom: 0px;
+			}
+		}
+
+		a {
+			color: @white;
+
+			&:hover {
+				text-decoration: none;
+				color: @turquoise3;
+			}
+
+			&:focus {
+				text-decoration: none;
+				color: @turquoise3;
+			}
+
+			&:active {
+				text-decoration: none;
+				color: @turquoise3;
+			}
+		}
+    }
+}
+
+//Nav bar disappearing for mobile
+@media (max-width: 768px) {
+  .sidenav {
+    width: 0;
+  }
+}
+
+//Nav appearing for computers
+@media (min-width: 768px) {
+  .sidenav {
+    width: 200px;
+  }
+}
+
+/*==================================
+=            3.0 - BODY            =
+===================================*/
+
+.body {
+
+}
+
+/*=====  3.1 - Body Padding  ======*/
+
+.body-padding {
+	padding-top: 65px;
+	padding-right: 15px;
+}
+
+//Left padding body and footer for mobile
+@media (max-width: 768px) {
+  .body-padding {
+    padding-left: 15px;
+  }
+  .footer-padding {
+  	padding-left: 15px;
+  }
+}
+
+//Left padding body and footer for computers
+@media (min-width: 768px) {
+  .body-padding {
+    padding-left: 215px;
+  }
+  .footer-padding {
+  	padding-left: 215px;
+  }
+}
+
+/*====================================
+=            4.0 - FOOTER            =
+====================================*/
+
+.footer {
+
+	.footer-links {
+		a {
+		color: @turquoise1;
+		font-weight: @bold-main-font;
+
+			&:hover {
+				text-decoration: none;
+				color: @turquoise3;
+			}
+
+			&:focus {
+				text-decoration: none;
+				color: @turquoise3;
+			}
+
+			&:active {
+				text-decoration: none;
+				color: @turquoise3;
+			}
+		}
+	}
+
+	.footer-copyright {
+		p {
+			margin: 0px;
+		}
+	}
+}
+
+.footer-padding {
+	padding-top: 15px;
+	padding-bottom: 15px;
+	padding-right: 15px;
+	background-color: @grey2;
+	border-top: 1px solid @grey3;  
 }
