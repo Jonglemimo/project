@@ -15,5 +15,5 @@
 	</section>
 
 <?php include ('footer.php'); ?>
-		
+    <?= $this->section('script') ?>
 
