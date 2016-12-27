@@ -248,7 +248,7 @@ class UserController extends Controller
         if(isset($comments[0]['content'])){
             $this->show('user/fullComment', ['comments' => $comments]);
         }else{
-            $this->show('user/fullComment', ['comments' => 'Vous n\'avez pas de vidéo']);
+            $this->show('user/fullComment', ['comments' => 'Vous n\'avez pas de commentaire']);
         }
     }
 
