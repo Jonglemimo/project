@@ -1,6 +1,4 @@
-
 <?php
-
 
 namespace Model;
 
@@ -8,7 +6,7 @@ use \W\Model\Model;
 
 class VideoModel extends Model
 {
-	
+
 	function getVideo()
 	{
 		$sql = 'SELECT *, SUM(stars)/ COUNT(*) as note
