@@ -2,15 +2,22 @@
 
 namespace Controller;
 
+
+
+use Services\PhpMailerService;
 use W\Controller\Controller;
-use W\Model\UsersModel;
-use \W\Security\AuthentificationModel;
+use \Model\UsersModel;
+use W\Security\AuthentificationModel;
+
 
 class UserController extends Controller
 {
 
     public function signin()
     {
+        if(isset($_SESSION['user'])){
+            $this->redirectToRoute('default_home');
+        }
 
         if (isset($_POST['signin'])) {
 
@@ -67,6 +74,13 @@ class UserController extends Controller
         }else {
             $this->show('user/signin');
         }
+    }
+
+    public function logout(){
+        $authModel = new AuthentificationModel();
+        $authModel->logUserOut();
+        $this->redirectToRoute('default_home');
+
     }
 
     public function signup ()
@@ -158,7 +172,7 @@ class UserController extends Controller
                     'password' => $password
                 ]);
 
-                // On redirige sur une page sucess afin d'afficher les informations du compte de l'utilisateur
+                // On redirige sur une page success afin d'afficher les informations du compte de l'utilisateur
                 $this->redirectToRoute('user_success');
 
             }else{
@@ -170,12 +184,65 @@ class UserController extends Controller
         }
     }
 
-    function sucess(){
+    function success()
+    {
+        $this->show('user/success');
+    }
+
+    function userAdministration(){
+        $userModel = new UsersModel();
         $authModel = new AuthentificationModel();
-        if($authModel->getLoggedUser()) {
-            $this->show('user/sucess');
+
+        if($authModel->getLoggedUser() == null){
+            $this->redirectToRoute('user_login');
+        }
+        $userModel->setTable('video');
+
+        $videos = $userModel->findVideoById($_SESSION['user']['id'], 3);
+        $comments = $userModel->findVideoByComment($_SESSION['user']['id']);
+
+        if(isset($videos[0]['id'])){
+            $this->show('user/administration', ['videos' => $videos, 'comments' => $comments]);
         }else{
-            $this->redirectToRoute('default_home');
+            $this->show('user/administration', ['videos' => 'Vous n\'avez pas de vidéo']);
+        }
+    }
+
+    function userFullVideos(){
+        $userModel = new UsersModel();
+        $authModel = new AuthentificationModel();
+
+        if($authModel->getLoggedUser() == null){
+            $this->redirectToRoute('user_login');
+        }
+
+        $userModel->setTable('video');
+
+        $videos = $userModel->findVideoById($_SESSION['user']['id']);
+
+        if(isset($videos[0]['id'])){
+            $this->show('user/fullVideo', ['videos' => $videos]);
+        }else{
+            $this->show('user/fullVideo', ['videos' => 'Vous n\'avez pas de vidéo']);
+        }
+    }
+
+    function userFullComments(){
+        $userModel = new UsersModel();
+        $authModel = new AuthentificationModel();
+
+        if($authModel->getLoggedUser() == null){
+            $this->redirectToRoute('user_login');
+        }
+
+        $userModel->setTable('video');
+
+        $comments = $userModel->findVideoByComment($_SESSION['user']['id']);
+
+        if(isset($comments[0]['content'])){
+            $this->show('user/fullComment', ['comments' => $comments]);
+        }else{
+            $this->show('user/fullComment', ['comments' => 'Vous n\'avez pas de vidéo']);
         }
     }
 }
