@@ -44,4 +44,6 @@ class UsersModel extends UModel
 
         return $sth->fetchAll();
     }
+
 }
+
