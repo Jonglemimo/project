@@ -15,5 +15,8 @@
 	</section>
 
 <?php include ('footer.php'); ?>
+<script>
+    var currentUrl = '<?= $this->url('default_home')?>';
+</script>
     <?= $this->section('script') ?>
 
