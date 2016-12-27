@@ -1,7 +1,8 @@
 <?php
 	
 	$w_routes = array(
-		['GET',                 '/',                               'Default#home',            'default_home'],
+
+	    	['GET',                 '/',                               'Default#home',            'default_home'],
 
         //Connexion
         ['GET',					'/logout',							'User#logout',			  'user_logout'],
@@ -23,6 +24,13 @@
 
         //Video
         ['GET|POST',            '/upload',                         'Upload#uploadForm',       'upload_form'],
+
+
+
+	
+
+		['GET|POST', '/search', 'Video#search', 'search'],
+      
 
 
 	);

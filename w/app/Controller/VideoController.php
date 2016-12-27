@@ -4,9 +4,28 @@ namespace Controller;
 use W\Controller\Controller;
 use \Model\VideoModel;
 
-class UploadController extends Controller
+class VideoController extends Controller
 {
-    public function uploadForm(){
+	
+	function search()
+	{
+		$videos = new VideoModel();
+
+		if (!empty($_POST['search'])) {
+			$search = trim($_POST['search']);
+			$search = $_POST['search'];
+			$result = $videos->getVideoSearch($search);
+		} else {
+			$search = NULL;
+			$result = $videos->getVideo();
+		}
+
+		
+		$this->show('video/displayVideo', ['videos' => $result]);
+
+	}
+ 
+      public function uploadForm(){
 
         $errors = array();
 
@@ -36,4 +55,6 @@ class UploadController extends Controller
             $this->show('upload/form');
         }
     }
+
+
 }
