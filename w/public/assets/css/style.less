@@ -1,3 +1,143 @@
+
+/*==================================
+=            NAVIGATION            =
+==================================*/
+
+//0.1 - COLORS
+//0.2 - FONTS
+
+//1.0 - MAIN
+//1.1 - Buttons
+
+//2.0 - HEADER
+//2.1 - Header Bar
+//2.2 - Navigation bar
+
+
+/*========  0.1 - COLORS  =========*/
+
+@2B : #2B2B2B;
+@47 : #473D3E;
+@73 : #73434B;
+@A3 : #A32C44;
+@E6 : #E61C44;
+
 body {
-  background-color: #FFF;
+	background-color: @2B;
+	color: #FFF;
+}
+
+/*========  0.2 - FONTS  ==========*/
+
+@main-font: 'Open Sans', sans-serif;
+@bold-main-font: 700;
+
+@title-font: 'Pacifico', cursive;
+
+@main-title-size: 24px;
+
+* {
+	font-family: @main-font;
+}
+
+/*==================================
+=            1.0 - MAIN            =
+==================================*/
+
+/*========  1.1 - Buttons  ========*/
+
+#buttons {
+	background-color: @47;
+	border-color: @A3;
+	color: #FFF;
+
+	&:hover {
+		background-color: @73;
+		border-color: @E6;
+		color: #FFF;
+	}
+
+	&:focus {
+		background-color: @73;
+		border-color: @E6;
+		color: #FFF;
+	}
+}
+
+/*====================================
+=            2.0 - HEADER            =
+====================================*/
+
+/*=======  2.1 - Header Bar  =======*/
+
+header nav#header-bar {
+	background-color: @47;
+	height: 50px;
+	margin-bottom: 0px;
+
+	#nav-bar-button-col.navbar-header.col-xs-2.visible-xs {
+		background-color: red;
+
+		#buttons {
+			width: 50px;
+		}
+	}
+
+	#website-title {
+		color: @E6;
+		font-family: @title-font;
+		font-size: @main-title-size;
+	}
+	
+	#header-buttons-mobile {
+	  	transform: translateY(40%); 
+	}
+
+	.form-group.text-center.col-xs-6 {
+		padding: 0px;
+
+		input.form-control {
+		width: 83%;
+		}
+	}
+}
+
+.search-button-computer {
+	vertical-align: inherit;
+	transform: translateY(-3%);
+}
+
+#search-form-mobile, #login-buttons-mobile {
+	margin-top: 49px;
+	padding: 10px 10px 15px 10px;
+	z-index: 1030;
+	background-color: #473D3E;
+
+	.form-control {
+		display: inline-block;
+		width: 80%;
+		height: 37px;
+	}
+
+	.search-button-mobile {
+		vertical-align: inherit;
+		height: 37px;
+		transform: translateY(2%);
+	}
+
+	.login-signin-button {
+		width: 47%;
+		margin: 0px 5px;
+	}
+}
+
+/*======  2.2 - Navigation bar ======*/
+
+.side-nav {
+	z-index: 1020;
+	padding-top: 80px;
+	width: 200px;
+	height: 100vh;
+	background-color: #E5E5E5;
+
 }
