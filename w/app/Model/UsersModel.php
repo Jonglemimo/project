@@ -23,7 +23,7 @@ class UsersModel extends UModel
         return $sth->fetchAll();
     }
 
-    public function findVideoByComment($id,$limit = null)
+    public function findVideoByComment($id, $limit = null)
     {
         if(!is_numeric($id)){
             return false;

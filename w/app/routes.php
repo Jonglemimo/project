@@ -18,6 +18,7 @@
 
         //Administration
         ['GET|POST',            '/mapage',                         'User#userAdministration', 'user_admin'],
+        ['GET|POST',            '/mapage/info',                    'User#userInfo',           'user_info'],
         ['GET',                 '/mapage/video',                   'User#userFullVideos',     'user_video'],
         ['GET',                 '/mapage/comment',                 'User#userFullComments',   'user_comment'],
 

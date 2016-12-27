@@ -2,7 +2,7 @@
 namespace Controller;
 
 use W\Controller\Controller;
-use \Model\VideoModel;
+use Model\VideoModel;
 
 class VideoController extends Controller
 {
@@ -13,7 +13,6 @@ class VideoController extends Controller
 
 		if (!empty($_POST['search'])) {
 			$search = trim($_POST['search']);
-			$search = $_POST['search'];
 			$result = $videos->getVideoSearch($search);
 		} else {
 			$search = NULL;
