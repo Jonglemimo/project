@@ -168,7 +168,7 @@ class UserController extends Controller
 
                 $password = $authModel -> hashPassword($password,PASSWORD_DEFAULT);
 
-                $userModel ->insert([
+                $user = $userModel -> insert([
                     'firstname'=> $firstname,
                     'lastname' => $lastname,
                     'email'    => $email,
@@ -177,7 +177,8 @@ class UserController extends Controller
                 ]);
 
                 // On redirige sur une page success afin d'afficher les informations du compte de l'utilisateur
-                $this->redirectToRoute('user_success');
+
+                $this->show('user/success', ['user' => $user]);
 
             }else{
                 $this->show('user/signup', ['errors' => $errors]);
@@ -188,10 +189,10 @@ class UserController extends Controller
         }
     }
 
-    function success()
-        
-    {
-        $this->show('user/success');
+    function success(){
+        if(!isset($user)){
+            $this->redirectToRoute('user_signup');
+        }
     }
 
     function userAdministration(){
