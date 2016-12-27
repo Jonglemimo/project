@@ -189,6 +189,7 @@ class UserController extends Controller
     }
 
     function success()
+        
     {
         $this->show('user/success');
     }
