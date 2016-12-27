@@ -90,9 +90,9 @@
 		
 		<!-- BUTTONS MENU -->
 		<div class="col-xs-12">
-			<a class="btn btn-default btn-block" type="submit" id="home">Accueil</a>
+			<button class="btn btn-default btn-block" type="submit" id="home">Accueil</button>
 			<button class="btn btn-default btn-block" type="submit" id="page">Ma page</button>
-			<button class="btn btn-default btn-block" type="submit"	>Mes vidéos</button>
+			<button class="btn btn-default btn-block" type="submit"	id="videos">Mes vidéos</button>
 			<button class="btn btn-default btn-block" type="submit" id="comment">Mes commentaires</button>
 		</div>
 
