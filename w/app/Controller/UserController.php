@@ -4,6 +4,7 @@ namespace Controller;
 
 
 
+use League\Url\Components\User;
 use Services\PhpMailerService;
 use W\Controller\Controller;
 use \Model\UsersModel;
@@ -243,6 +244,71 @@ class UserController extends Controller
             $this->show('user/fullComment', ['comments' => $comments]);
         }else{
             $this->show('user/fullComment', ['comments' => 'Vous n\'avez pas de vidéo']);
+        }
+    }
+
+    function userInfo(){
+
+        $userModel = new UsersModel();
+        $authModel = new AuthentificationModel();
+        $errors = array();
+
+        if($authModel->getLoggedUser() == null){
+            $this->redirectToRoute('user_login');
+        }else {
+            $user = $authModel->getLoggedUser();
+            $this->show('user/userInfo', ['user' => $user]);
+        }
+
+        if (empty($_POST['username'])) {
+            $errors['username']['empty'] = true;
+        } else {
+            $username = trim($_POST['username']);
+            $username = htmlspecialchars($username, ENT_QUOTES);
+
+            if ($userModel->usernameExists($_POST['username'])) {
+                $errors['username']['exist'] = true;
+            }
+        }
+
+        if(isset($_POST['signup'])) {
+
+            $errors = array();
+
+        //vérification email
+
+        if (empty($_POST['email'])) {
+            $errors['email']['empty'] = true;
+
+        } elseif (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+            $errors['email']['wrong'] = true;
+
+        } else {
+            $email = $_POST['email'];
+
+            if($userModel->emailExists($email)){
+                $errors['email']['exist'] = true;
+            }
+        }
+
+        //si aucune erreur, on ajoute en BDD
+
+        if(count($errors) === 0){
+
+            $userModel->setTable('users');
+
+            $userModel ->insert([
+                'email'    => $email,
+                'username' => $username,
+            ]);
+
+
+        }else{
+            $this->show('user/userInfo', ['errors' => $errors]);
+        }
+
+    }else {
+            $this->show('user/signup');
         }
     }
 }

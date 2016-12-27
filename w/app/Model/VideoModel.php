@@ -4,7 +4,7 @@ namespace Model;
 
 use \W\Model\Model;
 
-class UploadModel extends Model
+class VideoModel extends Model
 
 {
 

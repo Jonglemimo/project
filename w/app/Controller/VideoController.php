@@ -4,7 +4,7 @@ namespace Controller;
 use W\Controller\Controller;
 use \Model\VideoModel;
 
-class UploadController extends Controller
+class VideoController extends Controller
 {
     public function uploadForm(){
 

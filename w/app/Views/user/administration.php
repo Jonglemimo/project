@@ -1,9 +1,9 @@
 <?php $this->layout('layout', ['title' => 'Ma page']);
 $this->start('main_content');?>
+    <a href="<?=$this->url('user_info')?>">Mes infos</a>
     <h4>Mes vidéos</h4>
 
     <section class="container-fluid videoContainer">
-
         <?php if(is_array($videos)):?>
             <div class="row col-md-12">
                 <?php foreach ($videos as $video):?>
