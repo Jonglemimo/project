@@ -25,12 +25,7 @@
 
 
         //Video
-        ['GET|POST',            '/upload',                         'Upload#uploadForm',       'upload_form'],
-
-
-
-	
-
+        ['GET|POST',            '/upload',                         'Video#uploadForm',       'upload_form'],
 		['GET|POST', '/search', 'Video#search', 'search'],
       
 
