@@ -35,4 +35,15 @@ class VideoModel extends Model
 		return $stmt->fetchAll();
 	}
 
+	function fileExist($file){
+	    $sql = 'SELECT *
+	            FROM video
+	            WHERE url = :file or poster = :file';
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->bindParam(':file' , $file);
+        $stmt->execute();
+        return;
+
+    }
+
 }

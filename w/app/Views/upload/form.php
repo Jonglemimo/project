@@ -4,19 +4,22 @@ $this->layout('layout', ['title' => 'Formulaire d\'envoi']);
 $this->start('main_content');
 ?>
     <form id="formUpload" method="POST" enctype="multipart/form-data">
+        <p  class="hide" id="status"></p>
+        <p  class="hide" id="empty"></p>
+        <dialog open class="hide" id="result"></dialog>
         <input id="imageFile" type="hidden" name="image">
         <input id="videoFile" type="hidden" name="video">
         <div class="form-group">
             <?php if(isset($errors['title'])) : ?>
                 <p><?=$errors['title']?></p>
             <?php endif ?>
-            Titre : <input class="form-control" type="text" name="title"><br>
+            Titre : <input class="form-control title" type="text" name="title"><br>
         </div>
         <div class="form-group">
             <?php if(isset($errors['description'])) : ?>
                 <p><?=$errors['description']?></p>
             <?php endif ?>
-            Description : <textarea class="form-control" name="description" cols="30" rows="10"></textarea>
+            Description : <textarea class="form-control description" name="description" cols="30" rows="10"></textarea>
         </div>
         <ul class="hide" id="listItems">
         </ul>
@@ -26,6 +29,8 @@ $this->start('main_content');
             <?php endif ?>
             Fichiers à upload : <input class="form-control" data-url="<?=$this->url('upload_form')?>" id="fileupload" type="file" name="files[]" multiple><br>
         </div>
+
+
         <div class="clearfix">
             <button type="submit" class="btn btn-success pull-right">Envoyer</button>
         </div>

@@ -24,11 +24,44 @@ var upload = {
     },
     timeout : false,
     validateForm : function () {
-      /*  if(this.files.length != 2){
-            console.error('vous devez uploader une image et une vidéo uniquement');
+        var error = '';
+        if($('.title').val().length < 5){
+            error += 'Votre titre doit être supérieur à 5 caractères <br>';
+
+        }
+
+        if($('.description').val().length < 20){
+            error += 'Votre description doit être supérieur à 20 caractères';
+
+        }
+
+        if(error.length > 0){
+            $('#empty').html(error).removeClass('hide').addClass('alert alert-danger');
+
+        }else {
+            $('#empty').addClass('hide')
+        }
+
+
+       if(this.files.length > 2){
+
+           $('#status').html('vous devez uploader une image et une vidéo uniquement').removeClass('hide').addClass('alert alert-danger');
+
+           var more = true
+
+        }else if(this.files.length < 2){
+           $('#status').html('vous devez uploader une image et une vidéo').removeClass('hide').addClass('alert alert-danger');
+
+            var less = true
+       }else {
+           $('#status').addClass('hide')
+       }
+
+       if(error.length > 0 || more == true || less == true){
             return false;
-        }*/
-       /* var type = {
+       }
+
+       var type = {
             image : false,
             video : false,
             regexImg : /image/gi,
@@ -43,10 +76,11 @@ var upload = {
                 type.video = true;
             }
         });
+
         if(!type.image || !type.video){
-            console.error('Les fichiers ne sont pas valides');
+            $('#status').html('Les fichiers ne sont pas valides').removeClass('hide').addClass('alert alert-danger');
             return false;
-        }*/
+        }
 
         return true;
 
@@ -62,7 +96,12 @@ var upload = {
             'image' : $('#imageFile').val(),
             'video' : $('#videoFile').val()
         }, function (data) {
-            console.log(data);
+            if(data.success == true)
+            $('#result').html('L\'upload s\'est bien terminé').removeClass('hide').addClass('alert alert-success');
+            setTimeout(function()
+            {
+                javascript:window.location.reload()
+            }, 2000);
         });
     }
 };
@@ -78,18 +117,18 @@ $(function () {
 
     $(document).on('submit','#formUpload',function (e) {
         e.preventDefault();
-        upload.files.forEach(function (file) {
-            if(upload.validateForm()){
+        if(upload.validateForm()){
+            upload.files.forEach(function (file) {
                 file.submit();
-            }
-        })
+            });
+        };
     });
 
     $('#fileupload').fileupload({
         dataType: 'json',
         add: function (e,data) {
             if(upload.checkParams(data)){
-                console.error('parametre erreur');
+                $('.status').html('Erreur de paramétrage').removeClass('hide').addClass('alert alert-danger');
                 return;
             }
             upload.files.push(data);
@@ -103,18 +142,19 @@ $(function () {
         },
         done: function (e, data) {
             if(data.result.success){
-                console.log('upload réussi');
+
                 if(data.result.type == 'unknown'){
-                    console.error('type de fichier inconnu');
+                    $('.status').html('type de fichier inconnu').removeClass('hide').addClass('alert alert-danger');
                     return;
                 }
                 var element = data.result.type == 'image' ? $('#imageFile') : $('#videoFile');
                 element.val(data.result.file);
                 upload.sendForm();
             }else{
-                console.error('erreur lors de l\'upload du fichier: ' + data.files[0].name);
+                $('.status').html('erreur lors de l\'upload du fichier: '+data.files[0].name +'').removeClass('hide').addClass('alert alert-danger');
             }
           console.log('done',data);
+
         },
         progress: function (e,data) {
 

@@ -102,7 +102,7 @@ class UserController extends Controller
             if (empty($_POST['firstname'])) {
                 $errors['firstname']['empty'] = true;
 
-            } elseif (strlen($_POST['firstname']) < 5) {
+            } elseif (strlen($_POST['firstname']) < 2) {
                 $errors['firstname']['short'] = true;
             } else {
                 $firstname = $_POST['firstname'];
@@ -113,7 +113,7 @@ class UserController extends Controller
             if (empty($_POST['lastname'])) {
                 $errors['lastname']['empty'] = true;
 
-            } elseif (strlen($_POST['lastname']) < 5) {
+            } elseif (strlen($_POST['lastname']) < 2) {
                 $errors['lastname']['short'] = true;
             } else {
                 $lastname = $_POST['lastname'];

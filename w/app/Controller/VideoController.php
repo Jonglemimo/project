@@ -3,6 +3,7 @@ namespace Controller;
 
 use W\Controller\Controller;
 use Model\VideoModel;
+use Services\ImageManagerService;
 
 class VideoController extends Controller
 {
@@ -75,6 +76,7 @@ class VideoController extends Controller
     private function validateForm(){
 
         $videoModel = new VideoModel();
+        $imageResize = new ImageManagerService();
 
         $errors = array();
 
@@ -127,6 +129,19 @@ class VideoController extends Controller
                 'poster' => basename($image),
                 'id_user' => $_SESSION['user']['id']
             ]);
+
+
+                $outputMin = $this->imagesFolder.DIRECTORY_SEPARATOR.'min'.DIRECTORY_SEPARATOR.basename($image);
+                $outputMedium = $this->imagesFolder.DIRECTORY_SEPARATOR.'medium'.DIRECTORY_SEPARATOR.basename($image);
+                $outputLarge = $this->imagesFolder.DIRECTORY_SEPARATOR.'large'.DIRECTORY_SEPARATOR.basename($image);
+
+                $fullpath = $this->imagesFolder.DIRECTORY_SEPARATOR.basename($image);
+
+                $imageResize->resize( $fullpath ,null, 250, 200,false, $outputMin, false);
+                $imageResize->resize($fullpath, null, 450, 400,false, $outputMedium, false);
+                $imageResize->resize($fullpath, null, 1200, 1000,false, $outputLarge, false);
+
+
             return array('success' => true, 'errors' => $errors);
         }else{
             return array('success' => false, 'errors' => $errors);
