@@ -1,5 +1,9 @@
-<?php $this->layout('layout', ['title' => 'Perdu ?']) ?>
+<?php $this->layout('layout', ['title' => 'Erreur 404']) ?>
 
 <?php $this->start('main_content'); ?>
-<h1>404. Perdu ?</h1>
+
+<h3>Perdu ?</h3>
+
+<a href="<?=$this->url('default_home')?>">< Retour à la page d'accueil</a>
+
 <?php $this->stop('main_content'); ?>

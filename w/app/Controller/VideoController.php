@@ -1,14 +1,13 @@
 <?php
+
 namespace Controller;
 
 use W\Controller\Controller;
 use Model\VideoModel;
 
-class VideoController extends Controller
-{
+class VideoController extends Controller {
 	
-	function search()
-	{
+	function search() {
 		$videos = new VideoModel();
 
 		if (!empty($_POST['search'])) {
@@ -18,42 +17,40 @@ class VideoController extends Controller
 			$search = NULL;
 			$result = $videos->getVideo();
 		}
-
 		
 		$this->show('video/displayVideo', ['videos' => $result]);
-
 	}
  
-      public function uploadForm(){
+      public function uploadForm() {
 
         $errors = array();
 
-        if(isset($_POST['addMovie'])){
+        if(isset($_POST['addMovie'])) {
 
-            if(empty($_POST['pictureTitle'])){
+            if(empty($_POST['pictureTitle'])) {
                 $errors['pictureTitle'] = true;
-            }else{
+
+            } else {
                 $pictureTitle = trim($_POST['pictureTitle']);
             }
 
-            if(empty($_POST['pictureUrl'])){
+            if(empty($_POST['pictureUrl'])) {
                 $errors['pictureUrl'] = true;
             }
 
-            if(empty($_POST['videoTitle'])){
+            if(empty($_POST['videoTitle'])) {
                 $errors['videoTitle'] = true;
-            }else{
+
+            } else {
                 $videoTitle = trim($_POST['videoTitle']);
             }
 
-            if(empty($_POST[''])){
+            if(empty($_POST[''])) {
 
             }
 
-        }else{
+        } else {
             $this->show('upload/form');
         }
     }
-
-
 }

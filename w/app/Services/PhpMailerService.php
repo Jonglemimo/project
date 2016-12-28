@@ -1,9 +1,9 @@
 <?php
 namespace Services;
 
-class PhpMailerService
-{
-    function sendMail($address, $subject, $bodyHtml, $bodyPlain){
+class PhpMailerService {
+    
+    function sendMail($address, $subject, $bodyHtml, $bodyPlain) {
 
         $phpMailer = new \PHPMailer();
 

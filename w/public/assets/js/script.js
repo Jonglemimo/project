@@ -28,18 +28,14 @@ jQuery(document).ready(function() {
 		});
 		
 	})
-});
-
-$(function() {
 
 	//SEARCH BAR AND SIGNIN/LOGIN SHOWING
 	$('#search-form-mobile').on('show.bs.collapse', function () {
-			$('#login-buttons-mobile').collapse('hide');
+		$('#login-buttons-mobile').collapse('hide');
 	})
 	$('#login-buttons-mobile').on('show.bs.collapse', function () {
-			$('#search-form-mobile').collapse('hide');
+		$('#search-form-mobile').collapse('hide');
 	})
-	
 	
 	//SHOWING ONLY ONE AT ONCE
 	$( window ).resize(function() {
@@ -48,7 +44,7 @@ $(function() {
 
 
 	//SIDE NAVIGATION SHOWING OR NOT ON MOBILE
-	$('#mySidenav').on('input', function() {
+	$('#mySidenav').on('click', function() {
 	   	var navWidth = $('.sidenav').width();
 	    if (navWidth == 0){
 	    	$('.sidenav').css({
@@ -58,4 +54,5 @@ $(function() {
 		    	width: '0px'});
 	    }
 	});
+
 });
