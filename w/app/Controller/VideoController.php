@@ -127,6 +127,7 @@ class VideoController extends Controller
             $videoModel->insert([
                 'title' => $title,
                 'description' => $description,
+                'shortTitle' => uniqid(),
                 'url' => basename($video),
                 'poster' => basename($image),
                 'id_user' => $_SESSION['user']['id']

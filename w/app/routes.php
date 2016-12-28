@@ -25,7 +25,7 @@
 
 
         //Video
-        ['GET|POST',            '/upload',                         'Video#uploadForm',       'upload_form'],
+        ['GET|POST',            '/mapage/upload',                  'Video#uploadForm',       'upload_form'],
 		['GET|POST',            '/search',                         'Video#search',           'search'],
       
 

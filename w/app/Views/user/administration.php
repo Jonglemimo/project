@@ -4,6 +4,7 @@ $this->layout('layout', ['title' => 'Ma page']);
 $this->start('main_content');?>
 
 <a href="<?=$this->url('user_info')?>">Mes infos</a>
+<a class="pull-right" href="<?=$this->url('upload_form')?>">Ajouter une vidéo</a>
 
 <h4>Mes vidéos</h4>
 
@@ -15,7 +16,7 @@ $this->start('main_content');?>
 
             <?php foreach ($videos as $video):?>
 
-            <div class="col-md-4 col-md-push-2 text-center">
+            <div class="col-md-4 text-center">
                 <video src="<?=$video['url']?>" controls></video>
                 <p><?=$video['title'] ?></p>
                 <p><?=$video['description'] ?></p>
@@ -23,7 +24,7 @@ $this->start('main_content');?>
 
             <?php endforeach;?>
 
-            <a href="<?=$this->url('user_video')?>" class="col-md-offset-7">Voir plus</a>
+            <a href="<?=$this->url('user_video')?>" class="col-md-offset-6">Voir plus</a>
 
         </div>
 
@@ -50,7 +51,7 @@ $this->start('main_content');?>
             </div>
         <?php endforeach;?>
 
-        <a href="<?=$this->url('user_comment')?>" class = "col-md-offset-7">Voir plus</a>
+        <a href="<?=$this->url('user_comment')?>" class = "col-md-offset-6">Voir plus</a>
         
     <?php endif; ?>
 </section>

@@ -21,13 +21,14 @@ $this->start('main_content');
             <?php endif ?>
             Description : <textarea class="form-control description" name="description" cols="30" rows="10"></textarea>
         </div>
-        <ul class="hide" id="listItems">
+        <ul class="hide paddingNone" id="listItems">
         </ul>
         <div class="form-group">
             <?php if(isset(  $errors['file']['pictures'])) : ?>
                 <p><?=   $errors['file']['pictures']?></p>
             <?php endif ?>
-            Fichiers à upload : <input class="form-control" data-url="<?=$this->url('upload_form')?>" id="fileupload" type="file" name="files[]" multiple><br>
+
+            <label id="uploadButton" for="files"><i class="glyphicon glyphicon-open"></i> Fichiers à upload<input class="form-control" data-url="<?=$this->url('upload_form')?>" id="fileupload" type="file" name="files[]" multiple></label>
         </div>
 
 

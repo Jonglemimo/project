@@ -8,7 +8,7 @@ $this->start('main_content');?>
 
         <div class="row col-md-12">
             <?php foreach ($videos as $video):?>
-                <div class="col-md-4 col-md-push-2 text-center">
+                <div class="col-md-4 text-center">
 
                     <video src="<?=$video['url']?>" controls></video>
                     <p><?=$video['title'] ?></p>

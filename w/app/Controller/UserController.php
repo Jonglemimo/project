@@ -263,41 +263,40 @@ class UserController extends Controller {
         $userModel = new UsersModel();
         $authModel = new AuthentificationModel();
         $errors = array();
+        $user = $authModel->getLoggedUser();
 
         if($authModel->getLoggedUser() == null){
             $this->redirectToRoute('user_login');
-        }else {
-            $user = $authModel->getLoggedUser();
-            $this->show('user/userInfo', ['user' => $user]);
         }
 
-        if (empty($_POST['username'])) {
-            $errors['username']['empty'] = true;
-        } else {
-            $username = trim($_POST['username']);
-            $username = htmlspecialchars($username, ENT_QUOTES);
 
-            if ($userModel->usernameExists($_POST['username'])) {
-                $errors['username']['exist'] = true;
-            }
-        }
-
-        if(isset($_POST['signup'])) {
+        if(isset($_POST['modifyInfo'])) {
             $errors = array();
 
-        //CHECKING EMAIL
-        if (empty($_POST['email'])) {
-            $errors['email']['empty'] = true;
+            if (empty($_POST['username'])) {
+                $errors['username']['empty'] = true;
+            } else {
+                $username = trim($_POST['username']);
+                $username = htmlspecialchars($username, ENT_QUOTES);
 
-        } elseif (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
-            $errors['email']['wrong'] = true;
-
-        } else {
-            $email = $_POST['email'];
-
-            if($userModel->emailExists($email)) {
-                $errors['email']['exist'] = true;
+                if ($userModel->usernameExists($_POST['username'])) {
+                    $errors['username']['exist'] = true;
+                }
             }
+
+            //CHECKING EMAIL
+            if (empty($_POST['email'])) {
+                $errors['email']['empty'] = true;
+
+            } elseif (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+                $errors['email']['wrong'] = true;
+
+            } else {
+                $email = $_POST['email'];
+            }
+
+        }else{
+            $this->show('user/userInfo', ['user' => $user]);
         }
 
         //IF NO ERRORS, ADD IN DATABASE
@@ -305,15 +304,16 @@ class UserController extends Controller {
 
             $userModel->setTable('users');
 
-            $userModel ->insert([
+            $userModel->update([
                 'email'    => $email,
                 'username' => $username,
-            ]);
+
+            ],$user['id']);
+            $success = 'Vos informations ont bien été modifiées';
+            $this->show('user/userInfo', ['success' => $success]);
+
         } else {
-            $this->show('user/userInfo', ['errors' => $errors]);
-        }
-    } else {
-            $this->show('user/signup');
+            $this->show('user/userInfo', ['errors' => $errors,'user' => $user]);
         }
     }
 }

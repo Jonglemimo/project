@@ -17,9 +17,9 @@ var upload = {
         var html = '';
         for(var key in upload.files){
             file = upload.files[key].files[0];
-            html += '<li data-name="'+file.name+'" data-index="'+key+'">' + '<span>' + file.name + '</span><span>' + file.type +'</span><span>' + parseFloat(file.size /1024/1024).toFixed(2) + ' mo</span>' + '<i class="glyphicon glyphicon-trash removeItem"></i> <span class="progress hide"><span class="progress-bar progress-bar-info progress-bar-striped"></span></span></li>';
+            html += '<li class ="alert alert-success list-unstyled " data-name="'+file.name+'" data-index="'+key+'">' + '<span class="black"> Nom du fichier : </span><span>' + file.name + ' </span><span class="black"> | Type du fichier : </span><span>' + file.type +'</span><span class="black"> | Taille du fichier :</span><span> ' + parseFloat(file.size /1024/1024).toFixed(2) + ' mo</span>' + '<i class="glyphicon glyphicon-trash removeItem pull-right"></i><div class="progress hide "><div class="progress-bar progress-bar-info progress-bar-striped progressBar "></div></div></li>';
         };
-        console.log('process');
+
         $('#listItems').html(html).removeClass('hide');
     },
     timeout : false,
@@ -47,17 +47,17 @@ var upload = {
 
            $('#status').html('vous devez uploader une image et une vidéo uniquement').removeClass('hide').addClass('alert alert-danger');
 
-           var more = true
+           var notGoodNumber = true
 
         }else if(this.files.length < 2){
            $('#status').html('vous devez uploader une image et une vidéo').removeClass('hide').addClass('alert alert-danger');
 
-            var less = true
+            var notGoodNumber = true
        }else {
            $('#status').addClass('hide')
        }
 
-       if(error.length > 0 || more == true || less == true){
+       if(error.length > 0 || notGoodNumber == true){
             return false;
        }
 
@@ -90,7 +90,7 @@ var upload = {
             return;
         }
 
-        $.post(currentUrl + 'upload',{
+        $.post(currentUrl + '/mapage/upload',{
             'title' : $('input[name="title"]').val(),
             'description' : $('textarea[name="description"]').val(),
             'image' : $('#imageFile').val(),
@@ -157,7 +157,6 @@ $(function () {
 
         },
         progress: function (e,data) {
-
             var element = $('#listItems').find('li[data-name="'+data.files[0].name+'"] > .progress');
             if(element.length > 0){
                 if(element.hasClass('hide')){
