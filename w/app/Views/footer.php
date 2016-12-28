@@ -1,19 +1,17 @@
 <footer class="footer footer-padding">
 
-	<div class="footer-links">
-		<p>
-			<a href="#">Conditions d'utilisation</a>
-			 - 
-			<a href="#">Confidentialité</a>
-			 - 
-			<a href="#">Foire aux questions</a>
-			 - 
-			<a href="#">Nous contacter</a>
-		</p>
-	</div>
-
 	<div class="footer-copyright">
 		<p>© Tutomotion 2016</p>
+	</div>
+
+	<div class="footer-links">
+		<a href="#">Conditions d'utilisation</a>
+		 - 
+		<a href="#">Confidentialité</a>
+		 - 
+		<a href="#">Foire aux questions</a>
+		 - 
+		<a href="#">Nous contacter</a>
 	</div>
 
 </footer>

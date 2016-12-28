@@ -10,7 +10,7 @@
 	<!-- BOOTSTRAP 3.3.7 -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<!-- CUSTOM FONTS -->
-	<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Pacifico" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600i,700|Pacifico" rel="stylesheet">
 	<!-- CUSTOM CSS -->
 	<link rel="stylesheet" href="<?= $this->assetUrl('css/style.css')?>">
 </head>
@@ -52,7 +52,7 @@
 					<div class="row">
 						<!-- SEARCH -->
 						<div class="form-group text-center col-xs-6" >
-							<input type="text" id="search" class="form-control" placeholder="Search">
+							<input type="text" id="search" class="form-control" placeholder="Rechercher">
 							<button type="submit" id="btnSearch" class="buttons search-button-computer btn btn-default glyphicon glyphicon-search"></button>
 						</div>
 
@@ -75,7 +75,7 @@
 	<!-- SEARCH -->
 	<div class="search-form-mobile collapse navbar-fixed-top" id="search-form-mobile">
 		<div class="text-center">
-			<input type="text" id="search" class="form-control" placeholder="Search">
+			<input type="text" id="search" class="form-control" placeholder="Rechercher">
 			<button type="submit" id="btnSearch" class="buttons search-button-mobile btn btn-default glyphicon glyphicon-search"></button>
 		</div>
 	</div>

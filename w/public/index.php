@@ -1,16 +1,16 @@
 <?php
 
-//autochargement des classes
+//CLASSES AUTOLOAD
 require '../vendor/autoload.php';
 
-//configuration
+//CONFIGURATION
 require '../app/config.php';
 
-// rares fonctions globales
+//RARES GLOBAL FUNCTIONS
 require '../W/globals.php';
 
-//instancie notre appli en lui passant la config et les routes
+//INSTANCE OUR APPLICATION WITH CONFIGURATIONS AND ROUTES
 $app = new W\App($w_routes, $w_config);
 
-//exécute l'appli
+//APPLICATION EXECUTION
 $app->run();
