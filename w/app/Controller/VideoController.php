@@ -1,9 +1,11 @@
 <?php
+
 namespace Controller;
 
 use W\Controller\Controller;
 use Model\VideoModel;
 use Services\ImageManagerService;
+
 
 class VideoController extends Controller
 {
@@ -22,6 +24,7 @@ class VideoController extends Controller
 
     function search()
 	{
+
 		$videos = new VideoModel();
 
 		if (!empty($_POST['search'])) {
@@ -31,12 +34,11 @@ class VideoController extends Controller
 			$search = NULL;
 			$result = $videos->getVideo();
 		}
-
 		
 		$this->show('video/displayVideo', ['videos' => $result]);
-
 	}
  
+
     public function uploadForm(){
 
         if(!isset($_SESSION['user'])){
@@ -141,7 +143,6 @@ class VideoController extends Controller
                 $imageResize->resize($fullpath, null, 450, 400,false, $outputMedium, false);
                 $imageResize->resize($fullpath, null, 1200, 1000,false, $outputLarge, false);
 
-
             return array('success' => true, 'errors' => $errors);
         }else{
             return array('success' => false, 'errors' => $errors);
@@ -173,5 +174,4 @@ class VideoController extends Controller
             return $file;
         }
     }
-
 }
