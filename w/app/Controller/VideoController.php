@@ -9,17 +9,47 @@ use Services\ImageManagerService;
 
 class VideoController extends Controller
 {
-	private $uploadTmp = false;
-	private $videosFolder = false;
-	private $imagesFolder = false;
+	private $uploadTmp   = false;
+    private $usersFolder = false;
+    private $ffmpegBin   = false;
+    private $ffprobeBin  = false;
 
 	public function __construct()
     {
         $ds = DIRECTORY_SEPARATOR;
         $this->uploadTmp = dirname(dirname(dirname(__FILE__))).$ds.'tmp';
-        $this->videosFolder = dirname(dirname(dirname(__FILE__))).$ds.'public'.$ds.'assets'.$ds.'uploads'.$ds.'videos';
-        $this->imagesFolder = dirname(dirname(dirname(__FILE__))).$ds.'public'.$ds.'assets'.$ds.'uploads'.$ds.'images';
+        if(isset($_SESSION['user'])){
+            $this->usersFolder = dirname(dirname(dirname(__FILE__))).$ds.'public'.$ds.'users'.$ds.$_SESSION['user']['id'];
+            if(!file_exists($this->usersFolder)){
+                mkdir($this->usersFolder,0755);
+            }
 
+            putenv('TMPDIR='.dirname(dirname(dirname(__FILE__))).$ds.'php-tmp');
+
+            $os = new \Tivie\OS\Detector();
+            $ffmpegPath = dirname(dirname(dirname(__FILE__))).$ds.'bin';
+            if($os->getType() == 33){
+                //OSX
+                $this->ffmpegBin = $ffmpegPath.$ds.'osx'.$ds.'ffmpeg';
+                $this->ffprobeBin = $ffmpegPath.$ds.'osx'.$ds.'ffprobe';
+            }else if($os->getType() == 10){
+                if(PHP_INT_SIZE == 8){
+                    // Windows 64
+                    $this->ffmpegBin = $ffmpegPath.$ds.'windows'.$ds.'64'.$ds.'ffmpeg.exe';
+                    $this->ffprobeBin = $ffmpegPath.$ds.'windows'.$ds.'64'.$ds.'ffprobe.exe';
+
+                }else{
+                    // Windows 32
+                    $this->ffmpegBin = $ffmpegPath.$ds.'windows'.$ds.'32'.$ds.'ffmpeg.exe';
+                    $this->ffprobeBin = $ffmpegPath.$ds.'windows'.$ds.'32'.$ds.'ffprobe.exe';
+                }
+            }else{
+                //unknown
+            }
+
+
+
+        }
     }
 
     function search()
@@ -59,11 +89,6 @@ class VideoController extends Controller
             die;
         }
 
-        if(isset($_POST['formUpload'])){
-            print_r($_POST);
-            die;
-        }
-
         if(!empty($_POST)){
 
             header('Content-Type: application/json');
@@ -71,7 +96,10 @@ class VideoController extends Controller
             die;
         }
 
-        $this->show('upload/form');
+        $this->transcode();
+        die;
+
+        /*$this->show('upload/form');*/
 
     }
 
@@ -120,29 +148,45 @@ class VideoController extends Controller
         }
 
         if(count($errors) == 0){
-            rename($image,$this->imagesFolder.DIRECTORY_SEPARATOR.basename($image));
-            rename($video,$this->videosFolder.DIRECTORY_SEPARATOR.basename($video));
+            $shortTitle = uniqid();
+            $output = $this->usersFolder.DIRECTORY_SEPARATOR.$shortTitle.DIRECTORY_SEPARATOR;
+
+            if(!file_exists($output)){
+                mkdir($output,0755);
+
+            }
+
+            rename($image,$output.basename($image));
+            rename($video,$output.basename($video));
+
+
+
 
             $videoModel->setTable('video');
+
             $videoModel->insert([
                 'title' => $title,
                 'description' => $description,
-                'shortTitle' => uniqid(),
+                'shortTitle' => $shortTitle,
                 'url' => basename($video),
                 'poster' => basename($image),
                 'id_user' => $_SESSION['user']['id']
             ]);
 
+            $imageInfo = pathinfo($image);
 
-                $outputMin = $this->imagesFolder.DIRECTORY_SEPARATOR.'min'.DIRECTORY_SEPARATOR.basename($image);
-                $outputMedium = $this->imagesFolder.DIRECTORY_SEPARATOR.'medium'.DIRECTORY_SEPARATOR.basename($image);
-                $outputLarge = $this->imagesFolder.DIRECTORY_SEPARATOR.'large'.DIRECTORY_SEPARATOR.basename($image);
 
-                $fullpath = $this->imagesFolder.DIRECTORY_SEPARATOR.basename($image);
+            $outputMin = $output.$imageInfo['filename'].'.xs.'.$imageInfo['extension'];
+            $outputMedium = $output.$imageInfo['filename'].'.sm.'.$imageInfo['extension'];
+            $outputLarge = $output.$imageInfo['filename'].'.lg.'.$imageInfo['extension'];
 
-                $imageResize->resize( $fullpath ,null, 250, 200,false, $outputMin, false);
-                $imageResize->resize($fullpath, null, 450, 400,false, $outputMedium, false);
-                $imageResize->resize($fullpath, null, 1200, 1000,false, $outputLarge, false);
+            $fullpath = $output.basename($image);
+
+            $imageResize->resize($fullpath ,null, 250, 200,false, $outputMin, false);
+            $imageResize->resize($fullpath, null, 450, 400,false, $outputMedium, false);
+            $imageResize->resize($fullpath, null, 1200, 1000,false, $outputLarge, false);
+
+            unlink($fullpath);
 
             return array('success' => true, 'errors' => $errors);
         }else{
@@ -174,5 +218,24 @@ class VideoController extends Controller
         }else {
             return $file;
         }
+    }
+
+    private function transcode(){
+
+        if(!$this->ffprobeBin || !$this->ffmpegBin){
+            return false;
+        }
+        $ffmpeg = \FFMpeg\FFMpeg::create(array(
+            'ffmpeg.binaries' => $this->ffmpegBin,
+            'ffprobe.binaries' => $this->ffprobeBin
+        ));
+
+        $test = '/Users/Helda/Sites/Formation/Cours/group-project/project/w/public/users/2/586428ddc76d0/Scream.Queens.2015.VOSTFR.S02E10.HDTV.XViD-EXTREME.avi';
+
+        $output = dirname($test).DIRECTORY_SEPARATOR.'test.webm';
+
+        $video = $ffmpeg->open($test);
+        $video->save(new \FFMpeg\Format\Video\WebM(), $output);
+
     }
 }

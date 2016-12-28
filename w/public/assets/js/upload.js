@@ -100,7 +100,8 @@ var upload = {
             $('#result').html('L\'upload s\'est bien terminé').removeClass('hide').addClass('alert alert-success');
             setTimeout(function()
             {
-                javascript:window.location.reload()
+                window.location.reload();
+
             }, 2000);
         });
     }
