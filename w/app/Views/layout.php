@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+
     <title><?= $title ?></title>
 
     <!-- BOOTSTRAP 3.3.7 -->
@@ -125,15 +126,17 @@
     </div>
 </section>
 
-<input id="category" type="hidden" value="<?= $this->url('categories_get')?>">
-<section class="body body-padding">
-    <h1><?= $this->e($title) ?></h1>
+  <input id="category" type="hidden" value="<?= $this->url('categories_get')?>">
+	<input type="hidden" id="watch_route" value="<?= $this->url('watch') ?>">
+	<input type="hidden" id="ajax_search_route" value="<?= $this->url('search') ?>">
 
-    <section>
-        <?= $this->section('main_content') ?>
-    </section>
-</section>
+	<section class="body body-padding">
+		<h1><?= $this->e($title) ?></h1>
+		<section>
+			<?= $this->section('main_content') ?>
+		</section>
 
+	</section>
 
 <footer class="footer footer-padding">
 

@@ -20,8 +20,9 @@ class VideoModel extends Model {
 		return $stmt->fetchAll();
 	}
 
-	function getVideoSearch($search) {
-		
+
+	function getVideosSearch($search){
+
 		$sql = 'SELECT *, SUM(stars)/ COUNT(*) as note
 				FROM votesusers
 				INNER JOIN video
@@ -36,6 +37,33 @@ class VideoModel extends Model {
 		return $stmt->fetchAll();
 	}
 
+
+	function getVideo($url){
+		$sql = 'SELECT video.url ,video.title, video.description , video.date_created, video.poster, users.username, SUM(stars)/ COUNT(*) as note
+				FROM votesusers
+				INNER JOIN video
+				INNER JOIN users
+				WHERE video.shortTitle = :url 
+				AND video.id_user = users.id';
+		$stmt = $this->dbh->prepare($sql);
+		$stmt->bindParam(':url', $url);
+		$stmt->execute();
+		return $stmt->fetch();
+	}
+
+	public function exist($search){
+		$sql = 'SELECT COUNT(*)
+				FROM video 
+				WHERE shortTitle = :search';
+		$stmt = $this->dbh->prepare($sql);
+		$stmt->bindParam(':search', $search);
+		$stmt->execute();
+		if (count($stmt->fetch()) > 0 ){
+			return true;
+		} else {
+			return false;
+		}
+
 	function fileExist($file){
 	    $sql = 'SELECT *
 	            FROM video
@@ -46,6 +74,7 @@ class VideoModel extends Model {
         return;
 
     }
+
 
     function getWhileEncoding($id){
         $sql = 'SELECT title, shortTitle, url, posters.poster_xs,posters.poster_sm,posters.poster_lg
@@ -58,6 +87,7 @@ class VideoModel extends Model {
         $stmt->execute();
         return $stmt->fetchAll();
     }
+
 
 
 }

@@ -1,5 +1,6 @@
 
 jQuery(document).ready(function() {
+	
 	$.ajax({
 		url: $('#ajax_search_route').val() ,
 		dataType: 'html',
@@ -26,7 +27,7 @@ jQuery(document).ready(function() {
 		.fail(function() {
 			console.log("error");
 		});
-		
+
 	});
 	$.ajax({
 		url : $('#category').val(),
@@ -37,6 +38,23 @@ jQuery(document).ready(function() {
     }).fail(function (r) {
         $('.categories').html('Il n\'y a aucune catégories');
     });
+
+
+	});
+
+});
+
+	$(document).on('click','#videoInfoSmall', function(){
+		var urlVideo = $(this).children('img').data('unique');
+		var url = $('#watch_route').val();
+		url += "?video=" + urlVideo;
+		window.location.replace(url);
+	});
+
+
+$(function() {
+
+
 
 	//SEARCH BAR AND SIGNIN/LOGIN SHOWING
 	$('#search-form-mobile').on('show.bs.collapse', function () {
