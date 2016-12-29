@@ -234,7 +234,6 @@ class VideoController extends Controller
         }
     }
 
-
     public function watch(){
         if (isset($_GET['video'])) {
             $url = $_GET['video'];
@@ -255,7 +254,6 @@ class VideoController extends Controller
         $result = $video->getVideo($url);
         $this->show('video/watch', ['video' => $result]);
     }
-
 
     private function transcode(){
 

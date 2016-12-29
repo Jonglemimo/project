@@ -33,7 +33,7 @@
         "phpmailer/phpmailer": "^5.2",
         "php-ffmpeg/php-ffmpeg": "^0.6.1",
         "tivie/php-os-detector": "^1.0",
-        "peppeocchi/php-cron-scheduler": "^1.3"
+        "hybridlogic/cron": "^1.0"
     },
     "autoload": {
         "psr-4": {

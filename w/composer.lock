@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "079fe1712e6afb1457d1899edfb39c8f",
-    "content-hash": "424c22e3d6dfaad8ac001afc78ce9fd4",
+    "hash": "ba55f307f10f562e9c2ba6ed5f53b349",
+    "content-hash": "493d987c54bb75b07ebcec1a89303742",
     "packages": [
         {
             "name": "alchemy/binary-driver",
@@ -234,6 +234,53 @@
                 "event-emitter"
             ],
             "time": "2012-11-02 14:49:47"
+        },
+        {
+            "name": "hybridlogic/cron",
+            "version": "v1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Dachande663/PHP-Cron.git",
+                "reference": "94dc809b848d382350521224a239e40cb1bafb8c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Dachande663/PHP-Cron/zipball/94dc809b848d382350521224a239e40cb1bafb8c",
+                "reference": "94dc809b848d382350521224a239e40cb1bafb8c",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "HybridLogic": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Luke Lanchester",
+                    "email": "luke@lukelanchester.com",
+                    "homepage": "http://hybridlogic.co.uk",
+                    "role": "Developer"
+                }
+            ],
+            "description": "PHP Crontab is a crontab written in pure PHP with support for parsing standard cron expressions. No shell access required.",
+            "homepage": "https://github.com/Dachande663/PHP-Cron",
+            "keywords": [
+                "cron",
+                "crontab",
+                "events",
+                "queue",
+                "schedule",
+                "worker"
+            ],
+            "time": "2013-01-12 13:31:33"
         },
         {
             "name": "ircmaxell/password-compat",
