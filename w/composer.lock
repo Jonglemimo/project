@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "cd44cef0d08451b0a33d4687ad9dc59b",
-    "content-hash": "dc3b5807000b4a175a09e142324bb627",
+    "hash": "079fe1712e6afb1457d1899edfb39c8f",
+    "content-hash": "424c22e3d6dfaad8ac001afc78ce9fd4",
     "packages": [
         {
             "name": "alchemy/binary-driver",
@@ -234,53 +234,6 @@
                 "event-emitter"
             ],
             "time": "2012-11-02 14:49:47"
-        },
-        {
-            "name": "hybridlogic/cron",
-            "version": "v1.0.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Dachande663/PHP-Cron.git",
-                "reference": "94dc809b848d382350521224a239e40cb1bafb8c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Dachande663/PHP-Cron/zipball/94dc809b848d382350521224a239e40cb1bafb8c",
-                "reference": "94dc809b848d382350521224a239e40cb1bafb8c",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "HybridLogic": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Luke Lanchester",
-                    "email": "luke@lukelanchester.com",
-                    "homepage": "http://hybridlogic.co.uk",
-                    "role": "Developer"
-                }
-            ],
-            "description": "PHP Crontab is a crontab written in pure PHP with support for parsing standard cron expressions. No shell access required.",
-            "homepage": "https://github.com/Dachande663/PHP-Cron",
-            "keywords": [
-                "cron",
-                "crontab",
-                "events",
-                "queue",
-                "schedule",
-                "worker"
-            ],
-            "time": "2013-01-12 13:31:33"
         },
         {
             "name": "ircmaxell/password-compat",
@@ -611,6 +564,50 @@
             "time": "2016-11-26 00:15:39"
         },
         {
+            "name": "mtdowling/cron-expression",
+            "version": "v1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mtdowling/cron-expression.git",
+                "reference": "c9ee7886f5a12902b225a1a12f36bb45f9ab89e5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mtdowling/cron-expression/zipball/c9ee7886f5a12902b225a1a12f36bb45f9ab89e5",
+                "reference": "c9ee7886f5a12902b225a1a12f36bb45f9ab89e5",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0|~5.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Cron": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michael Dowling",
+                    "email": "mtdowling@gmail.com",
+                    "homepage": "https://github.com/mtdowling"
+                }
+            ],
+            "description": "CRON for PHP: Calculate the next or previous run date and determine if a CRON expression is due",
+            "keywords": [
+                "cron",
+                "schedule"
+            ],
+            "time": "2016-01-26 21:23:30"
+        },
+        {
             "name": "neutron/temporary-filesystem",
             "version": "2.2.0",
             "source": {
@@ -649,6 +646,58 @@
             ],
             "description": "Symfony filesystem extension to handle temporary files",
             "time": "2016-03-05 10:22:50"
+        },
+        {
+            "name": "peppeocchi/php-cron-scheduler",
+            "version": "v1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/peppeocchi/php-cron-scheduler.git",
+                "reference": "ae1cc5f8cd1cca2688d48ac80f825cd7bf935016"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/peppeocchi/php-cron-scheduler/zipball/ae1cc5f8cd1cca2688d48ac80f825cd7bf935016",
+                "reference": "ae1cc5f8cd1cca2688d48ac80f825cd7bf935016",
+                "shasum": ""
+            },
+            "require": {
+                "mtdowling/cron-expression": "@stable",
+                "php": ">=5.5.9",
+                "psr/log": "~1.0",
+                "swiftmailer/swiftmailer": "@stable"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "5.0.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "GO": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Giuseppe Occhipinti",
+                    "email": "peppeocchi@gmail.com"
+                },
+                {
+                    "name": "Carsten Windler",
+                    "email": "carsten@carstenwindler.de",
+                    "homepage": "http://carstenwindler.de",
+                    "role": "Contributor"
+                }
+            ],
+            "description": "PHP Cron Job Scheduler",
+            "keywords": [
+                "cron job",
+                "scheduler"
+            ],
+            "time": "2016-04-19 00:52:10"
         },
         {
             "name": "php-ffmpeg/php-ffmpeg",
@@ -830,6 +879,59 @@
                 "psr-3"
             ],
             "time": "2016-10-10 12:19:37"
+        },
+        {
+            "name": "swiftmailer/swiftmailer",
+            "version": "v5.4.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/swiftmailer/swiftmailer.git",
+                "reference": "545ce9136690cea74f98f86fbb9c92dd9ab1a756"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/545ce9136690cea74f98f86fbb9c92dd9ab1a756",
+                "reference": "545ce9136690cea74f98f86fbb9c92dd9ab1a756",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "mockery/mockery": "~0.9.1"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "5.4-dev"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "lib/swift_required.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Chris Corbyn"
+                },
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                }
+            ],
+            "description": "Swiftmailer, free feature-rich PHP mailer",
+            "homepage": "http://swiftmailer.org",
+            "keywords": [
+                "email",
+                "mail",
+                "mailer"
+            ],
+            "time": "2016-11-24 01:01:23"
         },
         {
             "name": "symfony/filesystem",

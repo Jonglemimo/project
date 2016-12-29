@@ -3,6 +3,14 @@
 $this->layout('layout', ['title' => 'Formulaire d\'envoi']);
 $this->start('main_content');
 ?>
+<div id="currentTranscoding" style="height: 200px; overflow-x: auto;overflow-y: hidden">
+    <div style="width: 8020px">
+        <?php for($i = 0; $i < 20; $i ++) {
+
+           echo '<img src = "http://lorempixel.com/400/200?'.uniqid().'" />';
+        } ?>
+    </div>
+</div>
     <form id="formUpload" method="POST" enctype="multipart/form-data">
         <p  class="hide" id="status"></p>
         <p  class="hide" id="empty"></p>

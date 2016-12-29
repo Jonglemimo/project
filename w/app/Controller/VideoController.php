@@ -96,10 +96,7 @@ class VideoController extends Controller
             die;
         }
 
-        $this->transcode();
-        die;
-
-        /*$this->show('upload/form');*/
+        $this->show('upload/form');
 
     }
 
