@@ -1,5 +1,6 @@
 
 jQuery(document).ready(function() {
+	
 	$.ajax({
 		url: $('#ajax_search_route').val() ,
 		dataType: 'html',
@@ -27,8 +28,17 @@ jQuery(document).ready(function() {
 			console.log("error");
 		});
 		
-	})
+	});
+
 });
+
+	$(document).on('click','#videoInfoSmall', function(){
+		var urlVideo = $(this).children('img').data('unique');
+		var url = $('#watch_route').val();
+		url += "?video=" + urlVideo;
+		window.location.replace(url);
+	});
+
 
 $(function() {
 
@@ -48,7 +58,7 @@ $(function() {
 
 
 	//SIDE NAVIGATION SHOWING OR NOT ON MOBILE
-	$('#mySidenav').on('input', function() {
+	$('#mySidenav').on('click', function() {
 	   	var navWidth = $('.sidenav').width();
 	    if (navWidth == 0){
 	    	$('.sidenav').css({

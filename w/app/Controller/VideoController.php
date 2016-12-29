@@ -13,10 +13,10 @@ class VideoController extends Controller
 
 		if (!empty($_POST['search'])) {
 			$search = trim($_POST['search']);
-			$result = $videos->getVideoSearch($search);
+			$result = $videos->getVideosSearch($search);
 		} else {
 			$search = NULL;
-			$result = $videos->getVideo();
+			$result = $videos->getVideos();
 		}
 
 		
@@ -24,7 +24,7 @@ class VideoController extends Controller
 
 	}
  
-      public function uploadForm(){
+    public function uploadForm(){
 
         $errors = array();
 
@@ -53,6 +53,27 @@ class VideoController extends Controller
         }else{
             $this->show('upload/form');
         }
+    }
+
+    public function watch(){
+        if (isset($_GET['video'])) {
+            $url = $_GET['video'];
+            //Tentative de vérification
+            $video = new VideoModel();
+            if($video->exist($url)){ // renvois toujours TRUE sans raison
+                $this->watchVideo($url);
+            } else {
+                $this->redirectToRoute('default_home');
+            }
+        } else {
+            $this->redirectToRoute('default_home');
+        }
+    }
+
+    public function watchVideo($url){
+        $video = new VideoModel();
+        $result = $video->getVideo($url);
+        $this->show('video/watch', ['video' => $result]);
     }
 
 
