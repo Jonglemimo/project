@@ -6,7 +6,9 @@ $this->start('main_content');
 <div id="currentTranscoding">
     <div style="width: <?= count($videoEncoding)*324?>px">
         <?php foreach ($videoEncoding as $video): ?>
-            <img src="<?=$this->assetUrl('users'.'/'.$_SESSION['user']['id'].'/'.$video['shortTitle'].'/'.$video['poster_sm'])?>" alt="<?=$video['title']?>">
+            <div class="videoEncoding">
+                <img  src="<?=$this->assetUrl('users'.'/'.$_SESSION['user']['id'].'/'.$video['shortTitle'].'/'.$video['poster_sm'])?>" alt="<?=$video['title']?>">
+            </div>
         <?php endforeach; ?>
     </div>
 </div>
@@ -44,11 +46,12 @@ $this->start('main_content');
             <?php endif ?>
 
             <label id="uploadButton" for="files"><i class="glyphicon glyphicon-open"></i> Fichiers à upload<input class="form-control" data-url="<?=$this->url('upload_form')?>" id="fileupload" type="file" name="files[]" multiple></label>
+            <p>(Merci d'upload une vidéo ainsi qu'une image la représentant)</p>
         </div>
 
 
         <div class="clearfix">
-            <button type="submit" class="btn btn-success pull-right">Envoyer</button>
+            <button type="submit" class="buttons btn btn-default pull-right">Envoyer</button>
         </div>
     </form>
 <?php $this->stop('main_content') ?>

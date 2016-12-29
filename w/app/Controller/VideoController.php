@@ -5,6 +5,7 @@ namespace Controller;
 use W\Controller\Controller;
 use Model\VideoModel;
 use Services\ImageManagerService;
+use Services\HelperService;
 
 
 class VideoController extends Controller
@@ -47,6 +48,9 @@ class VideoController extends Controller
             }else{
                 //unknown
             }
+
+
+
         }
     }
 
@@ -95,7 +99,13 @@ class VideoController extends Controller
             die;
         }
         $videoEncoding = $videoModel->getWhileEncoding($_SESSION['user']['id']);
-        $this->show('upload/form', ['videoEncoding' => $videoEncoding]);
+        if(count($videoEncoding) > 0){
+
+            $this->show('upload/form', ['videoEncoding' => $videoEncoding]);
+        }else {
+            $this->show('upload/form');
+        }
+
 
     }
 
@@ -155,9 +165,6 @@ class VideoController extends Controller
             rename($image,$output.basename($image));
             rename($video,$output.basename($video));
 
-
-
-
             $videoModel->setTable('video');
 
             $lastVideo = $videoModel->insert([
@@ -212,15 +219,18 @@ class VideoController extends Controller
 
     private function handleDuplicate($file){
 
+        $helper = new HelperService();
+        $info = pathinfo($file);
+
         if(file_exists($file)){
-            $info = pathinfo($file);
-            $name = $info['filename'].'-'.uniqid().'.'.$info['extension'];
+
+            $name = $helper->create_slug($info['filename'].'-'.uniqid()).'.'.$info['extension'];
 
             return $this->uploadTmp.DIRECTORY_SEPARATOR.$name;
 
-
         }else {
-            return $file;
+            $name = $helper->create_slug($info['filename']).'.'.$info['extension'];
+            return $this->uploadTmp.DIRECTORY_SEPARATOR.$name;
         }
     }
 

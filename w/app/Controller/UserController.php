@@ -289,7 +289,7 @@ class UserController extends Controller {
             $errors = array();
 
             if (empty($_POST['username'])) {
-                $errors['username']['empty'] = 'Votre pseudonyme est vide';
+                $errors['username']['empty'] = 'Votre pseudonyme ne peut pas être vide';
             } else {
                 $username = trim($_POST['username']);
 
@@ -300,7 +300,7 @@ class UserController extends Controller {
 
             //CHECKING EMAIL
             if (empty($_POST['email'])) {
-                $errors['email']['empty'] = 'L\'email est vide';
+                $errors['email']['empty'] = 'L\'email ne peut pas être vide';
 
             } elseif (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
                 $errors['email']['wrong'] = 'L\'email n\'est pas valide';
@@ -335,7 +335,7 @@ class UserController extends Controller {
             }
 
             if(empty($_POST['pass1']) && !empty($_POST['pass2'])) {
-                $errors['empty']['pass'] = 'Vous remplir le champ nouveau mot de passe';
+                $errors['empty']['pass'] = 'Vous devez remplir le champ nouveau mot de passe';
 
             }
 
@@ -350,6 +350,10 @@ class UserController extends Controller {
                 $pass = $_POST['pass2'];
             }
 
+            if($_POST['username'] == $user['username'] && $_POST['email'] == $user['email'] && empty($pass)){
+                $this->show('user/userInfo' ,['user' => $user, 'errors' => $errors,'pass' => $pass, 'status' => 'Vos informations sont identiques']);
+            }
+
             if(isset($pass)){
                 $password = $authModel -> hashPassword($pass,PASSWORD_DEFAULT);
                 $userModel->update([
@@ -360,7 +364,13 @@ class UserController extends Controller {
 
                 $_SESSION['user']['username'] = $username;
                 $_SESSION['user']['email'] = $email;
-            }else {
+
+            }else if ($_POST['username'] == $user['username'] && $_POST['email'] == $user['email'] &&isset($pass)) {
+                $password = $authModel -> hashPassword($pass,PASSWORD_DEFAULT);
+                $userModel->update([
+                    'password' => $password
+                ],$user['id']);
+            }else{
 
                 $userModel->update([
                     'email'    => $email,

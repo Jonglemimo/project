@@ -9,21 +9,29 @@ $this->start('main_content');?>
     <a href="<?=$this->url('user_admin')?>">< Retour à ma page</a>
 
     <form  method="POST">
+
+        <!-- Message success modif -->
         <?php if (isset($success)):?>
-            <dialog open class="alert alert-success">Vos informations ont bien été mises à jours</dialog>
+            <dialog open class="alert alert-success"><?=$success?></dialog>
         <?php endif; ?>
+
+        <!-- Message status modif -->
+        <?php if (isset($status)):?>
+            <dialog open class="alert alert-warning"><?=$status?></dialog>
+        <?php endif; ?>
+
         <!-- USERNAME -->
         <label>Pseudonyme</label>
         <input class="body-inputs form-control" type="text" name="username" value="<?=$user['username']?>">
         
         <!-- empty username -->
         <?php if(isset($errors['username']['empty'])) : ?>
-            <p><?=$errors['username']['empty']?></p>
+            <div class="what"><p><?=$errors['username']['empty']?></p></div>
         <?php endif ?>
         
         <!-- already used username -->
         <?php if(isset($errors['username']['exist'])) : ?>
-        <p><?=$errors['username']['exist']?></p>
+            <div class="false"><p><?=$errors['username']['exist']?></p></div>
         <?php endif ?>
         
 
@@ -32,19 +40,18 @@ $this->start('main_content');?>
         <input class="body-inputs form-control" type="email" name="email" value="<?=$user['email']?>">
 
         <!-- empty email -->
-
         <?php if(isset($errors['email']['empty'])) : ?>
-            <p><?=$errors['email']['empty']?></p>
+        <div class="what"><p><?=$errors['email']['empty']?></p></div>
         <?php endif ?>
         
         <!-- unvalid email -->
         <?php if(isset($errors['email']['wrong'])) : ?>
-            <p><?=$errors['email']['wrong']?></p>
+            <div class="false"><p><?=$errors['email']['wrong']?></p></div>
         <?php endif ?>
 
         <!-- already used email -->
         <?php if(isset($errors['email']['exist'])) : ?>
-            <p><?=$errors['email']['exist']?></p>
+            <div class="false"><p><?=$errors['email']['exist']?></p></div>
         <?php endif ?>
 
         <label for="pass1">Modification du mot de passe</label>
