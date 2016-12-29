@@ -46,7 +46,7 @@ jQuery(document).ready(function() {
 	//SIDE NAVIGATION SHOWING OR NOT ON MOBILE
 	$('#mySidenav').on('click', function() {
 	   	var navWidth = $('.sidenav').width();
-	    if (navWidth == 0){
+	    if (navWidth <= 0){
 	    	$('.sidenav').css({
 	    		width: '200px'});
 	    } else {
