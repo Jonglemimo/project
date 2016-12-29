@@ -3,3 +3,8 @@
 app/config.php
 /phpDocumentor.phar
 *.log
+tmp
+public/assets/uploads
+public/users
+php-tm
+public/assets/users

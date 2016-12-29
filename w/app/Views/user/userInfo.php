@@ -8,6 +8,8 @@ $this->start('main_content');?>
 
     <a href="<?=$this->url('user_admin')?>">< Retour à ma page</a>
 
+  
+
     <form method="POST">
         
         <!-- USERNAME -->
@@ -29,7 +31,9 @@ $this->start('main_content');?>
         <label>E-mail</label>
         <input class="body-inputs form-control" type="email" name="email" value="<?=$user['email']?>">
 
+
         <!-- empty email -->
+
         <?php if(isset($errors['email']['empty'])) : ?>
             <p>L'email est vide</p>
         <?php endif ?>
@@ -49,6 +53,7 @@ $this->start('main_content');?>
 
         <!-- FORGET PASSWORD LINK -->
         <a href="<?=$this->url('user_lostpass')?>">Mot de passe oublié ?</a>
+
     </form>
 </section>
 

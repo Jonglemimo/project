@@ -8,6 +8,7 @@ $this->start('main_content');
 
         <div class="row col-md-12">
             <?php foreach ($videos as $video):?>
+
                 <div class="col-md-4">
 
                     <video class="video-medium embed-responsive-item" src="<?=$video['url']?>" controls poster="<?= $video['poster'] ?>"></video>

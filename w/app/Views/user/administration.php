@@ -9,8 +9,12 @@ $this->start('main_content');
     <div>
         <p class="username"><?= $_SESSION['user']['username'] ?></p>
         <a href="<?=$this->url('user_info')?>">Mes infos</a>
+        <a class="pull-right" href="<?=$this->url('upload_form')?>">Ajouter une vidéo</a
     </div>
 </div>
+
+>
+
 
 <section class="container-fluid video-container">
 
@@ -20,12 +24,14 @@ $this->start('main_content');
 
         <div class="row col-md-12">
             <?php foreach ($videos as $video):?>
+
                 <div class="col-md-4">
                     <video class="video-medium" src="<?=$video['url']?>" controls poster="<?= $video['poster'] ?>"></video>
                     <h4><?=$video['title'] ?></h4>
                     <p><?= substr($video['description'], 0, 100); if(strlen($video['description']) > 100){ echo " [...]";} ?></p>
                 </div>
             <?php endforeach;?>
+
         </div>
 
     <div>
@@ -55,9 +61,11 @@ $this->start('main_content');
             </div>
         <?php endforeach;?>
 
+
     <div>
         <a href="<?=$this->url('user_comment')?>" class = "col-md-offset-7">Voir plus</a>
     </div>
+
         
     <?php endif; ?>
 </section>

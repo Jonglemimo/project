@@ -30,7 +30,10 @@
         "ircmaxell/random-lib": "^1.2",
         "ircmaxell/password-compat": "^1.0",
         "league/url": "^3.3",
-        "phpmailer/phpmailer": "^5.2"
+        "phpmailer/phpmailer": "^5.2",
+        "php-ffmpeg/php-ffmpeg": "^0.6.1",
+        "tivie/php-os-detector": "^1.0",
+        "peppeocchi/php-cron-scheduler": "^1.3"
     },
     "autoload": {
         "psr-4": {

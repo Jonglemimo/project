@@ -114,6 +114,58 @@ html {
 	}
 }
 
+.paddingNone{
+    padding:0;
+}
+
+.black{
+    color : black;
+}
+
+
+.progressBar{
+  display: inline-block;
+  height: 2rem;
+  width: 25rem;
+
+}
+
+#fileupload{
+	min-width: 100%;
+	min-height: 100%;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	top:0;
+	right: 0;
+	filter:alpha(opacity=0);
+	cursor: pointer;
+}
+
+#uploadButton{
+	width: 20rem;
+	height: 4rem;
+	position: relative;
+	display: inline-block;
+	background-color: #e74c3c;
+	color: #FFF;
+	cursor: pointer;
+	padding: 0.5rem 1rem;
+	font-weight: 700;
+	text-align: center;
+	line-height: 2.1;
+	border-radius: .4rem;
+	&:hover{
+		background-color: #c0392b;
+	}
+}
+
+#currentTranscoding{
+	height: 240px;
+	overflow-x: auto;
+	overflow-y: hidden
+}
+
 *,
 *:before,
 *:after {
