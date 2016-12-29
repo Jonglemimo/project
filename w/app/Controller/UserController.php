@@ -163,7 +163,9 @@ class UserController extends Controller {
                 $userModel->setTable('users');
                 $password = $authModel -> hashPassword($password,PASSWORD_DEFAULT);
 
+
                 $user = $userModel ->insert([
+
                     'firstname'=> $firstname,
                     'lastname' => $lastname,
                     'email'    => $email,
@@ -171,7 +173,9 @@ class UserController extends Controller {
                     'password' => $password,
                 ]);
 
+
                 //REDIRECT ON SUCCESS PAGE TO DISPLAY THE USER INFORMATIONS
+
                 $this->show('user/success', ['user' => $user]);
 
             } else {
@@ -182,10 +186,12 @@ class UserController extends Controller {
         }
     }
 
+
     function success() {
 
         if(!isset($user)) {
             $this->redirectToRoute("user_signup");
+
         }
     }
 
@@ -244,8 +250,11 @@ class UserController extends Controller {
 
         if(isset($comments[0]['content'])) {
             $this->show('user/fullComment', ['comments' => $comments]);
-        } else {
-            $this->show('user/fullComment', ['comments' => 'Vous n\'avez pas de vidéo']);
+
+
+        }else{
+            $this->show('user/fullComment', ['comments' => 'Vous n\'avez pas de commentaire']);
+
         }
     }
 
