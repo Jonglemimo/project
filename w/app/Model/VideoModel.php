@@ -63,8 +63,6 @@ class VideoModel extends Model {
 		} else {
 			return false;
 		}
-		
-	}
 
 	function fileExist($file){
 	    $sql = 'SELECT *
@@ -76,6 +74,20 @@ class VideoModel extends Model {
         return;
 
     }
+
+
+    function getWhileEncoding($id){
+        $sql = 'SELECT title, shortTitle, url, posters.poster_xs,posters.poster_sm,posters.poster_lg
+	            FROM video
+	            LEFT JOIN posters on video.id = posters.id_video
+	            WHERE id_user = :id_user AND encoding = 0
+	            ORDER BY date_created DESC';
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->bindParam(':id_user' , $id);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
 
 
 }

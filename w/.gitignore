@@ -6,4 +6,5 @@ app/config.php
 tmp
 public/assets/uploads
 public/users
-php-tmp
+php-tm
+public/assets/users

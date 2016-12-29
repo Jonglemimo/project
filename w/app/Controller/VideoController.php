@@ -18,8 +18,9 @@ class VideoController extends Controller
     {
         $ds = DIRECTORY_SEPARATOR;
         $this->uploadTmp = dirname(dirname(dirname(__FILE__))).$ds.'tmp';
+
         if(isset($_SESSION['user'])){
-            $this->usersFolder = dirname(dirname(dirname(__FILE__))).$ds.'public'.$ds.'users'.$ds.$_SESSION['user']['id'];
+            $this->usersFolder = dirname(dirname(dirname(__FILE__))).$ds.'public'.$ds.'assets'.DIRECTORY_SEPARATOR.'users'.$ds.$_SESSION['user']['id'];
             if(!file_exists($this->usersFolder)){
                 mkdir($this->usersFolder,0755);
             }
@@ -70,6 +71,8 @@ class VideoController extends Controller
 
     public function uploadForm(){
 
+	    $videoModel = new VideoModel();
+
         if(!isset($_SESSION['user'])){
             $this->redirectToRoute('default_home');
         }
@@ -94,8 +97,8 @@ class VideoController extends Controller
             echo json_encode($this->validateForm());
             die;
         }
-
-        $this->show('upload/form');
+        $videoEncoding = $videoModel->getWhileEncoding($_SESSION['user']['id']);
+        $this->show('upload/form', ['videoEncoding' => $videoEncoding]);
 
     }
 
@@ -160,12 +163,11 @@ class VideoController extends Controller
 
             $videoModel->setTable('video');
 
-            $videoModel->insert([
+            $lastVideo = $videoModel->insert([
+                'url' => basename($video),
                 'title' => $title,
                 'description' => $description,
                 'shortTitle' => $shortTitle,
-                'url' => basename($video),
-                'poster' => basename($image),
                 'id_user' => $_SESSION['user']['id']
             ]);
 
@@ -178,9 +180,18 @@ class VideoController extends Controller
 
             $fullpath = $output.basename($image);
 
-            $imageResize->resize($fullpath ,null, 250, 200,false, $outputMin, false);
-            $imageResize->resize($fullpath, null, 450, 400,false, $outputMedium, false);
+            $imageResize->resize($fullpath ,null, 180, 135,false, $outputMin, false);
+            $imageResize->resize($fullpath, null, 320, 240,false, $outputMedium, false);
             $imageResize->resize($fullpath, null, 1200, 1000,false, $outputLarge, false);
+
+            $videoModel->setTable('posters');
+            $videoModel->insert([
+                'id_video'  => $lastVideo['id'],
+                'poster_xs' => $imageInfo['filename'].'.xs.'.$imageInfo['extension'],
+                'poster_sm' => $imageInfo['filename'].'.sm.'.$imageInfo['extension'],
+                'poster_lg' => $imageInfo['filename'].'.lg.'.$imageInfo['extension']
+
+            ]);
 
             unlink($fullpath);
 
@@ -257,4 +268,6 @@ class VideoController extends Controller
         $video->save(new \FFMpeg\Format\Video\WebM(), $output);
 
     }
+
+
 }

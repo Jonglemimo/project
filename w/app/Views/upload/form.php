@@ -3,14 +3,15 @@
 $this->layout('layout', ['title' => 'Formulaire d\'envoi']);
 $this->start('main_content');
 ?>
-<div id="currentTranscoding" style="height: 200px; overflow-x: auto;overflow-y: hidden">
-    <div style="width: 8020px">
-        <?php for($i = 0; $i < 20; $i ++) {
-
-           echo '<img src = "http://lorempixel.com/400/200?'.uniqid().'" />';
-        } ?>
+<?php if(isset($videoEncoding)):?>
+<div id="currentTranscoding">
+    <div style="width: <?= count($videoEncoding)*324?>px">
+        <?php foreach ($videoEncoding as $video): ?>
+            <img src="<?=$this->assetUrl('users'.'/'.$_SESSION['user']['id'].'/'.$video['shortTitle'].'/'.$video['poster_sm'])?>" alt="<?=$video['title']?>">
+        <?php endforeach; ?>
     </div>
 </div>
+<?php endif; ?>
     <form id="formUpload" method="POST" enctype="multipart/form-data">
         <p  class="hide" id="status"></p>
         <p  class="hide" id="empty"></p>
@@ -20,8 +21,13 @@ $this->start('main_content');
         <div class="form-group">
             <?php if(isset($errors['title'])) : ?>
                 <p><?=$errors['title']?></p>
-            <?php endif ?>
+            <?php endif;?>
             Titre : <input class="form-control title" type="text" name="title"><br>
+        </div>
+        <div class="form-group">
+            <select name="categories"  class="form-control">
+                <option value="first" selected>Catégories</option>
+            </select>
         </div>
         <div class="form-group">
             <?php if(isset($errors['description'])) : ?>

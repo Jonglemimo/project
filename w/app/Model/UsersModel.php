@@ -11,7 +11,7 @@ class UsersModel extends UModel {
             return false;
         }
 
-        $sql = 'SELECT * FROM ' . $this->table . ' WHERE id_user  = :id_user ORDER BY date_created DESC';
+        $sql = 'SELECT * FROM ' . $this->table . ' WHERE id_user  = :id_user AND encoding = 1 ORDER BY date_created DESC';
 
         if($limit != null) {
             $sql .= ' LIMIT '.$limit.'';
@@ -34,7 +34,7 @@ class UsersModel extends UModel {
                 FROM comments
                 LEFT JOIN video ON comments.id_video = video.id
                 LEFT JOIN users ON comments.id_user = users.id
-                WHERE :id_user = comments.id_user ORDER BY date_posted DESC';
+                WHERE :id_user = comments.id_user AND encoding = 1 ORDER BY date_posted DESC';
 
         if($limit != null) {
             $sql .= ' LIMIT '.$limit.'';
