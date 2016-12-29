@@ -1,5 +1,6 @@
 
 jQuery(document).ready(function() {
+	
 	$.ajax({
 		url: $('#ajax_search_route').val() ,
 		dataType: 'html',
@@ -27,7 +28,21 @@ jQuery(document).ready(function() {
 			console.log("error");
 		});
 		
-	})
+
+	});
+
+});
+
+	$(document).on('click','#videoInfoSmall', function(){
+		var urlVideo = $(this).children('img').data('unique');
+		var url = $('#watch_route').val();
+		url += "?video=" + urlVideo;
+		window.location.replace(url);
+	});
+
+
+$(function() {
+
 
 	//SEARCH BAR AND SIGNIN/LOGIN SHOWING
 	$('#search-form-mobile').on('show.bs.collapse', function () {
