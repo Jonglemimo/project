@@ -2,61 +2,87 @@
 
 <?php $this->start('main_content') ?>
 
-    <nav><a href="<?=$this->url('default_home')?>">< Retour à la galerie</a></nav>
+<section class="signup">
+
+    <nav>
+        <a href="<?=$this->url('default_home')?>">< Retour à la page d'accueil</a>
+    </nav>
 
     <form method="POST">
-        Prénom : <input class="form-control" type="text" name="firstname"><br>
+
+        <!-- FIRSTNAME -->
+        <label>Prénom</label>
+        <input class="form-control" type="text" name="firstname">
+
         <?php if(isset($errors['firstname']['empty'])) : ?>
-            <p>Le prénom est vide</p>;
+            <p class="meh">Le prénom est vide</p>
         <?php endif ?>
-
+        
         <?php if(isset($errors['firstname']['wrong'])) : ?>
-            <p>Le prénom n'est pas valide</p>
+            <p class="false">Le prénom n'est pas valide</p>
         <?php endif ?>
 
-        Nom : <input class="form-control" type="text" name="lastname"><br>
+
+        <!-- LASTNAME -->
+        <label>Nom</label>
+        <input class="form-control" type="text" name="lastname">
+
         <?php if(isset($errors['lastname']['empty'])) : ?>
-            <p>Le nom est vide</p>
+            <p class="meh">Le nom est vide</p>
         <?php endif ?>
-
+        
         <?php if(isset($errors['lastname']['wrong'])) : ?>
-            <p>Le nom n'est pas valide</p>
+            <p class="false">Le nom n'est pas valide</p>
         <?php endif ?>
+        
 
+        <!-- USERNAME -->
+        <label>Pseudonyme</label>
+        <input class="form-control" type="text" name="username">
 
-        Pseudonyme : <input class="form-control" type="text" name="username"><br>
         <?php if(isset($errors['username']['empty'])) : ?>
-            <p>Votre username est vide</p>
+            <p class="meh">Votre pseudonyme est vide</p>
         <?php endif ?>
-
+        
         <?php if(isset($errors['username']['exist'])) : ?>
-            <p>Cet username existe déjà</p>
+            <p class="false">Cet username existe déjà</p>
         <?php endif ?>
+        
 
-        email : <input class="form-control" type="email" name="email"><br>
+        <!-- EMAIL -->
+        <label>E-mail</label>
+        <input class="form-control" type="email" name="email">
+
         <?php if(isset($errors['email']['empty'])) : ?>
-            <p>L'email est vide</p>
+            <p class="meh">L'email est vide</p>
         <?php endif ?>
 
         <?php if(isset($errors['email']['wrong'])) : ?>
-            <p>L'email n'est pas valide</p>
+            <p class="false">L'email n'est pas valide</p>
         <?php endif ?>
-
 
         <?php if(isset($errors['email']['exist'])) : ?>
-            <p>Cet email existe déjà</p>
+            <p class="false">Cet email est déjà utilisé</p>
         <?php endif ?>
 
 
-        Mot de passe : <input class="form-control" type="password" name="password">
+        <!-- PASSWORD -->
+        <label>Mot de passe</label>
+        <input class="form-control" type="password" name="password">
+
         <?php if(isset($errors['password']['empty'])) : ?>
-            <p>Précisez un mot de passe</p>
+            <p class="meh">Précisez un mot de passe</p>
         <?php endif ?>
 
         <?php if(isset($errors['password']['short'])) : ?>
-            <p>Votre mot de passe est inférieur à 5 caractères</p>
+            <p class="false">Votre mot de passe est inférieur à 5 caractères</p>
         <?php endif ?>
 
-        <button class="btn btn-default" type="submit" name="signup">Valider</button>
+
+        <!-- VALIDATE -->
+        <button class="buttons btn btn-default" type="submit" name="signup">Valider</button>
+
     </form>
+</section>
+
 <?php $this->stop('main_content') ?>

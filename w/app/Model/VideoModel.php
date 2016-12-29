@@ -4,23 +4,25 @@ namespace Model;
 
 use \W\Model\Model;
 
-class VideoModel extends Model
-{
+class VideoModel extends Model {
 
-	function getVideos()
-	{
+	function getVideo() {
+
 		$sql = 'SELECT *, SUM(stars)/ COUNT(*) as note
 				FROM votesusers
 				INNER JOIN video
 				WHERE video.id = id_video
 				GROUP BY id_video
 				ORDER BY note DESC, title';
+
 		$stmt = $this->dbh->prepare($sql);
 		$stmt->execute();
 		return $stmt->fetchAll();
 	}
 
+
 	function getVideosSearch($search){
+
 		$sql = 'SELECT *, SUM(stars)/ COUNT(*) as note
 				FROM votesusers
 				INNER JOIN video
@@ -34,6 +36,7 @@ class VideoModel extends Model
 		$stmt->execute();
 		return $stmt->fetchAll();
 	}
+
 
 	function getVideo($url){
 		$sql = 'SELECT video.url ,video.title, video.description , video.date_created, video.poster, users.username, SUM(stars)/ COUNT(*) as note
@@ -62,5 +65,17 @@ class VideoModel extends Model
 		}
 		
 	}
+
+	function fileExist($file){
+	    $sql = 'SELECT *
+	            FROM video
+	            WHERE url = :file or poster = :file';
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->bindParam(':file' , $file);
+        $stmt->execute();
+        return;
+
+    }
+
 
 }

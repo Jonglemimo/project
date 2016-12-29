@@ -14,28 +14,45 @@
 
 //3.0 - BODY
 //3.1 - Body Padding
+//3.2 - Titles
 
 //4.0 - FOOTER
+
+//5.0 - LOGIN
+
+//6.0 - SIGNUP
+
+//7.0 - LOST PASSWORD
 
 
 /*========  0.1 - COLORS  =========*/
 
+//Main
+@grey0 : #252525;
 @grey1 : #333333;
 @grey2 : #404242;
 @grey3 : #4e5352;
 @grey4 : #5b6160;
 @grey5 : #6a7975;
+@grey6 : #7E958F;
 
+//Body fonts
+@grey7 : #D2DEDB;
+
+//Titles/links
 @turquoise1 : #458c7a;
 @turquoise2 : #3ac39f;
 @turquoise3 : #2be9b9;
 
+//Buttons fonts
 @white : #FFF;
 
-body {
-	background-color: @grey1;
-	color: @white;
-}
+//Alert messages
+@correct : #8BD542;
+@what : #EFE831;
+@meh :  #F4971F;
+@false : #ED2B25;
+
 
 /*========  0.2 - FONTS  ==========*/
 
@@ -53,6 +70,92 @@ body {
 /*==================================
 =            1.0 - MAIN            =
 ==================================*/
+
+html {
+	height: 100%;
+  	box-sizing: border-box;
+
+  	body {
+		background-color: @grey0;
+		color: @white;
+		position: relative;
+	  	margin: 0;
+	  	min-height: 100%;
+
+	  	//Form colors
+	  	.correct {
+			color: @correct;
+			font-style: italic;
+	  	}
+
+	  	.what {
+			color: @what;
+			font-style: italic;
+	  	}
+
+	  	.meh {
+	  		color: @meh;
+			font-style: italic;
+	  	}
+
+	  	.false {
+			color: @false;
+			font-style: italic;
+	  	}
+	}
+}
+
+.paddingNone{
+    padding:0;
+}
+
+.black{
+    color : black;
+}
+
+
+.progressBar{
+  display: inline-block;
+  height: 2rem;
+  width: 25rem;
+
+}
+
+#fileupload{
+	min-width: 100%;
+	min-height: 100%;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	top:0;
+	right: 0;
+	filter:alpha(opacity=0);
+	cursor: pointer;
+}
+
+#uploadButton{
+	width: 20rem;
+	height: 4rem;
+	position: relative;
+	display: inline-block;
+	background-color: #e74c3c;
+	color: #FFF;
+	cursor: pointer;
+	padding: 0.5rem 1rem;
+	font-weight: 700;
+	text-align: center;
+	line-height: 2.1;
+	border-radius: .4rem;
+	&:hover{
+		background-color: #c0392b;
+	}
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
 
 /*========  1.1 - Buttons  ========*/
 
@@ -77,6 +180,25 @@ body {
 		background-color: @grey4;
 		border-color: @turquoise3;
 		color: @white;
+	}
+}
+
+a {
+	color: @turquoise1;
+
+	&:hover {
+		text-decoration: none;
+		color: @turquoise3;
+	}
+
+	&:focus {
+		text-decoration: none;
+		color: @turquoise3;
+	}
+
+	&:active {
+		text-decoration: none;
+		color: @turquoise3;
 	}
 }
 
@@ -136,6 +258,7 @@ header nav.header-bar {
 	padding: 10px 10px 15px 10px;
 	z-index: 1030;
 	background-color: @grey2;
+	border-bottom: 1px solid @grey3;
 
 	.form-control {
 		display: inline-block;
@@ -188,11 +311,12 @@ header nav.header-bar {
 			ul {
 				padding-left: 20px;
 				margin-bottom: 0px;
+				color: @grey7;
 			}
 		}
 
 		a {
-			color: @white;
+			color: @grey7;
 
 			&:hover {
 				text-decoration: none;
@@ -230,76 +354,162 @@ header nav.header-bar {
 =            3.0 - BODY            =
 ===================================*/
 
-.body {
-
-}
-
 /*=====  3.1 - Body Padding  ======*/
 
 .body-padding {
-	padding-top: 65px;
-	padding-right: 15px;
+	padding-top: 70px;
+	padding-right: 20px;
+	padding-bottom: 60px;
 }
 
 //Left padding body and footer for mobile
 @media (max-width: 768px) {
   .body-padding {
-    padding-left: 15px;
-  }
-  .footer-padding {
-  	padding-left: 15px;
+    padding-left: 20px;
   }
 }
 
 //Left padding body and footer for computers
 @media (min-width: 768px) {
   .body-padding {
-    padding-left: 215px;
+    padding-left: 220px;
   }
-  .footer-padding {
-  	padding-left: 215px;
-  }
+}
+
+/*=========  3.2 - Titles  =========*/
+
+.body {
+	h1 {
+		color: @turquoise2;
+		font-family: @title-font;
+		font-size: 30px;
+		margin: 15px 0px;
+	}
 }
 
 /*====================================
 =            4.0 - FOOTER            =
 ====================================*/
 
-.footer {
-
-	.footer-links {
-		a {
-		color: @turquoise1;
-		font-weight: @bold-main-font;
-
-			&:hover {
-				text-decoration: none;
-				color: @turquoise3;
-			}
-
-			&:focus {
-				text-decoration: none;
-				color: @turquoise3;
-			}
-
-			&:active {
-				text-decoration: none;
-				color: @turquoise3;
-			}
-		}
-	}
+.footer.footer-padding {
+	text-align: center;
+	height: 50px;
+	z-index: 1030;
+	padding: 10px 20px;
+	background-color: @grey2;
+	border-top: 1px solid @grey3;
+	position: absolute;
+  	right: 0;
+  	bottom: 0;
+  	left: 0;
 
 	.footer-copyright {
+		display: inline-block;
+		padding-right: 10px;
+		transform: translateY(25%);
+		font-size: 12px;
+
 		p {
 			margin: 0px;
 		}
 	}
+
+	.footer-links {
+		display: inline-block;
+		transform: translateY(25%);
+	}
 }
 
-.footer-padding {
-	padding-top: 15px;
-	padding-bottom: 15px;
-	padding-right: 15px;
-	background-color: @grey2;
-	border-top: 1px solid @grey3;  
+/*===================================
+=            5.0 - LOGIN            =
+====================================*/
+
+.login {
+	input {
+		margin-bottom: 15px;
+
+		//Input widths for mobile
+		@media (max-width: 768px) {
+			width: 100%;
+		}
+
+		//Input widths for computers
+		@media (min-width: 768px) {
+			width: 400px;
+		}
+	}
+
+	label {
+		color: @grey5;
+	}
+
+	a {
+		margin-left: 10px;
+	}
 }
+
+/*====================================
+=            6.0 - SIGNUP            =
+=====================================*/
+
+.signup {
+	nav {
+		margin-bottom: 10px;
+	}
+
+	label {
+		color: @grey5;
+	}
+
+	input {
+		margin-bottom: 15px;
+
+		//Input widths for mobile
+		@media (max-width: 768px) {
+			width: 100%;
+		}
+
+		//Input widths for computers
+		@media (min-width: 768px) {
+			width: 400px;
+		}
+	}
+}
+
+/*===========================================
+=            7.0 - LOST PASSWORD            =
+============================================*/
+
+.lostpassword {
+
+	input {
+		margin: 15px 0px;
+
+		//Input widths for mobile
+		@media (max-width: 768px) {
+			width: 100%;
+		}
+
+		//Input widths for computers
+		@media (min-width: 768px) {
+			width: 400px;
+		}
+	}
+
+}
+
+/*============================================
+=            8.0 - SIGNIN SUCCESS            =
+=============================================*/
+
+.signin-success {
+
+	label {
+		color: @grey5;
+	}
+
+	p {
+		display: inline-block;
+	}
+}
+
