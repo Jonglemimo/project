@@ -10,7 +10,7 @@
 	<!-- BOOTSTRAP 3.3.7 -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<!-- CUSTOM FONTS -->
-	<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600i,700|Pacifico" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600i,700|Pacifico|Roboto+Condensed:700" rel="stylesheet">
 	<!-- CUSTOM CSS -->
 	<link rel="stylesheet" href="<?= $this->assetUrl('css/style.css')?>">
 </head>

@@ -15,18 +15,16 @@
 
 </head>
 <body>
-<div class="container">
-    <header>
-        <h1>W :: <?= $this->e($title) ?></h1>
-    </header>
+    <div class="container">
+        <header>
+            <h1>W :: <?= $this->e($title) ?></h1>
+        </header>
 
-    <section class=" container">
-        <?= $this->section('main_content') ?>
-    </section>
+        <section class=" container">
+            <?= $this->section('main_content') ?>
+        </section>
 
-    <footer>
-    </footer>
-</div>
-
+        <footer></footer>
+    </div>
 </body>
 </html>

@@ -1,11 +1,10 @@
-<?php $this->layout('layout', ['title' => 'Accueil']) ?>
+<?php
+$this->layout('layout', ['title' => 'Accueil']);
+$this->start('main_content');
+?>
 
-<?php $this->start('main_content') ?>
+<input type="hidden" id="ajax_search_route" value="<?= $this->url('search') ?>">
 
-	<input type="hidden" id="ajax_search_route" value="<?= $this->url('search') ?>">
-
-	<section id="video">
-		
-	</section>
+<section id="video"></section>
 
 <?php $this->stop('main_content') ?>

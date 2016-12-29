@@ -1,58 +1,74 @@
 <?php
-
 $this->layout('layout_upload', ['title' => 'Formulaire d\'envoi']);
 $this->start('main_content');
 ?>
     <form id="fileupload" method="POST" enctype="multipart/form-data">
-        <p>Choix du poster de la vidéo</p>
+
+        <h4>Choix du poster de la vidéo</h4>
+
         <fieldset>
             <?php if(isset($errors['title'])) : ?>
                 <p><?=$errors['title']?></p>
             <?php endif ?>
-            Titre : <input type="text" name="pictureTitle"><br>
+
+            <label>Titre</label>
+            <input type="text" name="pictureTitle"><br>
+
             <?php if(isset(  $errors['file']['pictures'])) : ?>
                 <p><?=   $errors['file']['pictures']?></p>
             <?php endif ?>
-            Image à upload : <input type="file" name="pictureUrl"><br>
+            
+            <label>Image à upload</label>
+            <input type="file" name="pictureUrl"><br>
         </fieldset>
 
         <fieldset>
-            <p>Choix de la vidéo</p>
-
-           Titre : <input type="text" name="videoTitle">
+            <h4>Choix de la vidéo</h4>
+            
+            <label>Titre</label>
+            <input type="text" name="videoTitle">
         </fieldset>
+
         <?php if(isset($errors['description'])) : ?>
             <p><?=$errors['description']?></p>
         <?php endif ?>
-        Description : <br><textarea name="description" id="" cols="30" rows="10"></textarea><br>
+        
+        <label>Description</label>
+        <textarea name="description" id="" cols="30" rows="10"></textarea><br>
 
             <!-- Redirect browsers with JavaScript disabled to the origin page -->
             <noscript><input type="hidden" name="redirect" value="https://blueimp.github.io/jQuery-File-Upload/"></noscript>
             <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
             <div class="row fileupload-buttonbar">
                 <div class="col-lg-7">
+
                     <!-- The fileinput-button span is used to style the file input field as button -->
                     <span class="btn btn-success fileinput-button">
-                    <i class="glyphicon glyphicon-plus"></i>
-                    <span>Add files...</span>
-                    <input type="file" name="files[]" multiple>
-                </span>
+                        <i class="glyphicon glyphicon-plus"></i>
+                        <span>Add files...</span>
+                        <input type="file" name="files[]" multiple>
+                    </span>
+
                     <button type="submit" class="btn btn-primary start">
                         <i class="glyphicon glyphicon-upload"></i>
                         <span>Start upload</span>
                     </button>
+
                     <button type="reset" class="btn btn-warning cancel">
                         <i class="glyphicon glyphicon-ban-circle"></i>
                         <span>Cancel upload</span>
                     </button>
+
                     <button type="button" class="btn btn-danger delete">
                         <i class="glyphicon glyphicon-trash"></i>
                         <span>Delete</span>
                     </button>
+
                     <input type="checkbox" class="toggle">
                     <!-- The global file processing state -->
                     <span class="fileupload-process"></span>
                 </div>
+
                 <!-- The global progress state -->
                 <div class="col-lg-5 fileupload-progress fade">
                     <!-- The global progress bar -->
@@ -62,19 +78,24 @@ $this->start('main_content');
                     <!-- The extended global progress state -->
                     <div class="progress-extended">&nbsp;</div>
                 </div>
+
             </div>
             <!-- The table listing the files available for upload/download -->
             <table role="presentation" class="table table-striped"><tbody class="files"></tbody></table>
             <button class="btn btn-default" type="submit" name="addMovie">Envoyer</button>
         </form>
+
 <?php if(isset( $sucess['status']['error'])) : ?>
     <p><?= $sucess['status']['error']?></p>
 <?php endif ?>
+
 <?php if(isset( $sucess['status']['sucess'])) : ?>
     <p><?= $sucess['status']['sucess']?></p>
 <?php endif ?>
+
 <?php $this->stop('main_content'); ?>
 <?php $this->start('script')?>
+
 <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
@@ -107,7 +128,8 @@ $this->start('main_content');
 <!-- The File Upload user interface plugin -->
 <script src="<?=$this->assetUrl('vendors/jQuery-File-Upload/js/jquery.fileupload-ui.js')?>"></script>
 <!-- The main application script -->
-<script >
+<script>
+
     $(function () {
         $('#fileupload').fileupload({
             dataType: 'json',
@@ -132,9 +154,8 @@ $this->start('main_content');
                 });
                 data.context.text('Upload finished.');
             }
-
-
         });
     });
 </script>
+
 <?php $this->stop('script')?>
