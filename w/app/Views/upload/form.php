@@ -1,5 +1,4 @@
 <?php
-
 $this->layout('layout', ['title' => 'Formulaire d\'envoi']);
 $this->start('main_content');
 ?>
@@ -19,6 +18,7 @@ $this->start('main_content');
         <input id="imageFile" type="hidden" name="image">
         <input id="videoFile" type="hidden" name="video">
         <div class="form-group">
+
             <?php if(isset($errors['title'])) : ?>
                 <p><?=$errors['title']?></p>
             <?php endif;?>
@@ -33,6 +33,7 @@ $this->start('main_content');
             <?php if(isset($errors['description'])) : ?>
                 <p><?=$errors['description']?></p>
             <?php endif ?>
+
             Description : <textarea class="form-control description" name="description" cols="30" rows="10"></textarea>
         </div>
         <ul class="hide paddingNone" id="listItems">
@@ -56,5 +57,6 @@ $this->start('main_content');
 <script src="<?=$this->assetUrl('js/jquery.ui.widget.js')?>"></script>
 <script src="<?=$this->assetUrl('js/jquery.iframe-transport.js')?>"></script>
 <script src="<?=$this->assetUrl('js/jquery.fileupload.js')?>"></script>
+
 <?php $this->stop('script')?>
 

@@ -7,6 +7,9 @@
 
 //1.0 - MAIN
 //1.1 - Buttons
+//1.2 - Inputs
+//1.3 - Labels
+//1.4 - Videos
 
 //2.0 - HEADER
 //2.1 - Header Bar
@@ -18,11 +21,17 @@
 
 //4.0 - FOOTER
 
-//5.0 - LOGIN
+//5.0 - LOG SYSTEM
+//5.1 - Sign in
+//5.2 - Sign up
+//5.3 - Lost Password
+//5.4 - Sign in Success
 
-//6.0 - SIGNUP
+//6.0 - USER INFOS
 
-//7.0 - LOST PASSWORD
+//7.0 - USER PAGE
+//7.1 - Main User page
+//7.2 - My Videos
 
 
 /*========  0.1 - COLORS  =========*/
@@ -35,14 +44,13 @@
 @grey4 : #5b6160;
 @grey5 : #6a7975;
 @grey6 : #7E958F;
-
-//Body fonts
 @grey7 : #D2DEDB;
 
 //Titles/links
 @turquoise1 : #458c7a;
 @turquoise2 : #3ac39f;
 @turquoise3 : #2be9b9;
+@turquoise4 : #7EFFDE;
 
 //Buttons fonts
 @white : #FFF;
@@ -59,7 +67,8 @@
 @main-font: 'Open Sans', sans-serif;
 @bold-main-font: 700;
 
-@title-font: 'Pacifico', cursive;
+@main-title-font: 'Pacifico', cursive;
+@title-font: 'Roboto Condensed', sans-serif;
 
 @main-title-size: 24px;
 
@@ -77,7 +86,7 @@ html {
 
   	body {
 		background-color: @grey0;
-		color: @white;
+		color: @grey6;
 		position: relative;
 	  	margin: 0;
 	  	min-height: 100%;
@@ -169,6 +178,7 @@ html {
 	background-color: @grey3;
 	border-color: @grey5;
 	color: @white;
+	transition:.3s;
 
 	&:hover {
 		background-color: @grey3;
@@ -191,6 +201,7 @@ html {
 
 a {
 	color: @turquoise1;
+	transition:.3s;
 
 	&:hover {
 		text-decoration: none;
@@ -204,8 +215,49 @@ a {
 
 	&:active {
 		text-decoration: none;
-		color: @turquoise3;
+		color: @turquoise2;
 	}
+}
+
+/*=======  1.2 - Inputs  =======*/
+
+.body-inputs {
+	margin-bottom: 15px;
+	//Input widths for mobile
+	@media (max-width: 768px) {
+		width: 100%;
+	}
+
+	//Input widths for computers
+	@media (min-width: 768px) {
+		width: 400px;
+	}
+}
+
+
+/*========  1.3 - Labels  ========*/
+
+span, label {
+	display: inline-block;
+    margin-bottom: 5px;
+	font-weight: @bold-main-font;
+	color: @grey5;
+}
+
+/*========  1.4 - Videos  ========*/
+
+.video-medium {
+	margin: 10px;
+	border: 1px solid @grey3;
+	max-height: 240px;
+	max-width: 320px;
+}
+
+.video-small {
+	margin: 10px;
+	border: 1px solid @grey3;
+	max-height: 180px;
+	max-width: 240px;
 }
 
 /*====================================
@@ -237,8 +289,14 @@ header nav.header-bar {
 
 	.website-title {
 		color: @turquoise3;
-		font-family: @title-font;
+		font-family: @main-title-font;
 		font-size: @main-title-size;
+		text-shadow: 1px 2px 5px rgba(0,0,0,0.5);
+		transition:.3s;
+
+		&:hover {
+			color: @turquoise4;
+		}
 	}
 	
 	.header-buttons-mobile {
@@ -311,6 +369,9 @@ header nav.header-bar {
 			background-color: @grey3;
 			border-color: @grey4;
 			color: @white;
+			h3 {
+				font-weight: @bold-main-font;
+			}
 		}
 
 		.panel-body {
@@ -391,6 +452,16 @@ header nav.header-bar {
 		font-size: 30px;
 		margin: 15px 0px;
 	}
+
+	h2,h3 {
+		color: @white;
+		font-family: @title-font;
+	}
+
+	h4,h5,h6 {
+		color: @grey7;
+		font-weight: @bold-main-font;
+	}
 }
 
 /*====================================
@@ -426,96 +497,142 @@ header nav.header-bar {
 	}
 }
 
-/*===================================
-=            5.0 - LOGIN            =
-====================================*/
+/*========================================
+=            5.0 - LOG SYSTEM            =
+========================================*/
+
+/*========  5.1 - Sign in  ========*/
 
 .login {
-	input {
-		margin-bottom: 15px;
-
-		//Input widths for mobile
-		@media (max-width: 768px) {
-			width: 100%;
-		}
-
-		//Input widths for computers
-		@media (min-width: 768px) {
-			width: 400px;
-		}
+	a {
+		margin-left: 10px;
 	}
 
-	label {
-		color: @grey5;
+	p {
+		display: block;
+		margin-top: 15px;
+	}
+}
+
+/*========  5.2 - Sign up  ========*/
+
+.signup {
+	a {	
+		display: inline-block;
+		margin-bottom: 10px;
+	}
+}
+
+/*========  5.3 - Lost Password  ========*/
+
+.lost-password {
+	a {
+		display: inline-block;
+    	margin-bottom: 15px;
+	}
+}
+
+/*========  5.4 - Sign in Success  ========*/
+
+.signin-success {
+	p {
+		display: inline-block;
 	}
 
 	a {
+		display: block;
+	}
+}
+
+/*========================================
+=            6.0 - USER INFOS            =
+=========================================*/
+
+.user-info {
+	a {
+		display: inline-block;
+		margin-bottom: 10px;
+		margin-left: 0px;
+	}
+
+	form a {
 		margin-left: 10px;
 	}
 }
 
-/*====================================
-=            6.0 - SIGNUP            =
-=====================================*/
 
-.signup {
-	nav {
-		margin-bottom: 10px;
+/*=======================================
+=            7.0 - USER PAGE            =
+========================================*/
+
+/*=========  7.1 - Main User page  =========*/
+
+.userpage-banner {
+	height: 120px;
+	display: inline-block;
+	margin: 15px 0px;
+
+	img {
+		max-width: 120px;
+		border: 1px solid @turquoise3;
 	}
 
-	label {
-		color: @grey5;
-	}
-
-	input {
-		margin-bottom: 15px;
-
-		//Input widths for mobile
-		@media (max-width: 768px) {
-			width: 100%;
-		}
-
-		//Input widths for computers
-		@media (min-width: 768px) {
-			width: 400px;
-		}
-	}
-}
-
-/*===========================================
-=            7.0 - LOST PASSWORD            =
-============================================*/
-
-.lostpassword {
-
-	input {
-		margin: 15px 0px;
-
-		//Input widths for mobile
-		@media (max-width: 768px) {
-			width: 100%;
-		}
-
-		//Input widths for computers
-		@media (min-width: 768px) {
-			width: 400px;
-		}
-	}
-
-}
-
-/*============================================
-=            8.0 - SIGNIN SUCCESS            =
-=============================================*/
-
-.signin-success {
-
-	label {
-		color: @grey5;
-	}
-
-	p {
+	div {
 		display: inline-block;
+		transform: translateY(25%);
+		margin-left: 10px;
+
+		.username {
+			color: @white;
+			font-weight: @bold-main-font;
+			font-size: 16px;
+		}
 	}
 }
 
+.video-container, .comment-container, .main-video-container, .main-comment-container {
+	background-color: @grey1;
+	border: 1px solid @grey2;
+	margin: 15px 0px;
+
+	div {
+		text-align: center;
+		a {
+		display: inline-block;
+		margin: 15px 0px;
+		left: 50%;
+		}
+	}
+}
+
+.comment-container {
+	.video-comments {
+		text-align: left;
+		padding: 0px;
+
+		h5 p {
+			display: inline-block;
+			margin-right: 5px;
+			color: @grey6;
+		}
+	}
+}
+
+/*=========  7.2 - My Videos  =========*/
+
+.main-video-container, .main-comment-container {
+	padding: 15px 0px;
+}
+
+.main-comment-container {
+	.video-comments {
+		text-align: left;
+		padding: 0px;
+
+		h5 p {
+			display: inline-block;
+			margin-right: 5px;
+			color: @grey6;
+		}
+	}
+}

@@ -56,6 +56,7 @@ $(function() {
 
 
 
+
 	//SEARCH BAR AND SIGNIN/LOGIN SHOWING
 	$('#search-form-mobile').on('show.bs.collapse', function () {
 		$('#login-buttons-mobile').collapse('hide');
@@ -81,5 +82,4 @@ $(function() {
 		    	width: '0px'});
 	    }
 	});
-
 });
