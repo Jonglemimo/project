@@ -26,10 +26,9 @@
         
 	['GET|POST', 		'/search',			   'Video#search', 			'search'],
         ['GET|POST',            '/watch',                          'Video#watch',                       'watch'],
-        ['GET|POST',            '/watchAjax',                      'Video#watchVideo',                  'watch_ajax']
+        ['GET|POST',            '/watchAjax',                      'Video#watchVideo',                  'watch_ajax'],
 
         ['GET|POST',            '/mapage/upload',                  'Video#uploadForm',       'upload_form'],
-		['GET|POST',            '/search',                         'Video#search',           'search'],
 
         //Catégories
         ['GET|POST',            '/categories/',                    'Categories#categories',        'categories_get'],

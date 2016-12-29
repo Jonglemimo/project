@@ -6,7 +6,7 @@ use \W\Model\Model;
 
 class VideoModel extends Model {
 
-	function getVideo() {
+	function getVideos() {
 
 		$sql = 'SELECT *, SUM(stars)/ COUNT(*) as note
 				FROM votesusers
@@ -51,18 +51,20 @@ class VideoModel extends Model {
 		return $stmt->fetch();
 	}
 
-	public function exist($search){
-		$sql = 'SELECT COUNT(*)
+	public function exist($search)
+    {
+        $sql = 'SELECT COUNT(*)
 				FROM video 
 				WHERE shortTitle = :search';
-		$stmt = $this->dbh->prepare($sql);
-		$stmt->bindParam(':search', $search);
-		$stmt->execute();
-		if (count($stmt->fetch()) > 0 ){
-			return true;
-		} else {
-			return false;
-		}
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->bindParam(':search', $search);
+        $stmt->execute();
+        if (count($stmt->fetch()) > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 	function fileExist($file){
 	    $sql = 'SELECT *
