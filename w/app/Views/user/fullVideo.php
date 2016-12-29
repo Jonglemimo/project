@@ -1,18 +1,19 @@
 <?php
-
 $this->layout('layout', ['title' => 'Mes vidéos']);
-$this->start('main_content');?>
+$this->start('main_content');
+?>
 
-<section class="container-fluid videoContainer">
+<section class="container-fluid main-video-container">
     <?php if(is_array($videos)):?>
 
         <div class="row col-md-12">
             <?php foreach ($videos as $video):?>
-                <div class="col-md-4 text-center">
 
-                    <video src="<?=$video['url']?>" controls></video>
-                    <p><?=$video['title'] ?></p>
-                    <p><?=$video['description'] ?></p>
+                <div class="col-md-4">
+
+                    <video class="video-medium embed-responsive-item" src="<?=$video['url']?>" controls poster="<?= $video['poster'] ?>"></video>
+                    <h4><?=$video['title'] ?></h4>
+                    <p><?= substr($video['description'], 0, 100); if(strlen($video['description']) > 100){ echo " [...]";} ?></p>
 
                 </div>
             <?php endforeach;?>

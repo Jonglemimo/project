@@ -1,34 +1,60 @@
-<?php $this->layout('layout', ['title' => 'Modifier mes informations']) ?>
 
-<?php $this->start('main_content') ?>
+<?php
 
-    <nav><a href="<?=$this->url('default_home')?>">Retour à la galerie</a></nav>
+$this->layout('layout', ['title' => 'Modifier vos informations']);
+$this->start('main_content');?>
+
+<section class="user-info">
+
+    <a href="<?=$this->url('user_admin')?>">< Retour à ma page</a>
+
+  
 
     <form method="POST">
-        Pseudonyme : <input class="form-control" type="text" name="username" value="<?php if(isset($user)) echo $user['username']?>"><br>
-                <?php if(isset($errors['username']['empty'])) : ?>
-            <p>Votre username est vide</p>
+        
+        <!-- USERNAME -->
+        <label>Pseudonyme</label>
+        <input class="body-inputs form-control" type="text" name="username" value="<?=$user['username']?>">
+        
+        <!-- empty username -->
+        <?php if(isset($errors['username']['empty'])) : ?>
+            <p>Votre pseudonyme est vide</p>
         <?php endif ?>
-
-                <?php if(isset($errors['username']['exist'])) : ?>
-            <p>Cet username existe déjà</p>
+        
+        <!-- already used username -->
+        <?php if(isset($errors['username']['exist'])) : ?>
+            <p>Ce pseudonyme existe déjà</p>
         <?php endif ?>
+        
 
-            email : <input class="form-control" type="email" name="email" value="<?php if(isset($user)) echo $user['email']?>"><br>
+        <!-- EMAIL -->
+        <label>E-mail</label>
+        <input class="body-inputs form-control" type="email" name="email" value="<?=$user['email']?>">
+
+
+        <!-- empty email -->
+
         <?php if(isset($errors['email']['empty'])) : ?>
             <p>L'email est vide</p>
         <?php endif ?>
-
-                <?php if(isset($errors['email']['wrong'])) : ?>
+        
+        <!-- unvalid email -->
+        <?php if(isset($errors['email']['wrong'])) : ?>
             <p>L'email n'est pas valide</p>
         <?php endif ?>
 
-
-                <?php if(isset($errors['email']['exist'])) : ?>
+        <!-- already used email -->
+        <?php if(isset($errors['email']['exist'])) : ?>
             <p>Cet email existe déjà</p>
         <?php endif ?>
-        <button class="btn btn-default" type="submit" name ="modifyInfo">Valider</button>
-        <a class="pull-right" href="<?=$this->url('user_lostpass')?>">Mot de passe oublié ?</a>
+
+        <!-- SENDING BUTTON -->
+        <button class="buttons btn btn-default" type="submit" name="signup">Valider</button>
+
+        <!-- FORGET PASSWORD LINK -->
+        <a href="<?=$this->url('user_lostpass')?>">Mot de passe oublié ?</a>
+
     </form>
+</section>
 
 <?php $this->stop('main_content') ?>
