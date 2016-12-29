@@ -27,15 +27,24 @@ jQuery(document).ready(function() {
 			console.log("error");
 		});
 		
-	})
+	});
+	$.ajax({
+		url : $('#category').val(),
+		type : 'POST',
+		dataType : 'html',
+	}).done( function (r) {
+		$('.categories').html(r);
+    }).fail(function (r) {
+        $('.categories').html('Il n\'y a aucune catégories');
+    });
 
 	//SEARCH BAR AND SIGNIN/LOGIN SHOWING
 	$('#search-form-mobile').on('show.bs.collapse', function () {
 		$('#login-buttons-mobile').collapse('hide');
-	})
+	});
 	$('#login-buttons-mobile').on('show.bs.collapse', function () {
 		$('#search-form-mobile').collapse('hide');
-	})
+	});
 	
 	//SHOWING ONLY ONE AT ONCE
 	$( window ).resize(function() {

@@ -27,6 +27,11 @@
         //Video
         ['GET|POST',            '/mapage/upload',                  'Video#uploadForm',       'upload_form'],
 		['GET|POST',            '/search',                         'Video#search',           'search'],
+
+        //Catégories
+        ['GET|POST',            '/categories/',                    'Categories#categories',        'categories_get'],
+        ['GET',                 '/category/[:name]',               'Categories#categoryVideos',    'category_videos']
+
       
 
 
