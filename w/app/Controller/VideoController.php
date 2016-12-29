@@ -47,9 +47,6 @@ class VideoController extends Controller
             }else{
                 //unknown
             }
-
-
-
         }
     }
 

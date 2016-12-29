@@ -209,11 +209,24 @@ class UserController extends Controller {
         $comments = $userModel->findVideoByComment($_SESSION['user']['id']);
 
         if(isset($videos[0]['id'])) {
-            $this->show('user/administration', ['videos' => $videos, 'comments' => $comments]);
+            if(isset($comments[0]['content'])){
+                $this->show('user/administration', ['comments' => $comments,'videos' => $videos]);
+            } else {
+                $this->show('user/administration', ['comments' => 'Vous n\'avez pas de commentaire','videos' => $videos]);
+            }
         } else {
-            $this->show('user/administration', ['videos' => 'Vous n\'avez pas de vidéo']);
+            if(isset($comments[0]['content'])){
+                $this->show('user/administration', ['comments' => $comments,'videos' => 'Vous n\'avez pas de vidéo']);
+            } else {
+                $this->show('user/administration', ['comments' => 'Vous n\'avez pas de commentaire','videos' => 'Vous n\'avez pas de vidéo']);
+            }
         }
+
+
+
     }
+
+
 
     function userFullVideos() {
 
@@ -251,7 +264,6 @@ class UserController extends Controller {
         if(isset($comments[0]['content'])) {
             $this->show('user/fullComment', ['comments' => $comments]);
 
-
         }else{
             $this->show('user/fullComment', ['comments' => 'Vous n\'avez pas de commentaire']);
 
@@ -263,36 +275,68 @@ class UserController extends Controller {
         $userModel = new UsersModel();
         $authModel = new AuthentificationModel();
         $errors = array();
-        $user = $authModel->getLoggedUser();
+
 
         if($authModel->getLoggedUser() == null){
             $this->redirectToRoute('user_login');
         }
+
+        $userModel->setTable('users');
+        $user = $userModel->find($_SESSION['user']['id']);
 
 
         if(isset($_POST['modifyInfo'])) {
             $errors = array();
 
             if (empty($_POST['username'])) {
-                $errors['username']['empty'] = true;
+                $errors['username']['empty'] = 'Votre pseudonyme est vide';
             } else {
                 $username = trim($_POST['username']);
-                $username = htmlspecialchars($username, ENT_QUOTES);
 
-                if ($userModel->usernameExists($_POST['username'])) {
-                    $errors['username']['exist'] = true;
+                if ($userModel->usernameExists($username) && $_SESSION['user']['username'] != $_POST['username']) {
+                    $errors['username']['exist'] = 'Ce pseudonyme existe déjà';
                 }
             }
 
             //CHECKING EMAIL
             if (empty($_POST['email'])) {
-                $errors['email']['empty'] = true;
+                $errors['email']['empty'] = 'L\'email est vide';
 
             } elseif (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
-                $errors['email']['wrong'] = true;
+                $errors['email']['wrong'] = 'L\'email n\'est pas valide';
 
             } else {
                 $email = $_POST['email'];
+
+            }
+            // checking password
+
+            if (!empty($_POST['pass1'])) {
+
+                if (strlen($_POST['pass1']) < 8 || strlen($_POST['pass1']) > 30) {
+                    $errors['lenght']['pass1'] = 'Votre mot de passe doit être compris entre 8 et 30 caractères';
+
+                }
+            }
+
+            if (!empty($_POST['pass2'])) {
+
+                if (!empty($_POST['pass1']) && ($_POST['pass1'] !== $_POST['pass2'])) {
+
+                    //IF PASSWORD IS FILLED, IT CONFIRMS
+                    //BUT THE TWO ARE DIFFERENTS
+                    $errors['pass']['different'] = 'Les mots de passes ne sont pas identiques';
+                }
+            }
+
+            if(!empty($_POST['pass1']) && empty($_POST['pass2'])) {
+                $errors['empty']['pass'] = 'Vous devez remplir le champ confirmation du mot de passe';
+
+            }
+
+            if(empty($_POST['pass1']) && !empty($_POST['pass2'])) {
+                $errors['empty']['pass'] = 'Vous remplir le champ nouveau mot de passe';
+
             }
 
         }else{
@@ -300,20 +344,51 @@ class UserController extends Controller {
         }
 
         //IF NO ERRORS, ADD IN DATABASE
-        if(count($errors) === 0) {
+        if(count($errors) == 0) {
 
-            $userModel->setTable('users');
+            if(isset($_POST['pass2'])){
+                $pass = $_POST['pass2'];
+            }
 
-            $userModel->update([
-                'email'    => $email,
-                'username' => $username,
+            if(isset($pass)){
+                $password = $authModel -> hashPassword($pass,PASSWORD_DEFAULT);
+                $userModel->update([
+                    'email'    => $email,
+                    'username' => $username,
+                    'password' => $password
+                ],$user['id']);
 
-            ],$user['id']);
-            $success = 'Vos informations ont bien été modifiées';
-            $this->show('user/userInfo', ['success' => $success]);
+                $_SESSION['user']['username'] = $username;
+                $_SESSION['user']['email'] = $email;
+            }else {
+
+                $userModel->update([
+                    'email'    => $email,
+                    'username' => $username,
+
+                ],$user['id']);
+
+                $_SESSION['user']['username'] = $username;
+                $_SESSION['user']['email'] = $email;
+            }
+
+            $user = $userModel->find($_SESSION['user']['id']);
+
+            $this->show('user/userInfo', ['success' => 'Vos informations ont bien été modifiées', 'user' => $user]);
 
         } else {
-            $this->show('user/userInfo', ['errors' => $errors,'user' => $user]);
+            if(!isset($_POST['pass1']) && !isset($_POST['pass2'])){
+                $this->show('user/userInfo', ['errors' => $errors,'user' => $user]);
+            }else if(isset($_POST['pass1']) || isset($_POST['pass2'])){
+                $pass = array(
+                    'pass1' => $_POST['pass1'],
+                    'pass2' => $_POST['pass2']
+                );
+                $this->show('user/userInfo', ['errors' => $errors,'user' => $user, 'pass' => $pass]);
+            }else{
+                $this->show('user/userInfo', ['errors' => $errors,'user' => $user]);
+
+            }
         }
     }
 }

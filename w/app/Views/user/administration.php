@@ -8,13 +8,10 @@ $this->start('main_content');
 
     <div>
         <p class="username"><?= $_SESSION['user']['username'] ?></p>
-        <a href="<?=$this->url('user_info')?>">Mes infos</a>
-        <a class="pull-right" href="<?=$this->url('upload_form')?>">Ajouter une vidéo</a
+        <a href="<?=$this->url('user_info')?>">Mes infos</a><br>
+        <a href="<?=$this->url('upload_form')?>">Ajouter une vidéo</a>
     </div>
 </div>
-
->
-
 
 <section class="container-fluid video-container">
 
@@ -46,7 +43,7 @@ $this->start('main_content');
 
     <h3>Mes derniers commentaires</h3>
 
-    <?php if(isset($comments)):?>
+    <?php if(is_array($comments)):?>
         <?php foreach ($comments as $comment):?>
 
             <div class="col-md-6">
@@ -65,8 +62,8 @@ $this->start('main_content');
     <div>
         <a href="<?=$this->url('user_comment')?>" class = "col-md-offset-7">Voir plus</a>
     </div>
-
-        
+    <?php else :?>
+        <p><?= $comments ?></p>
     <?php endif; ?>
 </section>
 

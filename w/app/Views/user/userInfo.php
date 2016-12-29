@@ -8,22 +8,22 @@ $this->start('main_content');?>
 
     <a href="<?=$this->url('user_admin')?>">< Retour à ma page</a>
 
-  
-
-    <form method="POST">
-        
+    <form  method="POST">
+        <?php if (isset($success)):?>
+            <dialog open class="alert alert-success">Vos informations ont bien été mises à jours</dialog>
+        <?php endif; ?>
         <!-- USERNAME -->
         <label>Pseudonyme</label>
         <input class="body-inputs form-control" type="text" name="username" value="<?=$user['username']?>">
         
         <!-- empty username -->
         <?php if(isset($errors['username']['empty'])) : ?>
-            <p>Votre pseudonyme est vide</p>
+            <p><?=$errors['username']['empty']?></p>
         <?php endif ?>
         
         <!-- already used username -->
         <?php if(isset($errors['username']['exist'])) : ?>
-            <p>Ce pseudonyme existe déjà</p>
+        <p><?=$errors['username']['exist']?></p>
         <?php endif ?>
         
 
@@ -31,29 +31,45 @@ $this->start('main_content');?>
         <label>E-mail</label>
         <input class="body-inputs form-control" type="email" name="email" value="<?=$user['email']?>">
 
-
         <!-- empty email -->
 
         <?php if(isset($errors['email']['empty'])) : ?>
-            <p>L'email est vide</p>
+            <p><?=$errors['email']['empty']?></p>
         <?php endif ?>
         
         <!-- unvalid email -->
         <?php if(isset($errors['email']['wrong'])) : ?>
-            <p>L'email n'est pas valide</p>
+            <p><?=$errors['email']['wrong']?></p>
         <?php endif ?>
 
         <!-- already used email -->
         <?php if(isset($errors['email']['exist'])) : ?>
-            <p>Cet email existe déjà</p>
+            <p><?=$errors['email']['exist']?></p>
         <?php endif ?>
 
+        <label for="pass1">Modification du mot de passe</label>
+        <input value="<?php if(isset($pass['pass1'])) echo $pass['pass1']?>" class="body-inputs form-control" type="password" id="pass1" name="pass1" placeholder="Mot de passe">
+
+              <!-- empty password -->
+        <?php if (isset($errors['empty']['pass'])) : ?>
+            <div class="what"><p><?=$errors['empty']['pass']?></p></div>
+        <?php endif; ?>
+
+        <!-- short password -->
+        <?php if (isset($errors['lenght']['pass1'])) : ?>
+            <div class="false"><p><?=$errors['lenght']['pass1']?></p></div>
+        <?php endif; ?>
+
+        <!-- CONFIRM PASSWORD -->
+        <label for="pass2">Confirmation du mot de passe</label>
+        <input value="<?php if(isset($pass['pass2'])) echo $pass['pass2']?>" class="body-inputs form-control" type="password" name="pass2" placeholder="Confirmation">
+
+        <?php if (isset($errors['pass']['different'])) : ?>
+            <div class="false"><p><?=$errors['pass']['different']?></p></div>
+        <?php endif; ?>
+
         <!-- SENDING BUTTON -->
-        <button class="buttons btn btn-default" type="submit" name="signup">Valider</button>
-
-        <!-- FORGET PASSWORD LINK -->
-        <a href="<?=$this->url('user_lostpass')?>">Mot de passe oublié ?</a>
-
+        <button class="buttons btn btn-default" type="submit" name="modifyInfo">Valider</button>
     </form>
 </section>
 

@@ -21,7 +21,7 @@ $this->start('main_content');
 
         <?php endforeach;?>
         <?php else: ?>
-        
+        <p><?=$comments?></p>
     <?php endif; ?>
 </section>
 
