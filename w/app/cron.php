@@ -5,25 +5,27 @@ require_once __DIR__.'/../vendor/autoload.php';
 
 $crontab = new \HybridLogic\Cron\Crontab;
 
-function test2(){
-    mkdir('/Users/Helda/Sites/Formation/Cours/group-project/project/w/tmp/'.uniqid(),0775);
+function transcoding(){
+
+    $ch = curl_init();
+
+// set URL and other appropriate options
+    curl_setopt($ch, CURLOPT_URL, "http://localhost/Formation/Cours/group-project/project/w/public/api/transcode");
+    curl_setopt($ch, CURLOPT_HEADER, 0);
+
+// grab URL and pass it to the browser
+    curl_exec($ch);
+
+// close cURL resource, and free up system resources
+    curl_close($ch);
 }
 
 $crontab->add_job(
     \HybridLogic\Cron\Job::factory('test')
         ->on('* * * * *')
         ->trigger(function(){
-            test2();
-        })
-);
-
-$crontab->add_job(
-    \HybridLogic\Cron\Job::factory('autre')
-        ->on('*/2 * * * *')
-        ->trigger(function(){
-            mkdir('/Users/Helda/Sites/Formation/Cours/group-project/project/w/tmp/test',0775);
+            transcoding();
         })
 );
 
 $count = $crontab->run();
-echo "Executed $count job(s)";

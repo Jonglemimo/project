@@ -12,8 +12,6 @@ class VideoController extends Controller
 {
 	private $uploadTmp   = false;
     private $usersFolder = false;
-    private $ffmpegBin   = false;
-    private $ffprobeBin  = false;
 
 	public function __construct()
     {
@@ -25,32 +23,6 @@ class VideoController extends Controller
             if(!file_exists($this->usersFolder)){
                 mkdir($this->usersFolder,0755);
             }
-
-            putenv('TMPDIR='.dirname(dirname(dirname(__FILE__))).$ds.'php-tmp');
-
-            $os = new \Tivie\OS\Detector();
-            $ffmpegPath = dirname(dirname(dirname(__FILE__))).$ds.'bin';
-            if($os->getType() == 33){
-                //OSX
-                $this->ffmpegBin = $ffmpegPath.$ds.'osx'.$ds.'ffmpeg';
-                $this->ffprobeBin = $ffmpegPath.$ds.'osx'.$ds.'ffprobe';
-            }else if($os->getType() == 10){
-                if(PHP_INT_SIZE == 8){
-                    // Windows 64
-                    $this->ffmpegBin = $ffmpegPath.$ds.'windows'.$ds.'64'.$ds.'ffmpeg.exe';
-                    $this->ffprobeBin = $ffmpegPath.$ds.'windows'.$ds.'64'.$ds.'ffprobe.exe';
-
-                }else{
-                    // Windows 32
-                    $this->ffmpegBin = $ffmpegPath.$ds.'windows'.$ds.'32'.$ds.'ffmpeg.exe';
-                    $this->ffprobeBin = $ffmpegPath.$ds.'windows'.$ds.'32'.$ds.'ffprobe.exe';
-                }
-            }else{
-                //unknown
-            }
-
-
-
         }
     }
 
@@ -257,22 +229,5 @@ class VideoController extends Controller
 
     private function transcode(){
 
-        if(!$this->ffprobeBin || !$this->ffmpegBin){
-            return false;
-        }
-        $ffmpeg = \FFMpeg\FFMpeg::create(array(
-            'ffmpeg.binaries' => $this->ffmpegBin,
-            'ffprobe.binaries' => $this->ffprobeBin
-        ));
-
-        $test = '/Users/Helda/Sites/Formation/Cours/group-project/project/w/public/users/2/586428ddc76d0/Scream.Queens.2015.VOSTFR.S02E10.HDTV.XViD-EXTREME.avi';
-
-        $output = dirname($test).DIRECTORY_SEPARATOR.'test.webm';
-
-        $video = $ffmpeg->open($test);
-        $video->save(new \FFMpeg\Format\Video\WebM(), $output);
-
     }
-
-
 }

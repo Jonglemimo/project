@@ -4,11 +4,10 @@ $this->start('main_content');
 ?>
 <?php if(isset($videoEncoding)):?>
 <div id="currentTranscoding">
-    <div style="width: <?= count($videoEncoding)*324?>px">
+    <div class="videoEncoding" style="width: <?= count($videoEncoding)*324?>px">
         <?php foreach ($videoEncoding as $video): ?>
-            <div class="videoEncoding">
+            <div class="overlay"></div>
                 <img  src="<?=$this->assetUrl('users'.'/'.$_SESSION['user']['id'].'/'.$video['shortTitle'].'/'.$video['poster_sm'])?>" alt="<?=$video['title']?>">
-            </div>
         <?php endforeach; ?>
     </div>
 </div>

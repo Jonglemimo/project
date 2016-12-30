@@ -35,7 +35,8 @@
 
         //cron task
 
-        ['GET',                 '/api/transcode',                  'Api#transcode',               'cron_transcode']
+        ['GET',                 '/api/transcode',                  'Api#transcode',               'cron_transcode'],
+        ['GET',                 '/api/get-percentage/[:id]',       'Api#getpercentage',           'get_percentage']
 
       
 	);
