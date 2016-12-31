@@ -26,7 +26,7 @@
         ['GET|POST', 		    '/search',			               'Video#search', 			       'search'],
         ['GET|POST',            '/watch',                          'Video#watch',                  'watch'],
         ['GET|POST',            '/watchAjax',                      'Video#watchVideo',             'watch_ajax'],
-
+        ['GET|POST',            '/mapage/video/delete',            'Video#deleteVideoById',        'delete_video'],
         ['GET|POST',            '/mapage/upload',                  'Video#uploadForm',             'upload_form'],
 
         //Catégories

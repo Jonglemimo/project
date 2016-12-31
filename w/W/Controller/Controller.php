@@ -81,7 +81,6 @@ class Controller {
 	//SHOW 404 PAGE
 	public function showNotFound() {
 
-		header('HTTP/1.0 404 Not Found');
 		$file = self::PATH_VIEWS.'/w_errors/404.php';
 
 		if(file_exists($file)) {

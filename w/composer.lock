@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "ba55f307f10f562e9c2ba6ed5f53b349",
-    "content-hash": "493d987c54bb75b07ebcec1a89303742",
+    "hash": "825f4883ada514526a6ec9f8e37c7d5f",
+    "content-hash": "5732dae6e811270b1aeff64e3cda5fbc",
     "packages": [
         {
             "name": "alchemy/binary-driver",
@@ -745,6 +745,48 @@
                 "scheduler"
             ],
             "time": "2016-04-19 00:52:10"
+        },
+        {
+            "name": "perchten/rmrdir",
+            "version": "1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/perchten/php-rmrdir.git",
+                "reference": "ce8b95e509d64f339a10c3475a13ad687f1e6905"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/perchten/php-rmrdir/zipball/ce8b95e509d64f339a10c3475a13ad687f1e6905",
+                "reference": "ce8b95e509d64f339a10c3475a13ad687f1e6905",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/rmrdir.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alastair Brayne",
+                    "email": "al@perchten.co.uk",
+                    "homepage": "http://perchten.co.uk"
+                }
+            ],
+            "description": "Recusrive rmdir for PHP",
+            "homepage": "https://github.com/perchten/php-rmrdir",
+            "keywords": [
+                "dir",
+                "recursive",
+                "rm",
+                "rm -r",
+                "rmdir"
+            ],
+            "time": "2014-05-14 13:49:47"
         },
         {
             "name": "php-ffmpeg/php-ffmpeg",

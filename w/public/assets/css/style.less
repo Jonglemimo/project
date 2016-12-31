@@ -143,21 +143,28 @@ html {
 }
 
 #uploadButton{
+	margin-top: 2rem;
 	width: 20rem;
 	height: 4rem;
 	position: relative;
 	display: inline-block;
 	background-color: #e74c3c;
-	color: #FFF;
 	cursor: pointer;
 	padding: 0.5rem 1rem;
 	font-weight: 700;
 	text-align: center;
 	line-height: 2.1;
 	border-radius: .4rem;
+	color:#FFF;
+	#UploadText{
+		padding-left: .5rem;
+		color:#FFF;
+	}
+
 	&:hover{
 		background-color: #c0392b;
 	}
+
 }
 
 #currentTranscoding{
@@ -166,11 +173,85 @@ html {
 	overflow-y: hidden;
 
 	.videoEncoding{
-		filter: grayscale(100%);
+		position: relative;
+		width: auto;
+		height: 100%;
+
+		.wrap-video{
+
+			width: 320px;
+			display: inline-block;
+			position: relative;
+
+			.overlay{
+				background-color: #111;
+				opacity: .9;
+				position: absolute;
+				width: 100%;
+				top:0;
+				right: 0;
+				bottom: 0;
+				z-index: 2;
+				transition: width 2s ease-in-out;
+			}
+			img{
+				position: relative;
+				z-index: 1;
+
+			}
+
+			.wrap-loader{
+				position: absolute;
+				z-index: 3;
+				left: 50%;
+				top:50%;
+				transform: translate(-25px,-25px);
+			}
+		}
 	}
+
 }
 
 
+.video {
+	.settingImg {
+		padding: 0;
+		position: absolute;
+		width: 3rem;
+		height: 3rem;
+		display: none;
+		text-align: center;
+		opacity: .8;
+		top: 2rem;
+		right: 2rem;
+
+
+	}
+
+	.deleteImg {
+		padding: 0;
+		position: absolute;
+		width: 3rem;
+		height: 3rem;
+		display: none;
+		text-align: center;
+		opacity: .8;
+		top: 2rem;
+		right: 6rem;
+
+	}
+
+	&:hover{
+		.settingImg{
+			display: block;
+		}
+		.deleteImg{
+			display: block;
+		}
+	}
+}
+
+.loader-circle{display:block;-webkit-animation:svg-rotate 8s linear infinite;animation:svg-rotate 8s linear infinite}.loader-circle circle{fill:transparent;stroke:#3ac39f;stroke-width:2;stroke-linecap:round;stroke-dasharray:0,150.79645%;-webkit-animation:stroke-dash 2s linear infinite,stroke-width 2s linear infinite,stroke-color 8s steps(4) infinite;animation:stroke-dash 2s linear infinite,stroke-width 2s linear infinite,stroke-color 8s steps(4) infinite}@-webkit-keyframes svg-rotate{to{-webkit-transform:rotate(360deg);transform:rotate(360deg)}}@keyframes svg-rotate{to{-webkit-transform:rotate(360deg);transform:rotate(360deg)}}@-webkit-keyframes stroke-width{0%,100%{stroke-width:0}45%,55%{stroke-width:1}50%{stroke-width:2}}@keyframes stroke-width{0%,100%{stroke-width:0}45%,55%{stroke-width:1}50%{stroke-width:2}}@-webkit-keyframes stroke-dash{0%{stroke-dasharray:0,150.79645%;stroke-dashoffset:0}50%{stroke-dasharray:150.79645%,0;stroke-dashoffset:0}100%{stroke-dasharray:150.79645%,150.79645%;stroke-dashoffset:-150.79645%}}@keyframes stroke-dash{0%{stroke-dasharray:0,150.79645%;stroke-dashoffset:0}50%{stroke-dasharray:150.79645%,0;stroke-dashoffset:0}100%{stroke-dasharray:150.79645%,150.79645%;stroke-dashoffset:-150.79645%}}@-webkit-keyframes stroke-color{from{stroke:#3ac39f}}@keyframes stroke-color{from{stroke:#3ac39f}}
 
 *,
 *:before,

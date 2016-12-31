@@ -98,12 +98,17 @@ class ApiController
 
                 $video->save($format, $output);
 
+
+
                 $this->request->delete($this->transcodeId);
 
                 $this->request->setTable('video');
                 $this->request->update([
-                    'encoding' => 1
+                    'encoding' => 1,
+                    'url' => $info['filename'].'.webm'
                 ],$this->transcodeResult['id']);
+
+                unlink($file);
 
             }
         }

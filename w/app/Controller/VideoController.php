@@ -169,6 +169,8 @@ class VideoController extends Controller
 
             ]);
 
+            //todo transcode
+
             unlink($fullpath);
 
             return array('success' => true, 'errors' => $errors);
@@ -176,6 +178,23 @@ class VideoController extends Controller
             return array('success' => false, 'errors' => $errors);
         }
     }
+
+
+
+/*    private function startTranscoding(){
+
+        $ch = curl_init();
+
+// set URL and other appropriate options
+        curl_setopt($ch, CURLOPT_URL, $this->url('cron_transcode'));
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+
+// grab URL and pass it to the browser
+        curl_exec($ch);
+
+// close cURL resource, and free up system resources
+        curl_close($ch);
+    }*/
 
     private function getType($file){
         $type = mime_content_type($file);
@@ -197,10 +216,10 @@ class VideoController extends Controller
         if(file_exists($file)){
 
             $name = $helper->create_slug($info['filename'].'-'.uniqid()).'.'.$info['extension'];
-
             return $this->uploadTmp.DIRECTORY_SEPARATOR.$name;
 
         }else {
+
             $name = $helper->create_slug($info['filename']).'.'.$info['extension'];
             return $this->uploadTmp.DIRECTORY_SEPARATOR.$name;
         }
@@ -227,7 +246,49 @@ class VideoController extends Controller
         $this->show('video/watch', ['video' => $result]);
     }
 
-    private function transcode(){
+    function deleteVideoById(){
 
+
+        require_once __DIR__.'/../../vendor/perchten/rmrdir/src/rmrdir.php';
+
+        $videoModel = new VideoModel();
+
+        if(isset($_POST['id']) && is_numeric($_POST['id'])) {
+
+            $idVideo = $_POST['id'];
+
+            $videoModel->setTable('posters');
+            $poster = $videoModel->getPosterByIdVideo($idVideo);
+            $deletePoster = $videoModel->delete($poster['id']);
+
+
+
+
+            if($deletePoster){
+
+                $videoModel->setTable('video');
+                $video = $videoModel->find($idVideo);
+
+
+                $path =  __DIR__ . ''.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'users' . DIRECTORY_SEPARATOR.$video['id_user'].DIRECTORY_SEPARATOR.$video['shortTitle'];
+
+                $deleteVideo = $videoModel->delete($idVideo);
+
+                if($deleteVideo){
+
+                   rmrdir($path);
+                    $this->showJson(['sucess' => true]);
+                }else{
+                    $this->showJson(['sucess' => false]);
+                }
+            }else{
+                $this->showJson(['sucess' => false]);
+            }
+
+        }else {
+            $this->redirectToRoute('default_home');
+        }
     }
+
+
 }

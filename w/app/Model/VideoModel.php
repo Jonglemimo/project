@@ -79,17 +79,27 @@ class VideoModel extends Model {
 
 
     function getWhileEncoding($id){
-        $sql = 'SELECT title, shortTitle, url, posters.poster_xs,posters.poster_sm,posters.poster_lg
+        $sql = 'SELECT video.id, title, shortTitle, url, posters.poster_xs,posters.poster_sm,posters.poster_lg,encoding
 	            FROM video
 	            LEFT JOIN posters on video.id = posters.id_video
 	            WHERE id_user = :id_user AND (encoding = 0 OR encoding = 2)
-	            ORDER BY date_created DESC';
+	            ORDER BY date_created ASC';
         $stmt = $this->dbh->prepare($sql);
         $stmt->bindParam(':id_user' , $id);
         $stmt->execute();
         return $stmt->fetchAll();
     }
 
+    function getPosterByIdVideo($id){
+        $sql = 'SELECT *
+	            FROM posters
+	            WHERE posters.id_video = :id
+	            LIMIT 1';
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->bindParam(':id' , $id);
+        $stmt->execute();
+        return $stmt->fetch();
+    }
 
 
 }

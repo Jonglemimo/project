@@ -61,6 +61,7 @@ var upload = {
             return false;
        }
 
+
        var type = {
             image : false,
             video : false,
@@ -108,6 +109,7 @@ var upload = {
 };
 
 $(function () {
+
     $(document).on('click','.removeItem',function () {
         var index = parseInt($(this).parent().attr('data-index'));
         if(!isNaN(index)){
@@ -118,6 +120,7 @@ $(function () {
 
     $(document).on('submit','#formUpload',function (e) {
         e.preventDefault();
+
         if(upload.validateForm()){
             upload.files.forEach(function (file) {
                 file.submit();
@@ -132,8 +135,35 @@ $(function () {
                 $('.status').html('Erreur de paramétrage').removeClass('hide').addClass('alert alert-danger');
                 return;
             }
+
+            var type = {
+                image : false,
+                video : false,
+                regexImg : /image/gi,
+                regexVideo : /video/gi
+            };
+
+
+
+
+
             upload.files.push(data);
-            console.log(data);
+
+            if(type.regexImg.test(data.files[0].type)){
+                $('#UploadText').html('Upload une vidéo');
+                $('#order').addClass('hide');
+
+            }else if (typeof upload.files != 'undefined') {
+                if (type.regexVideo.test(upload.files[0].files[0].type)) {
+
+                    $('#order').html('vous devez uploader une image en premier').removeClass('hide').addClass('alert alert-danger');
+                    upload.files.splice(0, 1);
+                }
+            }
+
+            if(upload.files.length == 2){
+                $('#submitUploadForm').html(' <button type="submit" class="buttons btn btn-default">Envoyer</button>')
+            }
 
             if(upload.timeout)
                 clearTimeout(upload.timeout);
