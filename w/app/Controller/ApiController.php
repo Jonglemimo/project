@@ -142,4 +142,21 @@ class ApiController
             $controller->showNotFound();
         }
     }
+
+    public function deleteTokens(){
+        $userModel = new RecoveryTokenModel();
+
+        $userModel->setTable('recoverytokens');
+        $dateTokens = $userModel->findAll();
+
+        if(count($dateTokens) > 0){
+            foreach ($dateTokens as $dateToken){
+                $timenow = time();
+                $checktime = strtotime($dateToken['date_created']);
+                if($checktime <= ($timenow - 1800)) {
+                    $userModel->delete($dateToken['id']);
+                }
+            }
+        }
+    }
 }

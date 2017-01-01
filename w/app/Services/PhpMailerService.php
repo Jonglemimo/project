@@ -16,7 +16,7 @@ class PhpMailerService {
         $phpMailer->Port = 587;
         $phpMailer->CharSet = 'UTF-8';
 
-        //$phpMailer->SMTPDebug = 2;
+/*        $phpMailer->SMTPDebug = 2;*/
 
         $phpMailer->setFrom('wf3.mail@gmail.com', 'Réinitialisation du mot de passe', false);
         $phpMailer->addAddress($address);     		                // Ajouter un destinataire

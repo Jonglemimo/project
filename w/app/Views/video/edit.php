@@ -13,6 +13,7 @@ $this->start('main_content');
         Titre : <input class="form-control title" type="text" name="title" value="<?=$infoVideo['video']['title']?>"><br>
     </div>
     <div class="form-group">
+        <label for="categories">Catégories : </label>
         <select  name="categories"  class="form-control category">
             <option value="<?=$infoVideo['currentCategory']['id']?>" selected><?=$infoVideo['currentCategory']['name']?></option>
             <?php foreach ($infoVideo['categories'] as $category):?>

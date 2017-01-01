@@ -38,7 +38,7 @@
 
         ['GET',                 '/api/transcode',                  'Api#transcode',               'cron_transcode'],
         ['GET',                 '/api/get-percentage/[:id]',       'Api#getpercentage',           'get_percentage'],
-        ['GET',                 '/recovery-tokens/delete',         'RecoveryToken#deleteTokens',  'delete_recoveryTokens']
+        ['GET',                 '/recovery-tokens/delete',         'Api#deleteTokens',            'delete_recoveryTokens']
 
 
       

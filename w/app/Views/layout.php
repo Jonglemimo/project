@@ -141,7 +141,7 @@
 <footer class="footer footer-padding">
 
     <div class="footer-copyright">
-        <p>© Tutomotion 2016</p>
+        <p>© Tutomotion 2017</p>
     </div>
 
     <div class="footer-links">

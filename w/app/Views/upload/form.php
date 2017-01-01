@@ -52,6 +52,7 @@ $this->start('main_content');
                 <label id="uploadButton" for="files"><i class="glyphicon glyphicon-open"></i><span id="UploadText">Envoyer une image</span><input class="form-control" data-url="<?=$this->url('upload_form')?>" id="fileupload" type="file" name="files[]" multiple></label>
                 <p>(Merci d'upload une vidéo ainsi qu'une image la représentant)</p>
             </div>
+            <button id="submitBtn" type="submit" class="buttons btn btn-default hide">Envoyer</button>
         </div>
     </form>
 <?php $this->stop('main_content') ?>

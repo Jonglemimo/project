@@ -2,12 +2,11 @@
 
 namespace Controller;
 
-use League\Url\Components\User;
-use Services\PhpMailerService;
+
 use W\Controller\Controller;
 use \Model\UsersModel;
 use W\Security\AuthentificationModel;
-use \Model\CategoriesModel;
+
 
 
 class UserController extends Controller {
@@ -133,15 +132,36 @@ class UserController extends Controller {
             }
 
             //CHECKING PASSWORD
-            if (empty($_POST['password'])) {
-                $errors['password']['empty'] = true;
 
-            } elseif (strlen($_POST['password']) < 5) {
-                $errors['password']['short'] = true;
+            if (!empty($_POST['pass1'])) {
 
-            } else {
-                $password = $_POST['password'];
+                if (strlen($_POST['pass1']) < 5 || strlen($_POST['pass1']) > 30) {
+                    $errors['lenght']['pass1'] = 'Votre mot de passe doit être compris entre 5 et 30 caractères';
+                }
+            }else{
+                $errors['empty']['pass1'] = 'Vous devez remplir le champ mot de passe';
             }
+
+            if (!empty($_POST['pass2'])) {
+
+                if (!wempty($_POST['pass1']) && ($_POST['pass1'] !== $_POST['pass2'])) {
+
+                    //IF PASSWORD IS FILLED, IT CONFIRMS
+                    //BUT THE TWO ARE DIFFERENTS
+                    $errors['pass']['different'] = 'Les mots de passes ne sont pas identiques';
+                }
+            }
+
+            if(!empty($_POST['pass1']) && empty($_POST['pass2'])) {
+                $errors['empty']['pass'] = 'Vous devez remplir le champ confirmation du mot de passe';
+
+            }
+
+            if(empty($_POST['pass1']) && !empty($_POST['pass2'])) {
+                $errors['empty']['pass'] = 'Vous devez remplir le champ nouveau mot de passe';
+
+            }
+            //
 
             //CHECKING EMAIL
             if (empty($_POST['email'])) {
@@ -162,7 +182,10 @@ class UserController extends Controller {
             if(count($errors) === 0) {
 
                 $userModel->setTable('users');
-                $password = $authModel -> hashPassword($password,PASSWORD_DEFAULT);
+                if(isset($_POST['pass2'])) {
+                    $pass = $_POST['pass2'];
+                }
+                $password = $authModel -> hashPassword($pass,PASSWORD_DEFAULT);
 
 
                 $user = $userModel ->insert([
@@ -176,6 +199,16 @@ class UserController extends Controller {
 
 
                 //REDIRECT ON SUCCESS PAGE TO DISPLAY THE USER INFORMATIONS
+                $data =  array(
+                    'id'       => $user['id'],
+                    'firstname'=> $firstname,
+                    'lastname' => $lastname,
+                    'email'    => $email,
+                    'username' => $username,
+                    'date_created' => $user['date_created'],
+                    'last_connection' => $user['last_connection']
+                );
+                $authModel->logUserIn($data);
 
                 $this->show('user/success', ['user' => $user]);
 

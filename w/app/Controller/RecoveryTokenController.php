@@ -28,7 +28,7 @@ class RecoveryTokenController extends Controller {
                 //TESTING EMAIL VALIDITY
                 $isMailValid = filter_var($userMail, FILTER_VALIDATE_EMAIL);
                 if (!$isMailValid) {
-                    $errors['mail'] = true;
+                    $errors['mail'] = 'L\'adresse email renseigné n\'est pas valide';
                 }
 
                 if (count($errors) == 0) {
@@ -43,11 +43,12 @@ class RecoveryTokenController extends Controller {
                         $bodyHtml = 'Voici le lien de réinitialisation http://localhost/Formation/Cours/group-project/project/w/public/signin/reset_pass/' . $token;
                         $bodyPlain = 'Voici le lien de réinitialisation http://localhost/Formation/Cours/group-project/project/w/public/signin/reset_pass/' . $token;
                         $mail->sendMail($userMail, $subject, $bodyHtml, $bodyPlain);
+                        $this->show('user/lostPassword',['success' => 'Votre email de réinitialisation a été envoyé']);
 
                     } else {
 
                         //ECHO 'cette adresse Email n\'existe pas';
-                        $errors['wrongEmail'] = true;
+                        $errors['wrongEmail'] = 'Cette adresse mail n\'est pas enregistrée dans notre base de donnée';
                         $this->show('user/lostPassword',['errors' => $errors]);
                     }
 
@@ -56,7 +57,7 @@ class RecoveryTokenController extends Controller {
                 }
 
             } else {
-                $errors['empty'] = true;
+                $errors['empty'] = 'Vous n\'avez renseigné aucun adresse email';
                 $this->show('user/lostPassword',['errors' => $errors]);
             }
 
@@ -133,23 +134,6 @@ class RecoveryTokenController extends Controller {
         }
         
         $this->show('user/resetPassword');
-    }
-
-    public function deleteTokens(){
-        $userModel = new RecoveryTokenModel();
-
-        $userModel->setTable('recoverytokens');
-        $dateTokens = $userModel->findAll();
-
-        if(count($dateTokens) > 0){
-            foreach ($dateTokens as $dateToken){
-                $timenow = time();
-                $checktime = strtotime($dateToken['date_created']);
-                if($checktime <= ($timenow - 1800)) {
-                    $userModel->delete($dateToken['id']);
-                }
-            }
-        }
     }
 }
 

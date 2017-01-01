@@ -5,7 +5,6 @@ $(function () {
     $(document).on('click','.deleteVideo',function () {
 
         var id = $(this).data('delete');
-        console.log(id);
         $.ajax({
             type:'POST',
             url:$('.deleteId').val(),
@@ -14,6 +13,9 @@ $(function () {
             }
         }).done(function () {
             deleteElement(id);
+            if($(".latest-video").children().length === 0){
+                window.location.reload();
+            }
         }).fail(function (response) {
             console.log(response);
         })

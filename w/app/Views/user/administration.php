@@ -19,7 +19,7 @@ $this->start('main_content');
 
     <?php if(is_array($videos)):?>
 
-        <div class="row col-md-12">
+        <div class="latest-video row col-md-12">
             <?php foreach ($videos as $video):?>
                 <div class="col-md-4">
                     <div class="video">

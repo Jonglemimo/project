@@ -122,14 +122,8 @@ $(function () {
             regexVideo : /video/gi
         };
 
-        if(type.regexImg.test(upload.files[0].files[0].type)){
-            var statusButton = 'Envoyer une vidéo'
-
-        }else {
-            var statusButton = 'Envoyer une image'
-        }
-
-        $('#submitUploadForm').html('<label id="uploadButton" for="files"><i class="glyphicon glyphicon-open"></i><span id="UploadText">'+statusButton+'</span><input class="form-control" data-url="'+uploadUrl+'" id="fileupload" type="file" name="files[]" multiple></label><p>(Merci d\'upload une vidéo ainsi qu\'une image la représentant)</p>');
+        $('#submitUploadForm').removeClass('hide');
+        $('#submitBtn').addClass('hide');
 
         var index = parseInt($(this).parent().attr('data-index'));
         if(!isNaN(index)){
@@ -137,7 +131,16 @@ $(function () {
             upload.process();
         }
 
-        console.log(upload);
+        if(upload.files.length == 1 && type.regexVideo.test(upload.files[0].files[0].type)){
+            $('#UploadText').html('Envoyer une image');
+        }else{
+            $('#UploadText').html('Envoyer une vidéo');
+        }
+
+        if(upload.files.length == 0){
+            $('#UploadText').html('Envoyer une image');
+        }
+
 
     });
 
@@ -180,7 +183,8 @@ $(function () {
 
 
             if(upload.files.length == 2){
-                $('#submitUploadForm').html(' <button type="submit" class="buttons btn btn-default">Envoyer</button>')
+                $('#submitBtn').removeClass('hide');
+                $('#submitUploadForm').addClass('hide');
             }
 
             if(upload.timeout)

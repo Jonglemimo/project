@@ -352,7 +352,7 @@ class VideoController extends Controller
 
     }
 
-    public function validateEditVideo($id)
+    private function validateEditVideo($id)
     {
         $errors = array();
 

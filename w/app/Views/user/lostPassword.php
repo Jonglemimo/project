@@ -7,25 +7,32 @@ $this->start('main_content');
     
     <!-- RETURN TO HOMEPAGE -->
     <a href="<?=$this->url('default_home')?>">< Retour à la page d'accueil</a><br>
-    
-    <!-- LOST EMAIL -->
-    <label>E-mail</label>
-    <input error class="body-inputs form-control" type="text" name="mail" value="<?php if (isset($mail)) echo $mail ?>" placeholder="E-mail">
-    
+
+    <!-- succeess email -->
+    <?php if(isset($success)): ?>
+        <div class="alert alert-success"><p><?=$success?></p></div>
+    <?php endif; ?>
+
     <!-- unvalid email -->
     <?php if (isset($errors['mail'])) : ?>
-        <div class="false"><p>L'adresse mail n'est pas valide</p></div>
+        <div class="alert alert-danger"><p><?=$errors['mail']?></p></div>
     <?php endif; ?>
 
     <!-- email not found in database -->
     <?php if(isset($errors['wrongEmail'])):?>
-        <div class="what"><p>L'adresse mail n'existe pas en base de données</p></div>
+        <div class="alert alert-danger"><p><?=$errors['wrongEmail']?></p></div>
     <?php endif; ?>
 
     <!-- empty email -->
     <?php if(isset($errors['empty'])):?>
-        <div class="meh"><p>L'adresse mail est vide</p></div>
+        <div class="alert alert-danger"><p><?=$errors['empty']?></p></div>
     <?php endif; ?>
+
+    <!-- LOST EMAIL -->
+    <label>E-mail</label>
+    <input error class="body-inputs form-control" type="text" name="mail" value="<?php if (isset($mail)) echo $mail ?>" placeholder="E-mail">
+    
+
     
     <!-- SENDING BUTTON -->
     <button class="buttons btn btn-default" type="submit" name="reset-password">Envoyer</button>

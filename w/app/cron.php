@@ -36,16 +36,17 @@ function deleteRecoveryTokens(){
 }
 
 $crontab->add_job(
-    \HybridLogic\Cron\Job::factory('test')
+    \HybridLogic\Cron\Job::factory('transcode')
         ->on('* * * * *')
         ->trigger(function(){
             transcoding();
+            deleteRecoveryTokens();
         })
 );
 
 $crontab->add_job(
-    \HybridLogic\Cron\Job::factory('test')
-        ->on('*/30 * * * *')
+    \HybridLogic\Cron\Job::factory('deleteTokens')
+        ->on('* * * * *')
         ->trigger(function(){
             deleteRecoveryTokens();
         })
