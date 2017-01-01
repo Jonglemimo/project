@@ -7,6 +7,7 @@ use Services\PhpMailerService;
 use W\Controller\Controller;
 use \Model\UsersModel;
 use W\Security\AuthentificationModel;
+use \Model\CategoriesModel;
 
 
 class UserController extends Controller {

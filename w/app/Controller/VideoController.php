@@ -6,6 +6,7 @@ use W\Controller\Controller;
 use Model\VideoModel;
 use Services\ImageManagerService;
 use Services\HelperService;
+use \Model\CategoriesModel;
 
 
 class VideoController extends Controller
@@ -44,6 +45,7 @@ class VideoController extends Controller
 
     public function uploadForm(){
 
+        $categories = new CategoriesModel();
 	    $videoModel = new VideoModel();
 
         if(!isset($_SESSION['user'])){
@@ -71,11 +73,12 @@ class VideoController extends Controller
             die;
         }
         $videoEncoding = $videoModel->getWhileEncoding($_SESSION['user']['id']);
+        $categories = $categories->getCategories();
         if(count($videoEncoding) > 0){
 
-            $this->show('upload/form', ['videoEncoding' => $videoEncoding]);
+            $this->show('upload/form', ['videoEncoding' => $videoEncoding, 'categories' => $categories]);
         }else {
-            $this->show('upload/form');
+            $this->show('upload/form', ['categories' => $categories]);
         }
 
 
@@ -97,7 +100,7 @@ class VideoController extends Controller
             $title = $_POST['title'];
         }
 
-        //vérification lastname
+        //vérification description
 
         if (empty($_POST['description'])) {
             $errors['description'] = 'Vous devez entrer une description';
@@ -106,6 +109,13 @@ class VideoController extends Controller
             $errors['description'] = 'Votre description est trop courte';
         } else {
             $description = $_POST['description'];
+        }
+
+        if(empty($_POST['category'])){
+            $errors['category'] = 'Vous devez entrer une description';
+
+        }else {
+            $category = $_POST['category'];
         }
 
         if (empty($_POST['video'])) {
@@ -144,6 +154,7 @@ class VideoController extends Controller
                 'title' => $title,
                 'description' => $description,
                 'shortTitle' => $shortTitle,
+                'id_category' => $category,
                 'id_user' => $_SESSION['user']['id']
             ]);
 
@@ -246,12 +257,13 @@ class VideoController extends Controller
         $this->show('video/watch', ['video' => $result]);
     }
 
-    function deleteVideoById(){
+    public function deleteVideoById(){
 
 
         require_once __DIR__.'/../../vendor/perchten/rmrdir/src/rmrdir.php';
 
         $videoModel = new VideoModel();
+
 
         if(isset($_POST['id']) && is_numeric($_POST['id'])) {
 
@@ -290,5 +302,110 @@ class VideoController extends Controller
         }
     }
 
+    public function editVideo ($id){
 
+        if(!isset($_SESSION['user'])){
+            $this->redirectToRoute('default_home');
+        }
+
+        if(!empty($id) && is_numeric($id)){
+
+            $videoModel = new VideoModel();
+            $videoModel->setTable('video');
+            $video = $videoModel->find($id);
+
+            if($video){
+                $category = new CategoriesModel();
+
+
+
+                $videoModel->setTable('categories');
+                $currentCategory = $videoModel->find($video['id_category']);
+                $categories = $category->getCategories();
+
+                $infoVideo = array(
+                    'video'  => $video,
+                    'currentCategory' => $currentCategory,
+                    'categories'      => $categories
+                );
+
+                if(!empty($_POST)){
+
+                    header('Content-Type: application/json');
+                    echo json_encode($this->validateEditVideo($id));
+                    die;
+
+                }
+
+                $this->show('video/edit', ['infoVideo' => $infoVideo] );
+            }else{
+                $this->redirectToRoute('default_home');
+
+            }
+
+        }else{
+            $this->redirectToRoute('default_home');
+
+        }
+
+
+
+    }
+
+    public function validateEditVideo($id)
+    {
+        $errors = array();
+
+        $videoModel = new VideoModel();
+        $category = new CategoriesModel();
+
+
+        if (empty($_POST['title'])) {
+            $errors['title'] = 'Vous devez entrer un titre';
+
+        } elseif (strlen($_POST['title']) < 5) {
+            $errors['title'] = 'Votre titre est trop court';
+        } else {
+            $title = $_POST['title'];
+        }
+
+        //vérification description
+
+        if (empty($_POST['description'])) {
+            $errors['description'] = 'Vous devez entrer une description';
+
+        } elseif (strlen($_POST['description']) < 20) {
+            $errors['description'] = 'Votre description est trop courte';
+        } else {
+            $description = $_POST['description'];
+        }
+
+        if(!is_numeric($_POST['category'])){
+            $errors['category'] = 'Cette catégory n\'est pas valide';
+        }else{
+            $category->setTable('categories');
+            if(!$category->find($_POST['category'])){
+                $errors['category'] = 'Cette catégory n\'est pas valide';
+            }
+        }
+        if(empty($_POST['category'])){
+            $errors['category'] = 'Vous devez entrer une catégorie';
+
+        }else {
+            $category = $_POST['category'];
+        }
+
+        $videoModel->setTable('video');
+        if(count($errors) == 0){
+            $videoModel->update([
+                'title' => $title,
+                'description' => $description,
+                'id_category' => $category
+            ],$id);
+
+            return array('success' => true, 'errors' => $errors);
+        }else{
+            return array('success' => false, 'errors' => $errors);
+        }
+    }
 }

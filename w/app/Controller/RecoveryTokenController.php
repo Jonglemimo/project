@@ -8,6 +8,8 @@ use \Model\RecoveryTokenModel;
 use W\Security\AuthentificationModel;
 
 
+
+
 class RecoveryTokenController extends Controller {
 
     function lostPassword () {
@@ -131,6 +133,23 @@ class RecoveryTokenController extends Controller {
         }
         
         $this->show('user/resetPassword');
+    }
+
+    public function deleteTokens(){
+        $userModel = new RecoveryTokenModel();
+
+        $userModel->setTable('recoverytokens');
+        $dateTokens = $userModel->findAll();
+
+        if(count($dateTokens) > 0){
+            foreach ($dateTokens as $dateToken){
+                $timenow = time();
+                $checktime = strtotime($dateToken['date_created']);
+                if($checktime <= ($timenow - 1800)) {
+                    $userModel->delete($dateToken['id']);
+                }
+            }
+        }
     }
 }
 

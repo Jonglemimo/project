@@ -27,16 +27,19 @@
         ['GET|POST',            '/watch',                          'Video#watch',                  'watch'],
         ['GET|POST',            '/watchAjax',                      'Video#watchVideo',             'watch_ajax'],
         ['GET|POST',            '/mapage/video/delete',            'Video#deleteVideoById',        'delete_video'],
+        ['GET|POST',            '/mapage/video/edit/[i:id]',       'Video#editVideo',              'edit_video'],
         ['GET|POST',            '/mapage/upload',                  'Video#uploadForm',             'upload_form'],
 
         //Catégories
         ['GET|POST',            '/categories/',                    'Categories#categories',        'categories_get'],
-        ['GET',                 '/category/[:name]',               'Categories#categoryVideos',    'category_videos'],
+        ['GET',                 '/category/[:slug]',               'Categories#categoryVideos',    'category_videos'],
 
         //cron task
 
         ['GET',                 '/api/transcode',                  'Api#transcode',               'cron_transcode'],
-        ['GET',                 '/api/get-percentage/[:id]',       'Api#getpercentage',           'get_percentage']
+        ['GET',                 '/api/get-percentage/[:id]',       'Api#getpercentage',           'get_percentage'],
+        ['GET',                 '/recovery-tokens/delete',         'RecoveryToken#deleteTokens',  'delete_recoveryTokens']
+
 
       
 	);

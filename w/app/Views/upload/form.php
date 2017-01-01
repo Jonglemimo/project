@@ -20,6 +20,7 @@ $this->start('main_content');
     </div>
 </div>
 <?php endif; ?>
+<a href="<?=$this->url('user_admin')?>">< Retour à ma page</a>
 <?= isset($videoEncoding) ? '<h1>Ajouter une vidéo</h1>' : '' ?>
     <form id="formUpload" method="POST" enctype="multipart/form-data">
         <p  class="hide" id="status"></p>
@@ -29,36 +30,29 @@ $this->start('main_content');
         <input id="imageFile" type="hidden" name="image">
         <input id="videoFile" type="hidden" name="video">
         <div class="form-group">
-
-            <?php if(isset($errors['title'])) : ?>
-                <p><?=$errors['title']?></p>
-            <?php endif;?>
-            Titre : <input class="form-control title" type="text" name="title"><br>
+            <label for="title">Titre :</label>
+           <input class="form-control title" type="text" name="title"><br>
         </div>
         <div class="form-group">
-            <select name="categories"  class="form-control">
+           <select  name="categories"  class="form-control category">
                 <option value="first" selected>Catégories</option>
+                <?php foreach ($categories as $category):?>
+                    <option value="<?=$category['id']?>"><?=$category['name']?></option>
+                <?php endforeach; ?>
             </select>
         </div>
         <div class="form-group">
-            <?php if(isset($errors['description'])) : ?>
-                <p><?=$errors['description']?></p>
-            <?php endif ?>
-
-            Description : <textarea class="form-control description" name="description" cols="30" rows="10"></textarea>
+            <label for="description">Description : </label>
+            <textarea class="form-control description" name="description" cols="30" rows="10"></textarea>
         </div>
         <ul class="hide paddingNone" id="listItems">
         </ul>
         <div class="form-group">
-            <?php if(isset(  $errors['file']['pictures'])) : ?>
-                <p><?=   $errors['file']['pictures']?></p>
-            <?php endif ?>
             <div id="submitUploadForm">
                 <label id="uploadButton" for="files"><i class="glyphicon glyphicon-open"></i><span id="UploadText">Envoyer une image</span><input class="form-control" data-url="<?=$this->url('upload_form')?>" id="fileupload" type="file" name="files[]" multiple></label>
                 <p>(Merci d'upload une vidéo ainsi qu'une image la représentant)</p>
             </div>
         </div>
-
     </form>
 <?php $this->stop('main_content') ?>
 <?php $this->start('script')?>
@@ -67,6 +61,7 @@ $this->start('main_content');
 <script src="<?=$this->assetUrl('js/jquery.iframe-transport.js')?>"></script>
 <script src="<?=$this->assetUrl('js/jquery.fileupload.js')?>"></script>
 <script src="<?=$this->assetUrl('js/video-progress.js')?>"></script>
+<script> var uploadUrl = '<?= $this->url('upload_form')?>'</script>
 
 <?php $this->stop('script')?>
 

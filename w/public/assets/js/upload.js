@@ -30,6 +30,10 @@ var upload = {
 
         }
 
+        if($('.category').val() == 'first'){
+            error+= 'Vous devez choisir une catégorie <br>'
+        }
+
         if($('.description').val().length < 20){
             error += 'Votre description doit être supérieur à 20 caractères';
 
@@ -95,7 +99,8 @@ var upload = {
             'title' : $('input[name="title"]').val(),
             'description' : $('textarea[name="description"]').val(),
             'image' : $('#imageFile').val(),
-            'video' : $('#videoFile').val()
+            'video' : $('#videoFile').val(),
+            'category': $('.category').val()
         }, function (data) {
             if(data.success == true)
             $('#result').html('L\'upload s\'est bien terminé').removeClass('hide').addClass('alert alert-success');
@@ -111,11 +116,29 @@ var upload = {
 $(function () {
 
     $(document).on('click','.removeItem',function () {
+
+        var type = {
+            regexImg : /image/gi,
+            regexVideo : /video/gi
+        };
+
+        if(type.regexImg.test(upload.files[0].files[0].type)){
+            var statusButton = 'Envoyer une vidéo'
+
+        }else {
+            var statusButton = 'Envoyer une image'
+        }
+
+        $('#submitUploadForm').html('<label id="uploadButton" for="files"><i class="glyphicon glyphicon-open"></i><span id="UploadText">'+statusButton+'</span><input class="form-control" data-url="'+uploadUrl+'" id="fileupload" type="file" name="files[]" multiple></label><p>(Merci d\'upload une vidéo ainsi qu\'une image la représentant)</p>');
+
         var index = parseInt($(this).parent().attr('data-index'));
         if(!isNaN(index)){
             upload.files.splice(index,1);
             upload.process();
         }
+
+        console.log(upload);
+
     });
 
     $(document).on('submit','#formUpload',function (e) {
@@ -137,29 +160,24 @@ $(function () {
             }
 
             var type = {
-                image : false,
-                video : false,
                 regexImg : /image/gi,
                 regexVideo : /video/gi
             };
 
+            if(type.regexImg.test(data.files[0].type) && upload.files.length == 0){
+                $('#UploadText').html('Envoyer une vidéo');
+                $('#order').addClass('hide');
 
+            }
 
+            if (type.regexVideo.test(data.files[0].type) && upload.files.length == 0){
 
+                $('#order').html('vous devez envoyer une image en premier').removeClass('hide').addClass('alert alert-danger');
+                return;
+            }
 
             upload.files.push(data);
 
-            if(type.regexImg.test(data.files[0].type)){
-                $('#UploadText').html('Upload une vidéo');
-                $('#order').addClass('hide');
-
-            }else if (typeof upload.files != 'undefined') {
-                if (type.regexVideo.test(upload.files[0].files[0].type)) {
-
-                    $('#order').html('vous devez uploader une image en premier').removeClass('hide').addClass('alert alert-danger');
-                    upload.files.splice(0, 1);
-                }
-            }
 
             if(upload.files.length == 2){
                 $('#submitUploadForm').html(' <button type="submit" class="buttons btn btn-default">Envoyer</button>')

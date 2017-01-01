@@ -21,6 +21,8 @@ $(function () {
                     if(percent >= 100){
                         setTimeout(function (){
                             element.remove();
+                            $('h1:first').remove();
+
                         },1000);
                     }
                 }

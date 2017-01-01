@@ -31,4 +31,4 @@ var deleteElement = function (id) {
     if(container.length > 0){
         container.remove();
     }
-}
+};

@@ -3,6 +3,7 @@
 namespace Controller;
 
 use \W\Controller\Controller;
+use \Model\CategoriesModel;
 
 class DefaultController extends Controller {
 
@@ -10,6 +11,4 @@ class DefaultController extends Controller {
 	public function home() {
 		$this->show('default/home');
 	}
-
-
 }

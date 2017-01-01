@@ -24,10 +24,9 @@ $this->start('main_content');
                 <div class="col-md-4">
                     <div class="video">
                         <?php if ($video['id_user'] === $_SESSION['user']['id']):?>
-                            <?php print_r($video) ?>
                             <input class="deleteId" type="hidden" value="<?=$this->url('delete_video')?>">
-                            <button type="button" class="btn btn-default glyphicon glyphicon-edit editVideo" data-edit="<?=$video['id_video']?>"></button>
-                            <button type="button" class="btn btn-danger glyphicon glyphicon-trash deleteVideo" data-delete="<?=$video['id_video']?>" ></button>
+                            <button class="btn btn-danger glyphicon glyphicon-trash deleteVideo" data-delete="<?=$video['id_video']?>" ></button>
+                            <button class="btn btn-default glyphicon glyphicon-edit editVideo" data-edit="<?=$this->url('edit_video', ['id'=> $video['id_video']])?>"></button>
                         <?php endif; ?>
                         <video class="video-medium" src="<?=$this->assetUrl(DIRECTORY_SEPARATOR.'users'.DIRECTORY_SEPARATOR.$_SESSION['user']['id'].DIRECTORY_SEPARATOR.$video['shortTitle'].DIRECTORY_SEPARATOR.$video['url'])?>" controls poster="<?=$this->assetUrl(DIRECTORY_SEPARATOR.'users'.DIRECTORY_SEPARATOR.$_SESSION['user']['id'].DIRECTORY_SEPARATOR.$video['shortTitle'].DIRECTORY_SEPARATOR.$video['poster_sm']) ?>"></video>
                     </div>
