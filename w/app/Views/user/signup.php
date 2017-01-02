@@ -75,7 +75,7 @@ $this->start('main_content');
 
 
         <!-- PASSWORD -->
-        <label for="pass1">Modification du mot de passe</label>
+        <label for="pass1">Mot de passe</label>
         <input class="body-inputs form-control" type="password" id="pass1" name="pass1" placeholder="Mot de passe">
 
         <?php if (isset($errors['empty']['pass1'])) : ?>

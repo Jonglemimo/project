@@ -4,7 +4,12 @@ $this->start('main_content');
 ?>
 
 <div class="userpage-banner">
-    <img src="https://lh5.ggpht.com/DbMoJss0pR2-tKJdQaXiN2ZYwkHpTvfUSbjIYbc_zPlvGsnnLmJ5mHwwh_AnxbhFuks=w300" alt="Icône">
+    <?php if(!empty($user['avatar'])):?>
+    <img src="<?= $this->assetUrl('users'.DIRECTORY_SEPARATOR.$user['id'].DIRECTORY_SEPARATOR.$user['avatar']) ?>" alt="avatar">
+    <?php else: ?>
+    <img src="https://lh5.ggpht.com/DbMoJss0pR2-tKJdQaXiN2ZYwkHpTvfUSbjIYbc_zPlvGsnnLmJ5mHwwh_AnxbhFuks=w300" alt="avatar">
+    <?php endif; ?>
+
 
     <div>
         <p class="username"><?= $_SESSION['user']['username'] ?></p>
@@ -28,7 +33,7 @@ $this->start('main_content');
                             <button class="btn btn-danger glyphicon glyphicon-trash deleteVideo" data-delete="<?=$video['id_video']?>" ></button>
                             <button class="btn btn-default glyphicon glyphicon-edit editVideo" data-edit="<?=$this->url('edit_video', ['id'=> $video['id_video']])?>"></button>
                         <?php endif; ?>
-                        <video class="video-medium" src="<?=$this->assetUrl(DIRECTORY_SEPARATOR.'users'.DIRECTORY_SEPARATOR.$_SESSION['user']['id'].DIRECTORY_SEPARATOR.$video['shortTitle'].DIRECTORY_SEPARATOR.$video['url'])?>" controls poster="<?=$this->assetUrl(DIRECTORY_SEPARATOR.'users'.DIRECTORY_SEPARATOR.$_SESSION['user']['id'].DIRECTORY_SEPARATOR.$video['shortTitle'].DIRECTORY_SEPARATOR.$video['poster_sm']) ?>"></video>
+                        <video class="video-medium" src="<?=$this->assetUrl('users'.DIRECTORY_SEPARATOR.$_SESSION['user']['id'].DIRECTORY_SEPARATOR.$video['shortTitle'].DIRECTORY_SEPARATOR.$video['url'])?>" controls poster="<?=$this->assetUrl('users'.DIRECTORY_SEPARATOR.$_SESSION['user']['id'].DIRECTORY_SEPARATOR.$video['shortTitle'].DIRECTORY_SEPARATOR.$video['poster_sm']) ?>"></video>
                     </div>
                     <h4><?=$video['title'] ?></h4>
                     <p><?= substr($video['description'], 0, 100); if(strlen($video['description']) > 100){ echo " [...]";} ?></p>

@@ -8,7 +8,13 @@ $this->start('main_content');?>
 
     <a href="<?=$this->url('user_admin')?>">< Retour à ma page</a>
 
-    <form  method="POST">
+    <form  method="POST" enctype="multipart/form-data">
+
+
+        <div class="form-group pull-right">
+            <label for="picture">Avatar : </label>
+            <input type="file" name="picture">
+        </div>
 
         <!-- Message success modif -->
         <?php if (isset($success)):?>
