@@ -11,7 +11,7 @@
     <!-- BOOTSTRAP 3.3.7 -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <!-- CUSTOM FONTS -->
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600i,700|Pacifico" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600i,700|Roboto+Condensed:400,700|Pacifico" rel="stylesheet">
     <!-- CUSTOM CSS -->
     <link rel="stylesheet" href="<?= $this->assetUrl('css/style.css')?>">
 </head>
@@ -101,8 +101,10 @@
         <div class="col-xs-12">
             <a class="buttons btn btn-default btn-block" href="<?= $this->url('default_home') ?>">Accueil</a>
             <a class="buttons btn btn-default btn-block" href="<?= $this->url('user_admin') ?>">Ma page</a>
+            <?php if(isset($_SESSION['user'])): ?>
             <a class="buttons btn btn-default btn-block" href="<?= $this->url('user_video') ?>">Mes vidéos</a>
             <a class="buttons btn btn-default btn-block" href="<?= $this->url('user_comment') ?>">Mes commentaires</a>
+            <?php endif ; ?>
         </div>
 
         <!-- CATEGORIES PANEL -->
@@ -122,9 +124,9 @@
                 </div>
             </div>
         </div>
-
     </div>
 </section>
+
 
     <input id="category" type="hidden" value="<?= $this->url('categories_get')?>">
 	<input type="hidden" id="watch_route" value="<?= $this->url('watch') ?>">
@@ -135,7 +137,6 @@
 		<section>
 			<?= $this->section('main_content') ?>
 		</section>
-
 	</section>
 
 <footer class="footer footer-padding">
@@ -163,7 +164,7 @@
 <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
 <!-- BOOTSTRAP CDN 3.3.7 -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
+<!-- PERSONAL SCRIPTS -->
 <script src="<?= $this->assetUrl('js/script.js') ?>"></script>
 <?= $this->section('script') ?>
 </body>

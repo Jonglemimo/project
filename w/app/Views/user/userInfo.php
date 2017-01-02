@@ -1,24 +1,24 @@
-
 <?php
-
 $this->layout('layout', ['title' => 'Modifier vos informations']);
-$this->start('main_content');?>
+$this->start('main_content');
+?>
 
 <section class="user-info">
 
     <a href="<?=$this->url('user_admin')?>">< Retour à ma page</a>
 
-    <form  method="POST">
+    <form method="POST">
 
         <!-- Message success modif -->
         <?php if (isset($success)):?>
-            <dialog open class="alert alert-success"><?=$success?></dialog>
+            <div class="correct"><p><?=$success?></p></div>
         <?php endif; ?>
 
         <!-- Message status modif -->
         <?php if (isset($status)):?>
-            <dialog open class="alert alert-warning"><?=$status?></dialog>
+            <div class="what"><p><?=$status?></p></div>
         <?php endif; ?>
+
 
         <!-- USERNAME -->
         <label>Pseudonyme</label>
@@ -54,10 +54,11 @@ $this->start('main_content');?>
             <div class="false"><p><?=$errors['email']['exist']?></p></div>
         <?php endif ?>
 
-        <label for="pass1">Modification du mot de passe</label>
-        <input value="<?php if(isset($pass['pass1'])) echo $pass['pass1']?>" class="body-inputs form-control" type="password" id="pass1" name="pass1" placeholder="Mot de passe">
 
-              <!-- empty password -->
+        <label for="pass1">Nouveau mot de passe</label>
+        <input value="<?php if(isset($pass['pass1'])) echo $pass['pass1']?>" class="body-inputs form-control" type="password" id="pass1" name="pass1">
+
+        <!-- empty password -->
         <?php if (isset($errors['empty']['pass'])) : ?>
             <div class="what"><p><?=$errors['empty']['pass']?></p></div>
         <?php endif; ?>
@@ -67,9 +68,10 @@ $this->start('main_content');?>
             <div class="false"><p><?=$errors['lenght']['pass1']?></p></div>
         <?php endif; ?>
 
+
         <!-- CONFIRM PASSWORD -->
         <label for="pass2">Confirmation du mot de passe</label>
-        <input value="<?php if(isset($pass['pass2'])) echo $pass['pass2']?>" class="body-inputs form-control" type="password" name="pass2" placeholder="Confirmation">
+        <input value="<?php if(isset($pass['pass2'])) echo $pass['pass2']?>" class="body-inputs form-control" type="password" name="pass2">
 
         <?php if (isset($errors['pass']['different'])) : ?>
             <div class="false"><p><?=$errors['pass']['different']?></p></div>
