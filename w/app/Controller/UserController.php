@@ -416,14 +416,15 @@ class UserController extends Controller {
         //IF NO ERRORS, ADD IN DATABASE
         if(count($errors) == 0) {
 
-            if(isset($_POST['pass2'])){
+            if(isset($_POST['pass2']) && !empty($_POST['pass2'])){
                 $pass = $_POST['pass2'];
             }
 
-            if(count($_FILES['picture'] != 0)){
+
+            if(count($_FILES['picture'] > 0)){
                 $userModel->setTable('users');
                 $avatar = $userModel->find($_SESSION['user']['id']);
-                if(isset($avatar['avatar'])){
+                if(!empty($avatar['avatar'])){
                     unlink($this->usersFolder.DIRECTORY_SEPARATOR.$avatar['avatar']);
                 }
                 if(file_exists($temporaryImg)){
@@ -455,7 +456,7 @@ class UserController extends Controller {
                 $_SESSION['user']['username'] = $username;
                 $_SESSION['user']['email'] = $email;
 
-            }else if ($_POST['username'] == $user['username'] && $_POST['email'] == $user['email'] &&isset($pass)) {
+            }else if ($_POST['username'] == $user['username'] && $_POST['email'] == $user['email'] && isset($pass)) {
                 $password = $authModel -> hashPassword($pass,PASSWORD_DEFAULT);
                 $userModel->update([
                     'password' => $password
@@ -475,7 +476,7 @@ class UserController extends Controller {
 
             $user = $userModel->find($_SESSION['user']['id']);
 
-            $this->show('user/userInfo', ['success' => 'Vos informations ont bien été modifiées', 'user' => $user ,'picture' => $picture]);
+            $this->show('user/userInfo', ['success' => 'Vos informations ont bien été modifiées', 'user' => $user]);
 
         } else {
             if(!isset($_POST['pass1']) && !isset($_POST['pass2'])){

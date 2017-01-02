@@ -10,12 +10,6 @@ $this->start('main_content');?>
 
     <form  method="POST" enctype="multipart/form-data">
 
-
-        <div class="form-group pull-right">
-            <label for="picture">Avatar : </label>
-            <input type="file" name="picture">
-        </div>
-
         <!-- Message success modif -->
         <?php if (isset($success)):?>
             <dialog open class="alert alert-success"><?=$success?></dialog>
@@ -80,6 +74,11 @@ $this->start('main_content');?>
         <?php if (isset($errors['pass']['different'])) : ?>
             <div class="false"><p><?=$errors['pass']['different']?></p></div>
         <?php endif; ?>
+
+        <div class="form-group">
+            <label for="picture">Avatar : </label>
+            <input class="btn btn-default" type="file" name="picture">
+        </div>
 
         <!-- SENDING BUTTON -->
         <button class="buttons btn btn-default" type="submit" name="modifyInfo">Valider</button>
