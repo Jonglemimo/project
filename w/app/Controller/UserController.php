@@ -6,10 +6,27 @@ namespace Controller;
 use W\Controller\Controller;
 use \Model\UsersModel;
 use W\Security\AuthentificationModel;
+use Services\ImageManagerService;
+use \Controller\VideoController;
+
 
 
 
 class UserController extends Controller {
+
+    private $usersFolder = false;
+    private $uploadTmp   = false;
+    public function __construct()
+    {
+        $ds = DIRECTORY_SEPARATOR;
+        $this->uploadTmp = dirname(dirname(dirname(__FILE__))).$ds.'tmp';
+        if(isset($_SESSION['user'])){
+            $this->usersFolder = dirname(dirname(dirname(__FILE__))).$ds.'public'.$ds.'assets'.$ds.'users'.$ds.$_SESSION['user']['id'];
+            if(!file_exists($this->usersFolder)){
+                mkdir($this->usersFolder,0755);
+            }
+        }
+    }
 
     public function signin() {
 
@@ -242,17 +259,20 @@ class UserController extends Controller {
         $videos = $userModel->findVideoById($_SESSION['user']['id'], 3);
         $comments = $userModel->findVideoByComment($_SESSION['user']['id']);
 
+        $userModel->setTable('users');
+        $user = $userModel->find($_SESSION['user']['id']);
+
         if(isset($videos[0]['id'])) {
             if(isset($comments[0]['content'])){
-                $this->show('user/administration', ['comments' => $comments,'videos' => $videos]);
+                $this->show('user/administration', ['comments' => $comments,'videos' => $videos, 'user' => $user]);
             } else {
-                $this->show('user/administration', ['comments' => 'Vous n\'avez pas de commentaire','videos' => $videos]);
+                $this->show('user/administration', ['comments' => 'Vous n\'avez pas de commentaire','videos' => $videos,'user' => $user]);
             }
         } else {
             if(isset($comments[0]['content'])){
-                $this->show('user/administration', ['comments' => $comments,'videos' => 'Vous n\'avez pas de vidéo']);
+                $this->show('user/administration', ['comments' => $comments,'videos' => 'Vous n\'avez pas de vidéo', 'user' => $user]);
             } else {
-                $this->show('user/administration', ['comments' => 'Vous n\'avez pas de commentaire','videos' => 'Vous n\'avez pas de vidéo']);
+                $this->show('user/administration', ['comments' => 'Vous n\'avez pas de commentaire','videos' => 'Vous n\'avez pas de vidéo', 'user' => $user]);
             }
         }
 
@@ -306,8 +326,10 @@ class UserController extends Controller {
 
     function userInfo(){
 
+        $imageResize = new ImageManagerService();
         $userModel = new UsersModel();
         $authModel = new AuthentificationModel();
+        $videoModel = new VideoController();
         $errors = array();
 
 
@@ -373,6 +395,20 @@ class UserController extends Controller {
 
             }
 
+            //checking imageUser
+
+            if(!empty($_FILES['picture'])){
+                $temporaryImg = $videoModel->handleDuplicate($this->uploadTmp.DIRECTORY_SEPARATOR.$_FILES['picture']['name']);
+                if(move_uploaded_file($_FILES['picture']['tmp_name'], $temporaryImg)){
+                    if($videoModel->getType($temporaryImg) != 'image') {
+                        $errors['picture'] = 'Le fichier n\'est pas une image';
+                    }else {
+                        $picture = $this->uploadTmp.DIRECTORY_SEPARATOR.$_FILES['picture']['name'];
+
+                    }
+                }
+            }
+
         }else{
             $this->show('user/userInfo', ['user' => $user]);
         }
@@ -380,26 +416,47 @@ class UserController extends Controller {
         //IF NO ERRORS, ADD IN DATABASE
         if(count($errors) == 0) {
 
-            if(isset($_POST['pass2'])){
+            if(isset($_POST['pass2']) && !empty($_POST['pass2'])){
                 $pass = $_POST['pass2'];
             }
 
-            if($_POST['username'] == $user['username'] && $_POST['email'] == $user['email'] && empty($pass)){
+
+            if(count($_FILES['picture'] > 0)){
+                $userModel->setTable('users');
+                $avatar = $userModel->find($_SESSION['user']['id']);
+                if(!empty($avatar['avatar'])){
+                    unlink($this->usersFolder.DIRECTORY_SEPARATOR.$avatar['avatar']);
+                }
+                if(file_exists($temporaryImg)){
+                    $imageInfo = pathinfo(basename($temporaryImg));
+                    $output = $this->usersFolder.DIRECTORY_SEPARATOR;
+                    $outputAvatar = $output.$imageInfo['filename'].'.'.$imageInfo['extension'];
+                    $imageResize->resize($temporaryImg ,null, 180, 135,false, $outputAvatar, false);
+                    unlink($temporaryImg);
+                }
+            }
+
+
+
+
+            if($_POST['username'] == $user['username'] && $_POST['email'] == $user['email'] && empty($pass) && empty($_FILES['picture'])){
                 $this->show('user/userInfo' ,['user' => $user, 'errors' => $errors,'pass' => $pass, 'status' => 'Vos informations sont identiques']);
             }
+
 
             if(isset($pass)){
                 $password = $authModel -> hashPassword($pass,PASSWORD_DEFAULT);
                 $userModel->update([
                     'email'    => $email,
                     'username' => $username,
-                    'password' => $password
+                    'password' => $password,
+                    'avatar'   => $imageInfo['filename'].'.'.$imageInfo['extension']
                 ],$user['id']);
 
                 $_SESSION['user']['username'] = $username;
                 $_SESSION['user']['email'] = $email;
 
-            }else if ($_POST['username'] == $user['username'] && $_POST['email'] == $user['email'] &&isset($pass)) {
+            }else if ($_POST['username'] == $user['username'] && $_POST['email'] == $user['email'] && isset($pass)) {
                 $password = $authModel -> hashPassword($pass,PASSWORD_DEFAULT);
                 $userModel->update([
                     'password' => $password
@@ -409,6 +466,7 @@ class UserController extends Controller {
                 $userModel->update([
                     'email'    => $email,
                     'username' => $username,
+                    'avatar'   => $imageInfo['filename'].'.'.$imageInfo['extension']
 
                 ],$user['id']);
 

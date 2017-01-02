@@ -207,7 +207,7 @@ class VideoController extends Controller
         curl_close($ch);
     }*/
 
-    private function getType($file){
+    public function getType($file){
         $type = mime_content_type($file);
 
         if(preg_match('/image/',$type)){
@@ -219,7 +219,7 @@ class VideoController extends Controller
         }
     }
 
-    private function handleDuplicate($file){
+    public function handleDuplicate($file){
 
         $helper = new HelperService();
         $info = pathinfo($file);

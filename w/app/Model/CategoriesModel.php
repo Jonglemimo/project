@@ -17,9 +17,8 @@ class CategoriesModel extends Model
     function getVideoByCategories($category){
         $sql = 'SELECT title, shortTitle, url, posters.poster_xs,posters.poster_sm,posters.poster_lg
 	            FROM categories
-	            LEFT JOIN posters ON video.id = posters.id_video
-	            LEFT JOIN categoryVideo ON categories.id = categoryVideo.id_category
-	            LEFT JOIN video ON categoryVideo.id_video = video.id
+	            LEFT JOIN video ON categories.id = video.id_category
+	            LEFT JOIN posters ON posters.id_video = video.id
 	            WHERE categories.name = :category AND encoding = 0
 	            ORDER BY date_created DESC';
         $stmt = $this->dbh->prepare($sql);

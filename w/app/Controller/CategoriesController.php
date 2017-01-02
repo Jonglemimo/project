@@ -13,9 +13,9 @@ class CategoriesController extends Controller
         $this->show('default/categories', ['categories' => $categories]);
     }
 
-    public function categoryVideos($category){
+    public function categoryVideos($slug){
         $category = new CategoriesModel();
-        $videosByCategory =$category->getVideoByCategories($category);
+        $videosByCategory =$category->getVideoByCategories($slug);
         $this->show('video/category', ['videosByCategory' => $videosByCategory]);
     }
 }

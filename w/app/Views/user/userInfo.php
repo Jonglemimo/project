@@ -8,7 +8,7 @@ $this->start('main_content');?>
 
     <a href="<?=$this->url('user_admin')?>">< Retour à ma page</a>
 
-    <form  method="POST">
+    <form  method="POST" enctype="multipart/form-data">
 
         <!-- Message success modif -->
         <?php if (isset($success)):?>
@@ -74,6 +74,11 @@ $this->start('main_content');?>
         <?php if (isset($errors['pass']['different'])) : ?>
             <div class="false"><p><?=$errors['pass']['different']?></p></div>
         <?php endif; ?>
+
+        <div class="form-group">
+            <label for="picture">Avatar : </label>
+            <input class="btn btn-default" type="file" name="picture">
+        </div>
 
         <!-- SENDING BUTTON -->
         <button class="buttons btn btn-default" type="submit" name="modifyInfo">Valider</button>
