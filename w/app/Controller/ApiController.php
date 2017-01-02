@@ -144,17 +144,17 @@ class ApiController
     }
 
     public function deleteTokens(){
-        $userModel = new RecoveryTokenModel();
 
-        $userModel->setTable('recoverytokens');
-        $dateTokens = $userModel->findAll();
+
+        $this->request->setTable('recoverytokens');
+        $dateTokens = $this->request->findAll();
 
         if(count($dateTokens) > 0){
             foreach ($dateTokens as $dateToken){
                 $timenow = time();
                 $checktime = strtotime($dateToken['date_created']);
                 if($checktime <= ($timenow - 1800)) {
-                    $userModel->delete($dateToken['id']);
+                    $this->request->delete($dateToken['id']);
                 }
             }
         }
