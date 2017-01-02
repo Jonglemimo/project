@@ -76,7 +76,9 @@ $this->start('main_content');
 
         <!-- PASSWORD -->
         <label for="pass1">Mot de passe</label>
+
         <input class="body-inputs form-control" type="password" id="pass1" name="pass1">
+
 
         <?php if (isset($errors['empty']['pass1'])) : ?>
             <div class="what"><p><?=$errors['empty']['pass1']?></p></div>

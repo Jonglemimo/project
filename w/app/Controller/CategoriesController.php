@@ -7,14 +7,17 @@ use W\Controller\Controller;
 class CategoriesController extends Controller {
 
     public function categories() {
+
         $category = new CategoriesModel();
         $categories = $category->getCategories();
         $this->show('default/categories', ['categories' => $categories]);
     }
 
-    public function categoryVideos($category) {
+
+    public function categoryVideos($slug){
+
         $category = new CategoriesModel();
-        $videosByCategory =$category->getVideoByCategories($category);
+        $videosByCategory =$category->getVideoByCategories($slug);
         $this->show('video/category', ['videosByCategory' => $videosByCategory]);
     }
 }
