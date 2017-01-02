@@ -6,7 +6,7 @@ use \W\Model\Model;
 
 class VideoModel extends Model {
 
-	function getVideo() {
+	function getVideos() {
 
 		$sql = 'SELECT *, SUM(stars)/ COUNT(*) as note
 				FROM votesusers
@@ -51,18 +51,20 @@ class VideoModel extends Model {
 		return $stmt->fetch();
 	}
 
-	public function exist($search){
-		$sql = 'SELECT COUNT(*)
+	public function exist($search)
+    {
+        $sql = 'SELECT COUNT(*)
 				FROM video 
 				WHERE shortTitle = :search';
-		$stmt = $this->dbh->prepare($sql);
-		$stmt->bindParam(':search', $search);
-		$stmt->execute();
-		if (count($stmt->fetch()) > 0 ){
-			return true;
-		} else {
-			return false;
-		}
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->bindParam(':search', $search);
+        $stmt->execute();
+        if (count($stmt->fetch()) > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 	function fileExist($file){
 	    $sql = 'SELECT *
@@ -77,17 +79,27 @@ class VideoModel extends Model {
 
 
     function getWhileEncoding($id){
-        $sql = 'SELECT title, shortTitle, url, posters.poster_xs,posters.poster_sm,posters.poster_lg
+        $sql = 'SELECT video.id, title, shortTitle, url, posters.poster_xs,posters.poster_sm,posters.poster_lg,encoding
 	            FROM video
 	            LEFT JOIN posters on video.id = posters.id_video
-	            WHERE id_user = :id_user AND encoding = 0
-	            ORDER BY date_created DESC';
+	            WHERE id_user = :id_user AND (encoding = 0 OR encoding = 2)
+	            ORDER BY date_created ASC';
         $stmt = $this->dbh->prepare($sql);
         $stmt->bindParam(':id_user' , $id);
         $stmt->execute();
         return $stmt->fetchAll();
     }
 
+    function getPosterByIdVideo($id){
+        $sql = 'SELECT *
+	            FROM posters
+	            WHERE posters.id_video = :id
+	            LIMIT 1';
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->bindParam(':id' , $id);
+        $stmt->execute();
+        return $stmt->fetch();
+    }
 
 
 }

@@ -30,6 +30,8 @@ class RecoveryTokenModel extends UModel {
         return $sth->fetchColumn();
     }
 
+
+
     public function deleteToken($id) {
         if (!is_numeric($id)) {
             return false;

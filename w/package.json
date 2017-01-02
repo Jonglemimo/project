@@ -1,0 +1,18 @@
+{
+  "name": "tutomotion",
+  "version": "1.0.0",
+  "description": "W est un framework minimaliste. Il suit les structures et les grand thèmes des frameworks PHP OO MVC actuels, tout en en facilitant l'approche.",
+  "main": "server.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Victor",
+  "license": "ISC",
+  "dependencies": {
+    "node-cron": "^1.1.2"
+  }
+}

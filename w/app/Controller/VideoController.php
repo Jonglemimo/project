@@ -5,14 +5,14 @@ namespace Controller;
 use W\Controller\Controller;
 use Model\VideoModel;
 use Services\ImageManagerService;
+use Services\HelperService;
+use \Model\CategoriesModel;
 
 
 class VideoController extends Controller
 {
 	private $uploadTmp   = false;
     private $usersFolder = false;
-    private $ffmpegBin   = false;
-    private $ffprobeBin  = false;
 
 	public function __construct()
     {
@@ -24,32 +24,6 @@ class VideoController extends Controller
             if(!file_exists($this->usersFolder)){
                 mkdir($this->usersFolder,0755);
             }
-
-            putenv('TMPDIR='.dirname(dirname(dirname(__FILE__))).$ds.'php-tmp');
-
-            $os = new \Tivie\OS\Detector();
-            $ffmpegPath = dirname(dirname(dirname(__FILE__))).$ds.'bin';
-            if($os->getType() == 33){
-                //OSX
-                $this->ffmpegBin = $ffmpegPath.$ds.'osx'.$ds.'ffmpeg';
-                $this->ffprobeBin = $ffmpegPath.$ds.'osx'.$ds.'ffprobe';
-            }else if($os->getType() == 10){
-                if(PHP_INT_SIZE == 8){
-                    // Windows 64
-                    $this->ffmpegBin = $ffmpegPath.$ds.'windows'.$ds.'64'.$ds.'ffmpeg.exe';
-                    $this->ffprobeBin = $ffmpegPath.$ds.'windows'.$ds.'64'.$ds.'ffprobe.exe';
-
-                }else{
-                    // Windows 32
-                    $this->ffmpegBin = $ffmpegPath.$ds.'windows'.$ds.'32'.$ds.'ffmpeg.exe';
-                    $this->ffprobeBin = $ffmpegPath.$ds.'windows'.$ds.'32'.$ds.'ffprobe.exe';
-                }
-            }else{
-                //unknown
-            }
-
-
-
         }
     }
 
@@ -71,6 +45,7 @@ class VideoController extends Controller
 
     public function uploadForm(){
 
+        $categories = new CategoriesModel();
 	    $videoModel = new VideoModel();
 
         if(!isset($_SESSION['user'])){
@@ -98,7 +73,14 @@ class VideoController extends Controller
             die;
         }
         $videoEncoding = $videoModel->getWhileEncoding($_SESSION['user']['id']);
-        $this->show('upload/form', ['videoEncoding' => $videoEncoding]);
+        $categories = $categories->getCategories();
+        if(count($videoEncoding) > 0){
+
+            $this->show('upload/form', ['videoEncoding' => $videoEncoding, 'categories' => $categories]);
+        }else {
+            $this->show('upload/form', ['categories' => $categories]);
+        }
+
 
     }
 
@@ -118,7 +100,7 @@ class VideoController extends Controller
             $title = $_POST['title'];
         }
 
-        //vérification lastname
+        //vérification description
 
         if (empty($_POST['description'])) {
             $errors['description'] = 'Vous devez entrer une description';
@@ -127,6 +109,13 @@ class VideoController extends Controller
             $errors['description'] = 'Votre description est trop courte';
         } else {
             $description = $_POST['description'];
+        }
+
+        if(empty($_POST['category'])){
+            $errors['category'] = 'Vous devez entrer une description';
+
+        }else {
+            $category = $_POST['category'];
         }
 
         if (empty($_POST['video'])) {
@@ -158,9 +147,6 @@ class VideoController extends Controller
             rename($image,$output.basename($image));
             rename($video,$output.basename($video));
 
-
-
-
             $videoModel->setTable('video');
 
             $lastVideo = $videoModel->insert([
@@ -168,6 +154,7 @@ class VideoController extends Controller
                 'title' => $title,
                 'description' => $description,
                 'shortTitle' => $shortTitle,
+                'id_category' => $category,
                 'id_user' => $_SESSION['user']['id']
             ]);
 
@@ -193,6 +180,8 @@ class VideoController extends Controller
 
             ]);
 
+            //todo transcode
+
             unlink($fullpath);
 
             return array('success' => true, 'errors' => $errors);
@@ -200,6 +189,23 @@ class VideoController extends Controller
             return array('success' => false, 'errors' => $errors);
         }
     }
+
+
+
+/*    private function startTranscoding(){
+
+        $ch = curl_init();
+
+// set URL and other appropriate options
+        curl_setopt($ch, CURLOPT_URL, $this->url('cron_transcode'));
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+
+// grab URL and pass it to the browser
+        curl_exec($ch);
+
+// close cURL resource, and free up system resources
+        curl_close($ch);
+    }*/
 
     private function getType($file){
         $type = mime_content_type($file);
@@ -215,18 +221,20 @@ class VideoController extends Controller
 
     private function handleDuplicate($file){
 
-        if(file_exists($file)){
-            $info = pathinfo($file);
-            $name = $info['filename'].'-'.uniqid().'.'.$info['extension'];
+        $helper = new HelperService();
+        $info = pathinfo($file);
 
+        if(file_exists($file)){
+
+            $name = $helper->create_slug($info['filename'].'-'.uniqid()).'.'.$info['extension'];
             return $this->uploadTmp.DIRECTORY_SEPARATOR.$name;
 
-
         }else {
-            return $file;
+
+            $name = $helper->create_slug($info['filename']).'.'.$info['extension'];
+            return $this->uploadTmp.DIRECTORY_SEPARATOR.$name;
         }
     }
-
 
     public function watch(){
         if (isset($_GET['video'])) {
@@ -249,25 +257,155 @@ class VideoController extends Controller
         $this->show('video/watch', ['video' => $result]);
     }
 
+    public function deleteVideoById(){
 
-    private function transcode(){
 
-        if(!$this->ffprobeBin || !$this->ffmpegBin){
-            return false;
+        require_once __DIR__.'/../../vendor/perchten/rmrdir/src/rmrdir.php';
+
+        $videoModel = new VideoModel();
+
+
+        if(isset($_POST['id']) && is_numeric($_POST['id'])) {
+
+            $idVideo = $_POST['id'];
+
+            $videoModel->setTable('posters');
+            $poster = $videoModel->getPosterByIdVideo($idVideo);
+            $deletePoster = $videoModel->delete($poster['id']);
+
+
+
+
+            if($deletePoster){
+
+                $videoModel->setTable('video');
+                $video = $videoModel->find($idVideo);
+
+
+                $path =  __DIR__ . ''.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'users' . DIRECTORY_SEPARATOR.$video['id_user'].DIRECTORY_SEPARATOR.$video['shortTitle'];
+
+                $deleteVideo = $videoModel->delete($idVideo);
+
+                if($deleteVideo){
+
+                   rmrdir($path);
+                    $this->showJson(['sucess' => true]);
+                }else{
+                    $this->showJson(['sucess' => false]);
+                }
+            }else{
+                $this->showJson(['sucess' => false]);
+            }
+
+        }else {
+            $this->redirectToRoute('default_home');
         }
-        $ffmpeg = \FFMpeg\FFMpeg::create(array(
-            'ffmpeg.binaries' => $this->ffmpegBin,
-            'ffprobe.binaries' => $this->ffprobeBin
-        ));
+    }
 
-        $test = '/Users/Helda/Sites/Formation/Cours/group-project/project/w/public/users/2/586428ddc76d0/Scream.Queens.2015.VOSTFR.S02E10.HDTV.XViD-EXTREME.avi';
+    public function editVideo ($id){
 
-        $output = dirname($test).DIRECTORY_SEPARATOR.'test.webm';
+        if(!isset($_SESSION['user'])){
+            $this->redirectToRoute('default_home');
+        }
 
-        $video = $ffmpeg->open($test);
-        $video->save(new \FFMpeg\Format\Video\WebM(), $output);
+        if(!empty($id) && is_numeric($id)){
+
+            $videoModel = new VideoModel();
+            $videoModel->setTable('video');
+            $video = $videoModel->find($id);
+
+            if($video){
+                $category = new CategoriesModel();
+
+
+
+                $videoModel->setTable('categories');
+                $currentCategory = $videoModel->find($video['id_category']);
+                $categories = $category->getCategories();
+
+                $infoVideo = array(
+                    'video'  => $video,
+                    'currentCategory' => $currentCategory,
+                    'categories'      => $categories
+                );
+
+                if(!empty($_POST)){
+
+                    header('Content-Type: application/json');
+                    echo json_encode($this->validateEditVideo($id));
+                    die;
+
+                }
+
+                $this->show('video/edit', ['infoVideo' => $infoVideo] );
+            }else{
+                $this->redirectToRoute('default_home');
+
+            }
+
+        }else{
+            $this->redirectToRoute('default_home');
+
+        }
+
+
 
     }
 
+    private function validateEditVideo($id)
+    {
+        $errors = array();
 
+        $videoModel = new VideoModel();
+        $category = new CategoriesModel();
+
+
+        if (empty($_POST['title'])) {
+            $errors['title'] = 'Vous devez entrer un titre';
+
+        } elseif (strlen($_POST['title']) < 5) {
+            $errors['title'] = 'Votre titre est trop court';
+        } else {
+            $title = $_POST['title'];
+        }
+
+        //vérification description
+
+        if (empty($_POST['description'])) {
+            $errors['description'] = 'Vous devez entrer une description';
+
+        } elseif (strlen($_POST['description']) < 20) {
+            $errors['description'] = 'Votre description est trop courte';
+        } else {
+            $description = $_POST['description'];
+        }
+
+        if(!is_numeric($_POST['category'])){
+            $errors['category'] = 'Cette catégory n\'est pas valide';
+        }else{
+            $category->setTable('categories');
+            if(!$category->find($_POST['category'])){
+                $errors['category'] = 'Cette catégory n\'est pas valide';
+            }
+        }
+        if(empty($_POST['category'])){
+            $errors['category'] = 'Vous devez entrer une catégorie';
+
+        }else {
+            $category = $_POST['category'];
+        }
+
+        $videoModel->setTable('video');
+        if(count($errors) == 0){
+            $videoModel->update([
+                'title' => $title,
+                'description' => $description,
+                'id_category' => $category
+            ],$id);
+
+            return array('success' => true, 'errors' => $errors);
+        }else{
+            return array('success' => false, 'errors' => $errors);
+        }
+    }
 }

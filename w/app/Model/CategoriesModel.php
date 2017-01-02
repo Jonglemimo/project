@@ -7,7 +7,7 @@ use W\Model\Model;
 class CategoriesModel extends Model
 {
     function getCategories(){
-        $sql = 'SELECT name
+        $sql = 'SELECT *
 	            FROM categories';
         $stmt = $this->dbh->prepare($sql);
         $stmt->execute();

@@ -75,18 +75,30 @@ $this->start('main_content');
 
 
         <!-- PASSWORD -->
-        <label>Mot de passe</label>
-        <input class="body-inputs form-control" type="password" name="password">
-        
-        <!-- need password -->
-        <?php if(isset($errors['password']['empty'])) : ?>
-            <p class="meh">Précisez un mot de passe</p>
-        <?php endif ?>
-        
+        <label for="pass1">Modification du mot de passe</label>
+        <input class="body-inputs form-control" type="password" id="pass1" name="pass1" placeholder="Mot de passe">
+
+        <?php if (isset($errors['empty']['pass1'])) : ?>
+            <div class="what"><p><?=$errors['empty']['pass1']?></p></div>
+        <?php endif; ?>
+
+        <!-- empty password -->
+        <?php if (isset($errors['empty']['pass'])) : ?>
+            <div class="what"><p><?=$errors['empty']['pass']?></p></div>
+        <?php endif; ?>
+
         <!-- short password -->
-        <?php if(isset($errors['password']['short'])) : ?>
-            <p class="false">Votre mot de passe est inférieur à 5 caractères</p>
-        <?php endif ?>
+        <?php if (isset($errors['lenght']['pass1'])) : ?>
+            <div class="false"><p><?=$errors['lenght']['pass1']?></p></div>
+        <?php endif; ?>
+
+        <!-- CONFIRM PASSWORD -->
+        <label for="pass2">Confirmation du mot de passe</label>
+        <input class="body-inputs form-control" type="password" name="pass2" placeholder="Confirmation">
+
+        <?php if (isset($errors['pass']['different'])) : ?>
+            <div class="false"><p><?=$errors['pass']['different']?></p></div>
+        <?php endif; ?>
 
 
         <!-- SENDING BUTTON -->

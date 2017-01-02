@@ -126,7 +126,7 @@
     </div>
 </section>
 
-  <input id="category" type="hidden" value="<?= $this->url('categories_get')?>">
+    <input id="category" type="hidden" value="<?= $this->url('categories_get')?>">
 	<input type="hidden" id="watch_route" value="<?= $this->url('watch') ?>">
 	<input type="hidden" id="ajax_search_route" value="<?= $this->url('search') ?>">
 
@@ -141,7 +141,7 @@
 <footer class="footer footer-padding">
 
     <div class="footer-copyright">
-        <p>© Tutomotion 2016</p>
+        <p>© Tutomotion 2017</p>
     </div>
 
     <div class="footer-links">
@@ -164,8 +164,6 @@
 <!-- BOOTSTRAP CDN 3.3.7 -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-<script src="//vjs.zencdn.net/5.11/video.min.js"></script>
-<!-- CUSTOM JS -->
 <script src="<?= $this->assetUrl('js/script.js') ?>"></script>
 <?= $this->section('script') ?>
 </body>

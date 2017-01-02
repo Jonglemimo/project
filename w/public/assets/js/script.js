@@ -39,9 +39,6 @@ jQuery(document).ready(function() {
         $('.categories').html('Il n\'y a aucune catégories');
     });
 
-
-	});
-
 });
 
 	$(document).on('click','#videoInfoSmall', function(){

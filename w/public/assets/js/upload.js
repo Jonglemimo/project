@@ -30,6 +30,10 @@ var upload = {
 
         }
 
+        if($('.category').val() == 'first'){
+            error+= 'Vous devez choisir une catégorie <br>'
+        }
+
         if($('.description').val().length < 20){
             error += 'Votre description doit être supérieur à 20 caractères';
 
@@ -60,6 +64,7 @@ var upload = {
        if(error.length > 0 || notGoodNumber == true){
             return false;
        }
+
 
        var type = {
             image : false,
@@ -94,7 +99,8 @@ var upload = {
             'title' : $('input[name="title"]').val(),
             'description' : $('textarea[name="description"]').val(),
             'image' : $('#imageFile').val(),
-            'video' : $('#videoFile').val()
+            'video' : $('#videoFile').val(),
+            'category': $('.category').val()
         }, function (data) {
             if(data.success == true)
             $('#result').html('L\'upload s\'est bien terminé').removeClass('hide').addClass('alert alert-success');
@@ -108,16 +114,39 @@ var upload = {
 };
 
 $(function () {
+
     $(document).on('click','.removeItem',function () {
+
+        var type = {
+            regexImg : /image/gi,
+            regexVideo : /video/gi
+        };
+
+        $('#submitUploadForm').removeClass('hide');
+        $('#submitBtn').addClass('hide');
+
         var index = parseInt($(this).parent().attr('data-index'));
         if(!isNaN(index)){
             upload.files.splice(index,1);
             upload.process();
         }
+
+        if(upload.files.length == 1 && type.regexVideo.test(upload.files[0].files[0].type)){
+            $('#UploadText').html('Envoyer une image');
+        }else{
+            $('#UploadText').html('Envoyer une vidéo');
+        }
+
+        if(upload.files.length == 0){
+            $('#UploadText').html('Envoyer une image');
+        }
+
+
     });
 
     $(document).on('submit','#formUpload',function (e) {
         e.preventDefault();
+
         if(upload.validateForm()){
             upload.files.forEach(function (file) {
                 file.submit();
@@ -132,8 +161,31 @@ $(function () {
                 $('.status').html('Erreur de paramétrage').removeClass('hide').addClass('alert alert-danger');
                 return;
             }
+
+            var type = {
+                regexImg : /image/gi,
+                regexVideo : /video/gi
+            };
+
+            if(type.regexImg.test(data.files[0].type) && upload.files.length == 0){
+                $('#UploadText').html('Envoyer une vidéo');
+                $('#order').addClass('hide');
+
+            }
+
+            if (type.regexVideo.test(data.files[0].type) && upload.files.length == 0){
+
+                $('#order').html('vous devez envoyer une image en premier').removeClass('hide').addClass('alert alert-danger');
+                return;
+            }
+
             upload.files.push(data);
-            console.log(data);
+
+
+            if(upload.files.length == 2){
+                $('#submitBtn').removeClass('hide');
+                $('#submitUploadForm').addClass('hide');
+            }
 
             if(upload.timeout)
                 clearTimeout(upload.timeout);
