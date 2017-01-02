@@ -402,9 +402,6 @@ class UserController extends Controller {
                 if(move_uploaded_file($_FILES['picture']['tmp_name'], $temporaryImg)){
                     if($videoModel->getType($temporaryImg) != 'image') {
                         $errors['picture'] = 'Le fichier n\'est pas une image';
-                    }else {
-                        $picture = $this->uploadTmp.DIRECTORY_SEPARATOR.$_FILES['picture']['name'];
-
                     }
                 }
             }
@@ -421,7 +418,7 @@ class UserController extends Controller {
             }
 
 
-            if(count($_FILES['picture'] > 0)){
+            if(!empty($_FILES['picture']['name'])){
                 $userModel->setTable('users');
                 $avatar = $userModel->find($_SESSION['user']['id']);
                 if(!empty($avatar['avatar'])){
@@ -433,16 +430,16 @@ class UserController extends Controller {
                     $outputAvatar = $output.$imageInfo['filename'].'.'.$imageInfo['extension'];
                     $imageResize->resize($temporaryImg ,null, 180, 135,false, $outputAvatar, false);
                     unlink($temporaryImg);
+                    $insertAvatar = $userModel->update([
+                        'avatar'   => $imageInfo['filename'].'.'.$imageInfo['extension']
+                    ],$user['id']);
+
                 }
             }
 
-
-
-
-            if($_POST['username'] == $user['username'] && $_POST['email'] == $user['email'] && empty($pass) && empty($_FILES['picture'])){
-                $this->show('user/userInfo' ,['user' => $user, 'errors' => $errors,'pass' => $pass, 'status' => 'Vos informations sont identiques']);
+            if($_POST['username'] == $user['username'] && $_POST['email'] == $user['email'] && empty($pass) && empty($insertAvatar)){
+                $this->show('user/userInfo' ,['user' => $user, 'errors' => $errors, 'status' => 'Vos informations sont identiques']);
             }
-
 
             if(isset($pass)){
                 $password = $authModel -> hashPassword($pass,PASSWORD_DEFAULT);
@@ -450,7 +447,7 @@ class UserController extends Controller {
                     'email'    => $email,
                     'username' => $username,
                     'password' => $password,
-                    'avatar'   => $imageInfo['filename'].'.'.$imageInfo['extension']
+
                 ],$user['id']);
 
                 $_SESSION['user']['username'] = $username;
@@ -466,7 +463,7 @@ class UserController extends Controller {
                 $userModel->update([
                     'email'    => $email,
                     'username' => $username,
-                    'avatar'   => $imageInfo['filename'].'.'.$imageInfo['extension']
+
 
                 ],$user['id']);
 
