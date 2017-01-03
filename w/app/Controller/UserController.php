@@ -2,15 +2,11 @@
 
 namespace Controller;
 
-
 use W\Controller\Controller;
 use \Model\UsersModel;
 use W\Security\AuthentificationModel;
 use Services\ImageManagerService;
 use \Controller\VideoController;
-
-
-
 
 class UserController extends Controller {
 

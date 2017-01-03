@@ -5,9 +5,9 @@ $this->start('main_content');
 
 <div class="userpage-banner">
     <?php if(!empty($user['avatar'])):?>
-    <img src="<?= $this->assetUrl('users'.DIRECTORY_SEPARATOR.$user['id'].DIRECTORY_SEPARATOR.$user['avatar']) ?>" alt="avatar">
+    <img src="<?= $this->assetUrl('users'.DIRECTORY_SEPARATOR.$user['id'].DIRECTORY_SEPARATOR.$user['avatar']) ?>" alt="Votre avatar">
     <?php else: ?>
-    <img src="https://lh5.ggpht.com/DbMoJss0pR2-tKJdQaXiN2ZYwkHpTvfUSbjIYbc_zPlvGsnnLmJ5mHwwh_AnxbhFuks=w300" alt="avatar">
+    <img src="http://gurucul.com/wp-content/uploads/2015/01/default-user-icon-profile.png" alt="Votre avatar">
     <?php endif; ?>
 
 

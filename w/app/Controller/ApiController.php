@@ -5,6 +5,7 @@ use \Model\ApiModel;
 
 
 class ApiController {
+
     private $transcodeResult = false;
     private $request     = false;
     private $usersFolder = false;
@@ -43,7 +44,9 @@ class ApiController {
         } else {
             //unknown
         }
-    }
+
+
+    }   
 
     function transcode() {
 
@@ -66,7 +69,7 @@ class ApiController {
                 $ffmpeg = \FFMpeg\FFMpeg::create(array(
                     'ffmpeg.binaries' => $this->ffmpegBin,
                     'ffprobe.binaries' => $this->ffprobeBin,
-                    'ffmpeg.threads'   => 4
+               
                 ));
 
                 $file = $this->usersFolder.$this->transcodeResult['id_user'].DIRECTORY_SEPARATOR.$this->transcodeResult['shortTitle'].DIRECTORY_SEPARATOR.$this->transcodeResult['url'];

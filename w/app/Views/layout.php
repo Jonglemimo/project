@@ -53,7 +53,7 @@
                         <div class="row">
                             <!-- SEARCH -->
                             <div class="form-group text-center col-xs-6" >
-                                <input type="text" id="search" class="form-control" placeholder="Rechercher">
+                                <input type="text" id="search" class="body-inputs form-control" placeholder="Rechercher">
                                 <button type="submit" id="btnSearch" class="buttons search-button-computer btn btn-default glyphicon glyphicon-search"></button>
                             </div>
 
@@ -76,7 +76,7 @@
     <!-- SEARCH -->
     <div class="search-form-mobile collapse navbar-fixed-top" id="search-form-mobile">
         <div class="text-center">
-            <input type="text" id="search" class="form-control" placeholder="Rechercher">
+            <input type="text" id="search" class="body-inputs form-control" placeholder="Rechercher">
             <button type="submit" id="btnSearch" class="buttons search-button-mobile btn btn-default glyphicon glyphicon-search"></button>
         </div>
     </div>

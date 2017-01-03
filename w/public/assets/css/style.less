@@ -33,6 +33,7 @@
 //7.1 - Main User page
 //7.2 - My Videos
 //7.3 - Upload Videos
+//7.4 - Edit Videos
 
 
 /*========  0.1 - COLORS  =========*/
@@ -134,13 +135,13 @@ html {
 	transition:.3s;
 
 	&:hover {
-		background-color: @grey3;
+		background-color: @grey4;
 		border-color: @turquoise2;
 		color: @white;
 	}
 
 	&:focus {
-		background-color: @grey3;
+		background-color: @grey4;
 		border-color: @turquoise2;
 		color: @white;
 	}
@@ -180,9 +181,10 @@ a {
 		height: 3rem;
 		display: none;
 		text-align: center;
-		opacity: .8;
+		z-index: 1020;
 		top: 2rem;
-		right: 2rem;
+		right: 6.5rem;
+		transition:.3s;
 	}
 
 	.deleteVideo {
@@ -192,18 +194,26 @@ a {
 		height: 3rem;
 		display: none;
 		text-align: center;
-		opacity: .8;
+		z-index: 1020;
 		top: 2rem;
-		right: 6rem;
+		right: 10rem;
+		transition:.3s;
 
 	}
 
-	&:hover{
-		.editVideo{
+	&:hover {
+		.editVideo {
 			display: block;
+			background-color: @grey4;
+			border-color: @grey1;
+			color: @white;
 		}
-		.deleteVideo{
+
+		.deleteVideo {
 			display: block;
+			background-color: @grey4;
+			border-color: @grey1;
+			color: @false;
 		}
 	}
 }
@@ -214,7 +224,6 @@ a {
 	height: 4rem;
 	position: relative;
 	display: inline-block;
-	background-color: #5DB804;
 	cursor: pointer;
 	padding: 0.5rem 1rem;
 	font-weight: 700;
@@ -222,16 +231,32 @@ a {
 	line-height: 2.1;
 	border-radius: .4rem;
 	border: 1px solid @grey5;
-	color: @white;
+	color: @correct;
+	background-color: @grey2;
 	transition:.3s;
 
 	#UploadText{
 		padding-left: .5rem;
-		color:#FFF;
+		color:@white;
 	}
 
-	&:hover{
-		background-color: @correct;
+
+	&:hover {
+		background-color: @grey3;
+		border-color: @turquoise2;
+		color: @correct;
+	}
+
+	&:focus {
+		background-color: @grey3;
+		border-color: @turquoise2;
+		color: @correct;
+	}
+
+	&:active {
+		background-color: @grey4;
+		border-color: @turquoise3;
+		color: @correct;
 	}
 }
 
@@ -274,15 +299,17 @@ span, label {
 .video-medium {
 	margin: 10px;
 	border: 1px solid @grey3;
-	max-height: 240px;
-	max-width: 320px;
+	width: 320px;
+	height: 240px;
+	object-fit: fill;
 }
 
 .video-small {
 	margin: 10px;
 	border: 1px solid @grey3;
-	max-height: 180px;
-	max-width: 240px;
+	width: 240px;
+	height: 180px;
+	object-fit: fill;
 }
 
 .progressBar{
@@ -334,7 +361,6 @@ span, label {
 			img{
 				position: relative;
 				z-index: 1;
-
 			}
 
 			.wrap-loader{
@@ -428,7 +454,7 @@ header nav.header-bar {
 
 .search-button-computer {
 	vertical-align: inherit;
-	transform: translateY(-3%);
+	transform: translateY(-22%);
 }
 
 .search-form-mobile, .login-buttons-mobile {
@@ -676,7 +702,9 @@ header nav.header-bar {
 	margin: 15px 0px;
 
 	img {
-		max-width: 120px;
+		width: 120px;
+		height: 120px;
+		object-fit: cover;
 		border: 1px solid @turquoise3;
 	}
 
@@ -758,13 +786,32 @@ header nav.header-bar {
 
 .upload-video-back {	
 	display: inline-block;
-	margin-bottom: 10px;
+	margin: 10px 0px;
+}
+
+#result {
+	background-color: @grey3;
+	border: 1px solid @grey5;
+	width: 200px;
+	text-align: center;
+	padding-bottom: 0px;
 }
 
 #listItems {
+	.upload-line {
+		background-color: @grey1;
+		display: inline-block;
+		padding: 6px 10px;
+		margin-bottom: 10px;
+	}
+
 	.upload-name {
 		color: @white;
 		font-weight: @bold-main-font;
+	}
+
+	span {
+		margin-bottom: 0px; 
 	}
 
 	p {
@@ -773,7 +820,13 @@ header nav.header-bar {
 	}
 
 	button {
+		text-align: center;
 		margin-left: 10px;
+		transform: translateY(-3%);
+
+		i {
+			transform: translateX(-8%);
+		}
 	}
 
 	.progress {
@@ -789,4 +842,11 @@ header nav.header-bar {
 	.progress-bar-success {
 		background-color: @correct;
 	}
+}
+
+/*=========  7.4 - Edit Videos  =========*/
+
+.edit-videos-a {
+	display: inline-block;
+	margin-bottom: 10px;
 }

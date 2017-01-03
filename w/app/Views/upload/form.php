@@ -23,9 +23,10 @@ $this->start('main_content');
 </div>
 <?php endif; ?>
 
+<?= isset($videoEncoding) ? '<h1>Ajouter une vidéo</h1>' : '' ?>
+
 <a class="upload-video-back" href="<?=$this->url('user_admin')?>">< Retour à ma page</a>
 
-<?= isset($videoEncoding) ? '<h1>Ajouter une vidéo</h1>' : '' ?>
     <form id="formUpload" method="POST" enctype="multipart/form-data">
 
         <p class="hide" id="status"></p>
@@ -56,8 +57,10 @@ $this->start('main_content');
             <textarea class="body-inputs form-control description" name="description" rows="5"></textarea>
         </div>
 
-        <ul class="hide paddingNone" id="listItems">
-        </ul>
+        
+            <ul class="hide paddingNone upload-line" id="listItems">
+            </ul>
+
 
         <div class="form-group">
             <div id="submitUploadForm">

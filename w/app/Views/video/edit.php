@@ -3,7 +3,7 @@ $this->layout('layout', ['title' => 'Edition de votre vidéo']);
 $this->start('main_content');
 ?>
 
-<a href="<?=$this->url('user_admin')?>">< Retour à ma page</a>
+<a class="edit-videos-a" href="<?=$this->url('user_admin')?>">< Retour à ma page</a>
 
 <form id="edit" method="POST" enctype="multipart/form-data">
 
@@ -16,12 +16,10 @@ $this->start('main_content');
 
     <div class="form-group">
         <span>Titre</span>
-        <input class="form-control title" type="text" name="title" value="<?=$infoVideo['video']['title']?>"><br>
-    </div>
+        <input class="body-inputs form-control title" type="text" name="title" value="<?=$infoVideo['video']['title']?>">
 
-    <div class="form-group">
         <label for="categories">Catégories</label>
-        <select  name="categories"  class="form-control category">
+        <select  name="categories" class="body-inputs form-control category">
             <option value="<?=$infoVideo['currentCategory']['id']?>" selected><?=$infoVideo['currentCategory']['name']?></option>
             <?php foreach ($infoVideo['categories'] as $category):?>
                 <?php if($category['id'] != $infoVideo['currentCategory']['id']):?>
@@ -29,16 +27,15 @@ $this->start('main_content');
                 <?php endif; ?>
             <?php endforeach; ?>
         </select>
-    </div>
 
-    <div class="form-group">
-        Description : <textarea class="form-control description" name="description" cols="30" rows="10"><?=$infoVideo['video']['description']?></textarea>
+        <label>Description</label>
+        <textarea class="body-inputs form-control description" name="description" rows="5"><?=$infoVideo['video']['description']?></textarea>
     </div>
 
     <ul class="hide paddingNone" id="listItems"></ul>
 
     <div class="form-group">
-        <button class="btn btn-default" type="submit">Modifier</button>
+        <button class="buttons btn btn-default" type="submit">Modifier</button>
     </div>
 </form>
 
