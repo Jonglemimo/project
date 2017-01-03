@@ -55,7 +55,7 @@ class ApiController {
     function transcode() {
 
 
-        if(!$this->request->checkCurrentTranscoding()) {
+        if(!$this->request->checkCurrentTranscoding()){
             $this->transcodeResult = $this->request->getNextNotTranscoded();
 
             if($this->transcodeResult) {

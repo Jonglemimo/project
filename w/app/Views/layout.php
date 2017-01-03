@@ -13,6 +13,8 @@
     <!-- CUSTOM FONTS -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600i,700|Roboto+Condensed:400,700|Pacifico" rel="stylesheet">
     <!-- CUSTOM CSS -->
+    <link href="http://vjs.zencdn.net/5.8.8/video-js.css" rel="stylesheet">
+
     <link rel="stylesheet" href="<?= $this->assetUrl('css/style.css')?>">
 </head>
 <body>
@@ -160,11 +162,13 @@
 
 <script>
     var currentUrl = '<?= $this->url('default_home')?>';
+    window.HELP_IMPROVE_VIDEOJS = false;
 </script>
 <!-- JQUERY 3.1.1 -->
 <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
 <!-- BOOTSTRAP CDN 3.3.7 -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 <!-- PERSONAL SCRIPTS -->
 <script src="<?= $this->assetUrl('js/script.js') ?>"></script>
 <?= $this->section('script') ?>

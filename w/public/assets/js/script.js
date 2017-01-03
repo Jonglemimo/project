@@ -39,7 +39,7 @@ jQuery(document).ready(function() {
 			},
 		})
 		.done(function(r) {
-			$('#searchVideo').html(r);
+			$('#best').html(r);
 		})
 		.fail(function() {
 			console.log("error");

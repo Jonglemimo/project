@@ -110,13 +110,14 @@ var upload = {
             'video' : $('#videoFile').val(),
             'category': $('.category').val()
         }, function (data) {
-            if(data.success == true)
-            $('#result').html('<p class="correct">L\'envoi s\'est bien terminé</p>').removeClass('hide');
-            setTimeout(function()
-            {
-                window.location.reload();
+            if(typeof data.success != 'undefined' && data.success == true) {
+                $('#result').html('<p class="correct">L\'envoi s\'est bien terminé</p>').removeClass('hide');
+                setTimeout(function () {
+                    window.location.reload();
 
-            }, 2000);
+                }, 2000);
+            }
+
         });
     }
 };
