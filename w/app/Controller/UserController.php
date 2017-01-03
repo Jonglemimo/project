@@ -7,7 +7,6 @@ use W\Controller\Controller;
 use \Model\UsersModel;
 use W\Security\AuthentificationModel;
 use Services\ImageManagerService;
-use \Controller\VideoController;
 
 
 
@@ -16,10 +15,18 @@ class UserController extends Controller {
 
     private $usersFolder = false;
     private $uploadTmp   = false;
+    private $userModel   = false;
+    private $authModel   = false;
+
+
     public function __construct()
     {
+
         $ds = DIRECTORY_SEPARATOR;
         $this->uploadTmp = dirname(dirname(dirname(__FILE__))).$ds.'tmp';
+        $this->userModel = new UsersModel();
+        $this->authModel = new AuthentificationModel();
+
         if(isset($_SESSION['user'])){
             $this->usersFolder = dirname(dirname(dirname(__FILE__))).$ds.'public'.$ds.'assets'.$ds.'users'.$ds.$_SESSION['user']['id'];
             if(!file_exists($this->usersFolder)){
@@ -29,15 +36,12 @@ class UserController extends Controller {
     }
 
     public function signin() {
-
         if(isset($_SESSION['user'])) {
             $this->redirectToRoute('default_home');
         }
 
         if (isset($_POST['signin'])) {
 
-            $userModel = new UsersModel();
-            $authModel = new AuthentificationModel();
             $errors = array();
 
             //CHECKING PSEUDO/MAIL
@@ -56,7 +60,7 @@ class UserController extends Controller {
 
             //CHECKING IF IT EXIST IN DATABASE
             if(!empty($password) && !empty($emailOrUsername)) {
-               $userId = $authModel->isValidLoginInfo($emailOrUsername, $password);
+               $userId = $this->authModel->isValidLoginInfo($emailOrUsername, $password);
             }
 
             if(isset($userId)) {
@@ -69,14 +73,15 @@ class UserController extends Controller {
                 if ($userId != 0 && count($errors == 0)) {
 
                     //CONNEXION
-                    $user = $userModel->find($userId);
+                    $this->userModel->setTable('users');
+                    $user = $this->userModel->find($userId);
 
                     //PUT USER IN SESSION: $_SESSION['user'] = $user
-                    $authModel->logUserIn($user);
+                    $this->authModel->logUserIn($user);
 
                     if(isset($_SESSION['user'])) {
                        $data = array('last_connection' => date('Y-m-d H:i:s'));
-                       $userModel->update($data,$_SESSION['user']['id']);
+                        $this->userModel->update($data,$_SESSION['user']['id']);
                     }
 
                 $this->redirectToRoute('default_home');
@@ -95,8 +100,7 @@ class UserController extends Controller {
 
     public function logout() {
 
-        $authModel = new AuthentificationModel();
-        $authModel->logUserOut();
+        $this->authModel->logUserOut();
 
         $this->redirectToRoute('default_home');
     }
@@ -109,8 +113,6 @@ class UserController extends Controller {
 
         if(isset($_POST['signup'])) {
 
-            $userModel = new UsersModel();
-            $authModel = new AuthentificationModel();
             $errors = array();
 
             //CHECKING FIRSTNAME
@@ -121,7 +123,10 @@ class UserController extends Controller {
                 $errors['firstname']['short'] = true;
 
             } else {
-                $firstname = $_POST['firstname'];
+
+                $firstname = trim($_POST['firstname']);
+                $firstname = $this->filterString($firstname);
+                $firstname = htmlspecialchars($firstname, ENT_QUOTES);
             }
 
             //CHECKING LASTNAME
@@ -132,7 +137,10 @@ class UserController extends Controller {
                 $errors['lastname']['short'] = true;
 
             } else {
-                $lastname = $_POST['lastname'];
+
+                $lastname = trim($_POST['lastname']);
+                $lastname = $this->filterString($lastname);
+                $lastname = htmlspecialchars($lastname, ENT_QUOTES);
             }
 
             //CHECKING PSEUDO
@@ -141,10 +149,27 @@ class UserController extends Controller {
 
             } else {
                 $username = trim($_POST['username']);
-                $username = htmlspecialchars($username, ENT_QUOTES);
-
-                if ($userModel->usernameExists($_POST['username'])) {
+                if ($this->userModel->usernameExists(trim($username))) {
                     $errors['username']['exist'] = true;
+                }else{
+                    $username = $this->filterString($username);
+                    $username = htmlspecialchars($username, ENT_QUOTES);
+                }
+            }
+
+
+            //CHECKING EMAIL
+            if (empty($_POST['email'])) {
+                $errors['email']['empty'] = true;
+
+            } elseif (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+                $errors['email']['wrong'] = true;
+
+            } else {
+                $email = $_POST['email'];
+
+                if($this->userModel->emailExists($email)) {
+                    $errors['email']['exist'] = true;
                 }
             }
 
@@ -180,32 +205,17 @@ class UserController extends Controller {
             }
             //
 
-            //CHECKING EMAIL
-            if (empty($_POST['email'])) {
-                $errors['email']['empty'] = true;
-
-            } elseif (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
-                $errors['email']['wrong'] = true;
-
-            } else {
-                $email = $_POST['email'];
-
-                if($userModel->emailExists($email)) {
-                    $errors['email']['exist'] = true;
-                }
-            }
-
             //IF NO ERRORS, ADD IN DATABASE
             if(count($errors) === 0) {
 
-                $userModel->setTable('users');
+                $this->userModel->setTable('users');
                 if(isset($_POST['pass2'])) {
                     $pass = $_POST['pass2'];
                 }
-                $password = $authModel -> hashPassword($pass,PASSWORD_DEFAULT);
+                $password = $this->authModel->hashPassword($pass,PASSWORD_DEFAULT);
 
 
-                $user = $userModel ->insert([
+                $user = $this->userModel->insert([
 
                     'firstname'=> $firstname,
                     'lastname' => $lastname,
@@ -225,7 +235,7 @@ class UserController extends Controller {
                     'date_created' => $user['date_created'],
                     'last_connection' => $user['last_connection']
                 );
-                $authModel->logUserIn($data);
+                $this->authModel->logUserIn($data);
 
                 $this->show('user/success', ['user' => $user]);
 
@@ -248,19 +258,16 @@ class UserController extends Controller {
 
     function userAdministration() {
 
-        $userModel = new UsersModel();
-        $authModel = new AuthentificationModel();
-
-        if($authModel->getLoggedUser() == null) {
+        if($this->authModel->getLoggedUser() == null) {
             $this->redirectToRoute('user_login');
         }
 
-        $userModel->setTable('video');
-        $videos = $userModel->findVideoById($_SESSION['user']['id'], 3);
-        $comments = $userModel->findVideoByComment($_SESSION['user']['id']);
+        $this->userModel->setTable('video');
+        $videos = $this->userModel->findVideoById($_SESSION['user']['id'], 3);
+        $comments = $this->userModel->findVideoByComment($_SESSION['user']['id']);
 
-        $userModel->setTable('users');
-        $user = $userModel->find($_SESSION['user']['id']);
+        $this->userModel->setTable('users');
+        $user = $this->userModel->find($_SESSION['user']['id']);
 
         if(isset($videos[0]['id'])) {
             if(isset($comments[0]['content'])){
@@ -280,20 +287,15 @@ class UserController extends Controller {
 
     }
 
-
-
     function userFullVideos() {
 
-        $userModel = new UsersModel();
-        $authModel = new AuthentificationModel();
-
-        if($authModel->getLoggedUser() == null) {
+        if($this->authModel->getLoggedUser() == null) {
             $this->redirectToRoute('user_login');
         }
 
-        $userModel->setTable('video');
+        $this->userModel->setTable('video');
 
-        $videos = $userModel->findVideoById($_SESSION['user']['id']);
+        $videos = $this->userModel->findVideoById($_SESSION['user']['id']);
 
         if(isset($videos[0]['id'])) {
             $this->show('user/fullVideo', ['videos' => $videos]);
@@ -304,16 +306,13 @@ class UserController extends Controller {
 
     function userFullComments() {
 
-        $userModel = new UsersModel();
-        $authModel = new AuthentificationModel();
-
-        if($authModel->getLoggedUser() == null) {
+        if($this->authModel->getLoggedUser() == null) {
             $this->redirectToRoute('user_login');
         }
 
-        $userModel->setTable('video');
+        $this->userModel->setTable('video');
 
-        $comments = $userModel->findVideoByComment($_SESSION['user']['id']);
+        $comments = $this->userModel->findVideoByComment($_SESSION['user']['id']);
 
         if(isset($comments[0]['content'])) {
             $this->show('user/fullComment', ['comments' => $comments]);
@@ -327,167 +326,190 @@ class UserController extends Controller {
     function userInfo(){
 
         $imageResize = new ImageManagerService();
-        $userModel = new UsersModel();
-        $authModel = new AuthentificationModel();
-        $videoModel = new VideoController();
-        $errors = array();
 
-
-        if($authModel->getLoggedUser() == null){
+        if($this->authModel->getLoggedUser() == null){
             $this->redirectToRoute('user_login');
+        }else{
+            $this->userModel->setTable('users');
+            $user = $this->userModel->find($_SESSION['user']['id']);
         }
 
-        $userModel->setTable('users');
-        $user = $userModel->find($_SESSION['user']['id']);
-
-
-        if(isset($_POST['modifyInfo'])) {
-            $errors = array();
-
-            if (empty($_POST['username'])) {
-                $errors['username']['empty'] = 'Votre pseudonyme ne peut pas être vide';
-            } else {
-                $username = trim($_POST['username']);
-
-                if ($userModel->usernameExists($username) && $_SESSION['user']['username'] != $_POST['username']) {
-                    $errors['username']['exist'] = 'Ce pseudonyme existe déjà';
-                }
-            }
-
-            //CHECKING EMAIL
-            if (empty($_POST['email'])) {
-                $errors['email']['empty'] = 'L\'email ne peut pas être vide';
-
-            } elseif (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
-                $errors['email']['wrong'] = 'L\'email n\'est pas valide';
-
-            } else {
-                $email = $_POST['email'];
-
-            }
-            // checking password
-
-            if (!empty($_POST['pass1'])) {
-
-                if (strlen($_POST['pass1']) < 8 || strlen($_POST['pass1']) > 30) {
-                    $errors['lenght']['pass1'] = 'Votre mot de passe doit être compris entre 8 et 30 caractères';
-
-                }
-            }
-
-            if (!empty($_POST['pass2'])) {
-
-                if (!empty($_POST['pass1']) && ($_POST['pass1'] !== $_POST['pass2'])) {
-
-                    //IF PASSWORD IS FILLED, IT CONFIRMS
-                    //BUT THE TWO ARE DIFFERENTS
-                    $errors['pass']['different'] = 'Les mots de passes ne sont pas identiques';
-                }
-            }
-
-            if(!empty($_POST['pass1']) && empty($_POST['pass2'])) {
-                $errors['empty']['pass'] = 'Vous devez remplir le champ confirmation du mot de passe';
-
-            }
-
-            if(empty($_POST['pass1']) && !empty($_POST['pass2'])) {
-                $errors['empty']['pass'] = 'Vous devez remplir le champ nouveau mot de passe';
-
-            }
-
-            //checking imageUser
-
-            if(!empty($_FILES['picture'])){
-                $temporaryImg = $videoModel->handleDuplicate($this->uploadTmp.DIRECTORY_SEPARATOR.$_FILES['picture']['name']);
-                if(move_uploaded_file($_FILES['picture']['tmp_name'], $temporaryImg)){
-                    if($videoModel->getType($temporaryImg) != 'image') {
-                        $errors['picture'] = 'Le fichier n\'est pas une image';
-                    }
-                }
-            }
-
+        if(isset($_POST['modifyInfo'])){
+           $returnValidate = $this->validateUserInfo($_POST['modifyInfo']);
         }else{
             $this->show('user/userInfo', ['user' => $user]);
         }
-
         //IF NO ERRORS, ADD IN DATABASE
-        if(count($errors) == 0) {
+        if(count($returnValidate['errors']) == 0) {
 
             if(isset($_POST['pass2']) && !empty($_POST['pass2'])){
                 $pass = $_POST['pass2'];
             }
 
 
-            if(!empty($_FILES['picture']['name'])){
-                $userModel->setTable('users');
-                $avatar = $userModel->find($_SESSION['user']['id']);
+            if(!empty($returnValidate['temporaryImg'])){
+                $this->userModel->setTable('users');
+                $avatar = $this->userModel->find($_SESSION['user']['id']);
                 if(!empty($avatar['avatar'])){
                     unlink($this->usersFolder.DIRECTORY_SEPARATOR.$avatar['avatar']);
                 }
-                if(file_exists($temporaryImg)){
-                    $imageInfo = pathinfo(basename($temporaryImg));
+                if(file_exists($returnValidate['temporaryImg'])){
+                    $imageInfo = pathinfo(basename($returnValidate['temporaryImg']));
                     $output = $this->usersFolder.DIRECTORY_SEPARATOR;
                     $outputAvatar = $output.$imageInfo['filename'].'.'.$imageInfo['extension'];
-                    $imageResize->resize($temporaryImg ,null, 180, 135,false, $outputAvatar, false);
-                    unlink($temporaryImg);
-                    $insertAvatar = $userModel->update([
+                    $imageResize->resize($returnValidate['temporaryImg'] ,null, 180, 135,false, $outputAvatar, false);
+                    unlink($returnValidate['temporaryImg']);
+                    $insertAvatar = $this->userModel->update([
                         'avatar'   => $imageInfo['filename'].'.'.$imageInfo['extension']
                     ],$user['id']);
 
                 }
             }
 
-            if($_POST['username'] == $user['username'] && $_POST['email'] == $user['email'] && empty($pass) && empty($insertAvatar)){
-                $this->show('user/userInfo' ,['user' => $user, 'errors' => $errors, 'status' => 'Vos informations sont identiques']);
+
+            if($returnValidate['username'] == $user['username'] && $returnValidate['email'] == $user['email'] && empty($pass) && empty($insertAvatar)){
+                $this->show('user/userInfo' ,['user' => $user, 'errors' => $returnValidate['errors'], 'status' => 'Vos informations sont identiques']);
             }
 
             if(isset($pass)){
-                $password = $authModel -> hashPassword($pass,PASSWORD_DEFAULT);
-                $userModel->update([
-                    'email'    => $email,
-                    'username' => $username,
+                $password = $this->authModel -> hashPassword($pass,PASSWORD_DEFAULT);
+                $this->userModel->update([
+                    'email'    => $returnValidate['email'],
+                    'username' => $returnValidate['username'],
                     'password' => $password,
 
                 ],$user['id']);
 
-                $_SESSION['user']['username'] = $username;
-                $_SESSION['user']['email'] = $email;
+                $_SESSION['user']['username'] = $returnValidate['username'];
+                $_SESSION['user']['email'] = $returnValidate['email'];
 
-            }else if ($_POST['username'] == $user['username'] && $_POST['email'] == $user['email'] && isset($pass)) {
-                $password = $authModel -> hashPassword($pass,PASSWORD_DEFAULT);
-                $userModel->update([
+
+            }else if ($returnValidate['username'] == $user['username'] && $returnValidate['email'] == $user['email'] && isset($pass)) {
+                $password = $this->authModel -> hashPassword($pass,PASSWORD_DEFAULT);
+                $this->userModel->update([
                     'password' => $password
                 ],$user['id']);
             }else{
 
-                $userModel->update([
-                    'email'    => $email,
-                    'username' => $username,
+                $this->userModel->update([
+                    'email'    => $returnValidate['email'],
+                    'username' => $returnValidate['username'],
 
 
                 ],$user['id']);
 
-                $_SESSION['user']['username'] = $username;
-                $_SESSION['user']['email'] = $email;
+                $_SESSION['user']['username'] = $returnValidate['username'];
+                $_SESSION['user']['email'] = $returnValidate['email'];
             }
 
-            $user = $userModel->find($_SESSION['user']['id']);
+            $user = $this->userModel->find($_SESSION['user']['id']);
 
             $this->show('user/userInfo', ['success' => 'Vos informations ont bien été modifiées', 'user' => $user]);
 
         } else {
             if(!isset($_POST['pass1']) && !isset($_POST['pass2'])){
-                $this->show('user/userInfo', ['errors' => $errors,'user' => $user]);
+                $this->show('user/userInfo', ['errors' => $returnValidate['errors'],'user' => $user]);
             }else if(isset($_POST['pass1']) || isset($_POST['pass2'])){
                 $pass = array(
                     'pass1' => $_POST['pass1'],
                     'pass2' => $_POST['pass2']
                 );
-                $this->show('user/userInfo', ['errors' => $errors,'user' => $user, 'pass' => $pass]);
+                $this->show('user/userInfo', ['errors' => $returnValidate['errors'],'user' => $returnValidate, 'pass' => $pass]);
             }else{
-                $this->show('user/userInfo', ['errors' => $errors,'user' => $user]);
+                $this->show('user/userInfo', ['errors' => $returnValidate['errors'],'user' => $user]);
 
             }
         }
     }
+
+    private function validateUserInfo()
+    {
+
+        $errors = array();
+        $videoController = new \Controller\VideoController();
+
+
+        if (empty($_POST['username'])) {
+            $errors['username']['empty'] = 'Votre pseudonyme ne peut pas être vide';
+        } else {
+            $filterString = $this->filterString($_POST['username']);
+            $username = htmlspecialchars(trim($filterString));
+
+            if ($this->userModel->usernameExists($username) && $_SESSION['user']['username'] != $_POST['username']) {
+                $errors['username']['exist'] = 'Ce pseudonyme existe déjà';
+            }
+        }
+
+        //CHECKING EMAIL
+        if (empty($_POST['email'])) {
+            $errors['email']['empty'] = 'L\'email ne peut pas être vide';
+
+        } elseif (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+            $errors['email']['wrong'] = 'L\'email n\'est pas valide';
+
+        } else {
+            $email = htmlspecialchars($_POST['email']);
+        }
+        // checking password
+
+        if (!empty($_POST['pass1'])) {
+
+            if (strlen($_POST['pass1']) < 8 || strlen($_POST['pass1']) > 30) {
+                $errors['lenght']['pass1'] = 'Votre mot de passe doit être compris entre 8 et 30 caractères';
+
+            }
+        }
+        if (!empty($_POST['pass2'])) {
+
+            if (!empty($_POST['pass1']) && ($_POST['pass1'] !== $_POST['pass2'])) {
+
+                //IF PASSWORD IS FILLED, IT CONFIRMS
+                //BUT THE TWO ARE DIFFERENTS
+                $errors['pass']['different'] = 'Les mots de passes ne sont pas identiques';
+            }
+        }
+
+        if (!empty($_POST['pass1']) && empty($_POST['pass2'])) {
+            $errors['empty']['pass'] = 'Vous devez remplir le champ confirmation du mot de passe';
+
+        }
+
+        if (empty($_POST['pass1']) && !empty($_POST['pass2'])) {
+            $errors['empty']['pass'] = 'Vous devez remplir le champ nouveau mot de passe';
+
+        }
+
+        //checking imageUser
+
+        if (!empty($_FILES['picture']['tmp_name'])) {
+            if ($videoController->getType($_FILES['picture']['tmp_name']) != 'image') {
+                $errors['picture'] = 'Le fichier n\'est pas une image';
+                unlink($_FILES['picture']['tmp_name']);
+            }else{
+                $temporaryImg = $videoController->handleDuplicate($this->uploadTmp . DIRECTORY_SEPARATOR . $_FILES['picture']['name']);
+                move_uploaded_file($_FILES['picture']['tmp_name'], $temporaryImg);
+            }
+        }
+
+        return array('errors' => $errors, 'email' => isset($email) ? $email : null, 'username' => isset($username) ? $username : null,'temporaryImg' => isset($temporaryImg) ? $temporaryImg : null);
+
+    }
+
+    private function filterString ($string){
+        $caracteres = array('a', 'Á' => 'a', 'Â' => 'a', 'Ä' => 'a', 'à' => 'a', 'á' => 'a', 'â' => 'a', 'ä' => 'a', '@' => 'a',
+        'È' => 'e', 'É' => 'e', 'Ê' => 'e', 'Ë' => 'e', 'è' => 'e', 'é' => 'e', 'ê' => 'e', 'ë' => 'e', '€' => 'e',
+        'Ì' => 'i', 'Í' => 'i', 'Î' => 'i', 'Ï' => 'i', 'ì' => 'i', 'í' => 'i', 'î' => 'i', 'ï' => 'i',
+        'Ò' => 'o', 'Ó' => 'o', 'Ô' => 'o', 'Ö' => 'o', 'ò' => 'o', 'ó' => 'o', 'ô' => 'o', 'ö' => 'o',
+        'Ù' => 'u', 'Ú' => 'u', 'Û' => 'u', 'Ü' => 'u', 'ù' => 'u', 'ú' => 'u', 'û' => 'u', 'ü' => 'u', 'µ' => 'u',
+        'Œ' => 'oe', 'œ' => 'oe',
+        '$' => 's');
+
+        $string = strtr($string, $caracteres);
+        $string = preg_replace('#[^A-Za-z0-9]+#', '-', $string);
+        $string = trim($string, '-');
+        $string = strtolower($string);
+
+        return $string;
+    }
+
 }
