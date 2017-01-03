@@ -18,8 +18,9 @@ $this->start('main_content');
             <?php endforeach;?>
         </div>
 
-    <?php else: echo $videos ?>
-<?php endif; ?>
+    <?php else: ?>
+        <p class="no-content"><?=$videos ?></p>
+    <?php endif; ?>
 </section>
 
 <?php $this->stop('main_content');?>

@@ -6,7 +6,7 @@ $this->start('main_content');
 <form action="#" id="changePassword" method="POST">
 
     <!-- EDITING PASSWORD -->
-    <label for="pass1">Modification du mot de passe</label>
+    <label for="pass1">Nouveau mot de passe</label>
     <input class="body-inputs form-control" type="password" id="pass1" name="pass1" placeholder="Mot de passe">
     
     <!-- empty password -->
@@ -20,7 +20,7 @@ $this->start('main_content');
     <?php endif; ?>
 
     <!-- CONFIRM PASSWORD -->
-    <label for="pass2">Confirmation du mot de passe</label>
+    <label for="pass2">Confirmation du nouveau mot de passe</label>
     <input class="body-inputs form-control" type="password" name="pass2" placeholder="Confirmation">
     
     <!-- empty confirm password -->

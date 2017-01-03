@@ -51,9 +51,6 @@ jQuery(document).ready(function() {
 
 $(function() {
 
-
-
-
 	//SEARCH BAR AND SIGNIN/LOGIN SHOWING
 	$('#search-form-mobile').on('show.bs.collapse', function () {
 		$('#login-buttons-mobile').collapse('hide');
@@ -67,16 +64,12 @@ $(function() {
 		$('#login-buttons-mobile, #search-form-mobile').collapse('hide');
 	});
 
-
 	//SIDE NAVIGATION SHOWING OR NOT ON MOBILE
 	$('#mySidenav').on('click', function() {
-	   	var navWidth = $('.sidenav').width();
-	    if (navWidth <= 0){
-	    	$('.sidenav').css({
-	    		width: '200px'});
+		if ( !$('.sidenav').hasClass('open') ){
+	    	$('.sidenav').addClass('open')
 	    } else {
-	    	$('.sidenav').css({
-		    	width: '0px'});
+	    	$('.sidenav').removeClass('open')
 	    }
 	});
 });
