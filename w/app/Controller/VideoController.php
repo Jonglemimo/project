@@ -72,6 +72,7 @@ class VideoController extends Controller
             echo json_encode($this->validateForm());
             die;
         }
+
         $videoEncoding = $videoModel->getWhileEncoding($_SESSION['user']['id']);
         $categories = $categories->getCategories();
         if(count($videoEncoding) > 0){
@@ -112,7 +113,7 @@ class VideoController extends Controller
         }
 
         if(empty($_POST['category'])){
-            $errors['category'] = 'Vous devez entrer une description';
+            $errors['category'] = 'Vous devez entrer une catégorie';
 
         }else {
             $category = $_POST['category'];
@@ -407,5 +408,42 @@ class VideoController extends Controller
         }else{
             return array('success' => false, 'errors' => $errors);
         }
+    }
+
+    public function getVote(){
+        if (isset($_SESSION['user']['id'])) {
+            if (!empty($_POST['shortTitle'])) {
+                $vote = new VideoModel();
+                $idVideo = $vote->findVideoByShort($_POST['shortTitle']);
+                $voteExist = $vote->voteExist($_SESSION['user']['id'], $idVideo['idVideo']);
+                if (isset($voteExist['stars'])) {
+                    $stars = $voteExist['stars'];
+                    $this->showJson(['vote' => $stars]);
+                } else {
+                    $this->showJson(['vote' => 0]);
+                } 
+            } 
+        }
+    }
+
+    public function vote(){
+        if (isset($_SESSION['user']['id'])) {
+            if (!empty($_POST['shortTitle'])) {
+                $vote = new VideoModel();
+                $idVideo = $vote->findVideoByShort($_POST['shortTitle']);
+                $voteExist = $vote->voteExist($_SESSION['user']['id'], $idVideo['idVideo']);
+                if (count($voteExist) > 1 ) {
+                    $this->showJson(['response' => 'Vous avez déjà voté pour cette vidéo' ,'change' => true]);
+                } else {
+                    $vote->vote($_SESSION['user']['id'] , $idVideo['idVideo'] , $_POST['stars']);
+                    $this->showJson(['response' => 'Votre vote a bien été enregistré' , 'change' => false]);
+                } 
+            } else {
+                $this->showJson(['response' => false]);
+            }
+        } else {
+            $this->showJson(['response' => 'Veuillez vous connecter' , 'change' => false]);
+        }
+        
     }
 }

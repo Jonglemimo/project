@@ -144,7 +144,7 @@ class UserController extends Controller {
 
             if (!empty($_POST['pass2'])) {
 
-                if (!wempty($_POST['pass1']) && ($_POST['pass1'] !== $_POST['pass2'])) {
+                if (!empty($_POST['pass1']) && ($_POST['pass1'] !== $_POST['pass2'])) {
 
                     //IF PASSWORD IS FILLED, IT CONFIRMS
                     //BUT THE TWO ARE DIFFERENTS
