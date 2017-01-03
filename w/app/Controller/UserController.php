@@ -80,8 +80,10 @@ class UserController extends Controller {
                     $this->authModel->logUserIn($user);
 
                     if(isset($_SESSION['user'])) {
-                       $data = array('last_connection' => date('Y-m-d H:i:s'));
-                        $this->userModel->update($data,$_SESSION['user']['id']);
+
+                        $this->userModel->update([
+                            'last_connection' => date('Y-m-d H:i:s')
+                        ],$_SESSION['user']['id']);
                     }
 
                 $this->redirectToRoute('default_home');
