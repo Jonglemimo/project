@@ -32,6 +32,14 @@ var upload = {
     timeout : false,
     validateForm : function () {
         var error = '';
+
+        var type = {
+            image : false,
+            video : false,
+            regexImg : /image/gi,
+            regexVideo : /video/gi
+        };
+
         if($('.title').val().length < 5){
             error += '<p class="what">Votre titre doit être supérieur à 5 caractères</p>';
 
@@ -56,28 +64,22 @@ var upload = {
 
        if(this.files.length > 2){
 
-           $('#status').html('<p class="meh">Vous devez uploader une image et une vidéo uniquement</p>').removeClass('hide');
+           $('#status').html('<p class="meh">Vous devez ajouter une image et une vidéo uniquement</p>').removeClass('hide');
 
            var notGoodNumber = true
 
         }else if(this.files.length < 2){
-           $('#status').html('<p class="meh">Vous devez uploader une image et une vidéo</p>').removeClass('hide');
+           $('#status').html('<p class="meh">Vous devez ajouter une image et une vidéo</p>').removeClass('hide');
 
             var notGoodNumber = true
        } else {
            $('#status').addClass('hide')
        }
 
+
        if(error.length > 0 || notGoodNumber == true) {
             return false;
        }
-
-       var type = {
-            image : false,
-            video : false,
-            regexImg : /image/gi,
-            regexVideo : /video/gi
-        };
 
         this.files.forEach(function (file) {
             file = file.files[0];
@@ -109,7 +111,7 @@ var upload = {
             'category': $('.category').val()
         }, function (data) {
             if(data.success == true)
-            $('#result').html('<p class="correct">L\'upload s\'est bien terminé</p>').removeClass('hide');
+            $('#result').html('<p class="correct">L\'envoi s\'est bien terminé</p>').removeClass('hide');
             setTimeout(function()
             {
                 window.location.reload();
@@ -121,7 +123,7 @@ var upload = {
 
 $(function () {
 
-    $(document).on('click','.removeItem',function () {
+    $(document).on('mousedown','.removeItem',function (e) {
 
         var type = {
             regexImg : /image/gi,
@@ -164,8 +166,10 @@ $(function () {
         dataType: 'json',
         add: function (e,data) {
             if(upload.checkParams(data)){
-                $('.status').html('<p class="false">Erreur de paramétrage</p>').removeClass('hide');
+                $('#status').html('<p class="false">Erreur de paramétrage</p>').removeClass('hide');
                 return;
+            }else{
+                $('#status').addClass('hide')
             }
 
             var type = {
@@ -174,15 +178,24 @@ $(function () {
             };
 
             if(type.regexImg.test(data.files[0].type) && upload.files.length == 0) {
-                $('#UploadText').html('Envoyer une vidéo');
+                $('#UploadText').html('Ajouter votre vidéo');
+                $('.stepByStep').addClass('hide');
                 $('#order').addClass('hide');
 
             }
 
             if (type.regexVideo.test(data.files[0].type) && upload.files.length == 0) {
-
-                $('#order').html('<p class="what">Vous devez envoyer une image en premier</p>').removeClass('hide');
+                $('#order').html('<p class="what">Vous devez ajouter une image en premier</p>').removeClass('hide');
                 return;
+            } else {
+                $('#status').addClass('hide')
+            }
+
+            if(data.files[0].type.match(type.regexImg) !== null && upload.files.length == 1){
+                $('#status').html('<p class="meh">Vous devez ajouter une vidéo</p>').removeClass('hide');
+                return;
+            } else {
+                $('#status').addClass('hide')
             }
 
             upload.files.push(data);

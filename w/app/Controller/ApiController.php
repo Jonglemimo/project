@@ -20,8 +20,12 @@ class ApiController {
         $os = new \Tivie\OS\Detector();
 
         $ds = DIRECTORY_SEPARATOR;
-
-        putenv('TMPDIR='.dirname(dirname(dirname(__FILE__))).$ds.'php-tmp');
+        $phpTmp = dirname(dirname(dirname(__FILE__))).$ds.'php-tmp';
+        if(!is_writable($phpTmp)){
+            echo 'Vérifier les droits du dossier : '.$phpTmp;
+            die;
+        }
+        putenv('TMPDIR='.$phpTmp);
         $ffmpegPath = dirname(dirname(dirname(__FILE__))).$ds.'bin';
         $this->usersFolder = dirname(dirname(dirname(__FILE__))).$ds.'public'.$ds.'assets'.DIRECTORY_SEPARATOR.'users'.$ds;
 
@@ -56,19 +60,15 @@ class ApiController {
 
             if($this->transcodeResult) {
 
-                $this->request->setTable('video');
-                $this->request->update([
-                    'encoding' => 2
-                ], $this->transcodeResult['id']);
-
-
                 if(!$this->ffprobeBin || !$this->ffmpegBin){
                     return false;
                 }
 
                 $ffmpeg = \FFMpeg\FFMpeg::create(array(
-                    'ffmpeg.binaries' => $this->ffmpegBin,
+                    'ffmpeg.binaries'  => $this->ffmpegBin,
                     'ffprobe.binaries' => $this->ffprobeBin,
+                    'ffmpeg.threads'   => 12,
+                    'timeout' => 0
                
                 ));
 
@@ -79,7 +79,12 @@ class ApiController {
 
                 $video = $ffmpeg->open($file);
 
-                $format = new \FFMpeg\Format\Video\WebM();
+                $format = new \Services\CustomWebM();
+
+                $this->request->setTable('video');
+                $this->request->update([
+                    'encoding' => 2
+                ], $this->transcodeResult['id']);
 
                 $this->request->setTable('transcode');
 
@@ -98,9 +103,12 @@ class ApiController {
                    ],$this->transcodeId);
                 });
 
+                if(!is_writable(dirname($output))){
+                    echo 'Vérifier les droits du dossier : '.dirname($output);
+                    die;
+                }
+
                 $video->save($format, $output);
-
-
 
                 $this->request->delete($this->transcodeId);
 

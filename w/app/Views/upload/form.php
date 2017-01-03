@@ -68,11 +68,11 @@ $this->start('main_content');
             <div id="submitUploadForm">
                 <label id="uploadButton" for="files">
                     <i class="glyphicon glyphicon-open"></i>
-                        <span id="UploadText">Envoyer une image</span>
+                        <span id="UploadText">Ajouter votre image</span>
                     <input class="form-control" data-url="<?=$this->url('upload_form')?>" id="fileupload" type="file" name="files[]" multiple>
                 </label>
 
-                <br><br><i>Merci d'uploader une vidéo ainsi qu'une image la représentant</i>
+                <br><br><i class="stepByStep">Merci d'ajouter une image représentant votre vidéo</i>
             </div>
 
             <button id="submitBtn" type="submit" class="buttons btn btn-default hide">Envoyer</button>
