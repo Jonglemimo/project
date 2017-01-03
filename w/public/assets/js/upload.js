@@ -17,7 +17,13 @@ var upload = {
         var html = '';
         for(var key in upload.files){
             file = upload.files[key].files[0];
-            html += '<li class ="alert alert-success list-unstyled " data-name="'+file.name+'" data-index="'+key+'">' + '<span class="black"> Nom du fichier : </span><span>' + file.name + ' </span><span class="black"> | Type du fichier : </span><span>' + file.type +'</span><span class="black"> | Taille du fichier :</span><span> ' + parseFloat(file.size /1024/1024).toFixed(2) + ' mo</span>' + '<i class="glyphicon glyphicon-trash removeItem pull-right"></i><div class="progress hide "><div class="progress-bar progress-bar-info progress-bar-striped progressBar "></div></div></li>';
+            html += '<li class="list-unstyled" data-name="'
+                + file.name + '"data-index="'
+                + key + '">' + '<span class="upload-name"> Nom du fichier :</span><p>'
+                + file.name + '</p><span class="upload-name">| Type du fichier :</span><p>'
+                + file.type +'</p><span class="upload-name">| Taille du fichier :</span><p> '
+                + parseFloat(file.size /1024/1024).toFixed(2) + 'mo</p>'
+                + '<button class="buttons btn btn-default removeItem"><i class="glyphicon glyphicon-trash"></i></button><div class="progress hide"><div class="progress-bar progress-bar-success progress-bar-striped progressBar" role="progressbar"></div></div></li>';
         };
 
         $('#listItems').html(html).removeClass('hide');
@@ -26,45 +32,44 @@ var upload = {
     validateForm : function () {
         var error = '';
         if($('.title').val().length < 5){
-            error += 'Votre titre doit être supérieur à 5 caractères <br>';
+            error += '<p class="what">Votre titre doit être supérieur à 5 caractères</p>';
 
         }
 
         if($('.category').val() == 'first'){
-            error+= 'Vous devez choisir une catégorie <br>'
+            error+= '<p class="what">Vous devez choisir une catégorie</p>'
         }
 
         if($('.description').val().length < 20){
-            error += 'Votre description doit être supérieur à 20 caractères';
+            error += '<p class="what">Votre description doit être supérieur à 20 caractères</p>';
 
         }
 
         if(error.length > 0){
-            $('#empty').html(error).removeClass('hide').addClass('alert alert-danger');
+            $('#empty').html(error).removeClass('hide');
 
-        }else {
+        } else {
             $('#empty').addClass('hide')
         }
 
 
        if(this.files.length > 2){
 
-           $('#status').html('vous devez uploader une image et une vidéo uniquement').removeClass('hide').addClass('alert alert-danger');
+           $('#status').html('<p class="meh">Vous devez uploader une image et une vidéo uniquement</p>').removeClass('hide');
 
            var notGoodNumber = true
 
         }else if(this.files.length < 2){
-           $('#status').html('vous devez uploader une image et une vidéo').removeClass('hide').addClass('alert alert-danger');
+           $('#status').html('<p class="meh">Vous devez uploader une image et une vidéo</p>').removeClass('hide');
 
             var notGoodNumber = true
-       }else {
+       } else {
            $('#status').addClass('hide')
        }
 
-       if(error.length > 0 || notGoodNumber == true){
+       if(error.length > 0 || notGoodNumber == true) {
             return false;
        }
-
 
        var type = {
             image : false,
@@ -83,7 +88,7 @@ var upload = {
         });
 
         if(!type.image || !type.video){
-            $('#status').html('Les fichiers ne sont pas valides').removeClass('hide').addClass('alert alert-danger');
+            $('#status').html('<p class="false">Les fichiers ne sont pas valides</p>').removeClass('hide');
             return false;
         }
 
@@ -103,7 +108,7 @@ var upload = {
             'category': $('.category').val()
         }, function (data) {
             if(data.success == true)
-            $('#result').html('L\'upload s\'est bien terminé').removeClass('hide').addClass('alert alert-success');
+            $('#result').html('<p class="correct">L\'upload s\'est bien terminé</p>').removeClass('hide');
             setTimeout(function()
             {
                 window.location.reload();
@@ -158,7 +163,7 @@ $(function () {
         dataType: 'json',
         add: function (e,data) {
             if(upload.checkParams(data)){
-                $('.status').html('Erreur de paramétrage').removeClass('hide').addClass('alert alert-danger');
+                $('.status').html('<p class="false">Erreur de paramétrage</p>').removeClass('hide');
                 return;
             }
 
@@ -167,15 +172,15 @@ $(function () {
                 regexVideo : /video/gi
             };
 
-            if(type.regexImg.test(data.files[0].type) && upload.files.length == 0){
+            if(type.regexImg.test(data.files[0].type) && upload.files.length == 0) {
                 $('#UploadText').html('Envoyer une vidéo');
                 $('#order').addClass('hide');
 
             }
 
-            if (type.regexVideo.test(data.files[0].type) && upload.files.length == 0){
+            if (type.regexVideo.test(data.files[0].type) && upload.files.length == 0) {
 
-                $('#order').html('vous devez envoyer une image en premier').removeClass('hide').addClass('alert alert-danger');
+                $('#order').html('<p class="what">Vous devez envoyer une image en premier</p>').removeClass('hide');
                 return;
             }
 
@@ -197,14 +202,14 @@ $(function () {
             if(data.result.success){
 
                 if(data.result.type == 'unknown'){
-                    $('.status').html('type de fichier inconnu').removeClass('hide').addClass('alert alert-danger');
+                    $('.status').html('<p class="what">Type de fichier inconnu</p>').removeClass('hide');
                     return;
                 }
                 var element = data.result.type == 'image' ? $('#imageFile') : $('#videoFile');
                 element.val(data.result.file);
                 upload.sendForm();
             }else{
-                $('.status').html('erreur lors de l\'upload du fichier: '+data.files[0].name +'').removeClass('hide').addClass('alert alert-danger');
+                $('.status').html('<p class="false">Erreur lors de l\'upload du fichier: ' + data.files[0].name + ' </p>').removeClass('hide');
             }
           console.log('done',data);
 

@@ -9,17 +9,19 @@ use Services\HelperService;
 use \Model\CategoriesModel;
 
 
-class VideoController extends Controller
-{
+class VideoController extends Controller {
 	private $uploadTmp   = false;
     private $usersFolder = false;
+    private $videoModel  = false;
+    private $categoriesModel = false;
 
-	public function __construct()
-    {
+	public function __construct() {
         $ds = DIRECTORY_SEPARATOR;
-        $this->uploadTmp = dirname(dirname(dirname(__FILE__))).$ds.'tmp';
+        $this->videoModel = new VideoModel();
+        $this->categoriesModel = new CategoriesModel();
+        $this->uploadTmp  = dirname(dirname(dirname(__FILE__))).$ds.'tmp';
 
-        if(isset($_SESSION['user'])){
+        if(isset($_SESSION['user'])) {
             $this->usersFolder = dirname(dirname(dirname(__FILE__))).$ds.'public'.$ds.'assets'.DIRECTORY_SEPARATOR.'users'.$ds.$_SESSION['user']['id'];
             if(!file_exists($this->usersFolder)){
                 mkdir($this->usersFolder,0755);
@@ -27,32 +29,28 @@ class VideoController extends Controller
         }
     }
 
-    function search()
-	{
+    function search() {
 
-		$videos = new VideoModel();
 
 		if (!empty($_POST['search'])) {
 			$search = trim($_POST['search']);
-			$result = $videos->getVideosSearch($search);
+			$result = $this->videoModel->getVideosSearch($search);
 		} else {
 			$search = NULL;
-			$result = $videos->getVideos();
+			$result = $this->videoModel->getVideos();
 		}
 		
 		$this->show('video/displayVideo', ['videos' => $result]);
 	}
 
-    public function uploadForm(){
+    public function uploadForm() {
 
-        $categories = new CategoriesModel();
-	    $videoModel = new VideoModel();
 
-        if(!isset($_SESSION['user'])){
+        if(!isset($_SESSION['user'])) {
             $this->redirectToRoute('default_home');
         }
 
-        if(isset($_FILES['files'])){
+        if(isset($_FILES['files'])) {
             $info = ['success' => false, 'file' => false, 'type' => false];
             $name = $_FILES['files']['name'][0];
             $destination = $this->handleDuplicate($this->uploadTmp.DIRECTORY_SEPARATOR.$name);
@@ -66,28 +64,26 @@ class VideoController extends Controller
             die;
         }
 
-        if(!empty($_POST)){
+        if(!empty($_POST)) {
 
             header('Content-Type: application/json');
             echo json_encode($this->validateForm());
             die;
         }
 
-        $videoEncoding = $videoModel->getWhileEncoding($_SESSION['user']['id']);
-        $categories = $categories->getCategories();
+        $videoEncoding = $this->videoModel->getWhileEncoding($_SESSION['user']['id']);
+        $categories = $this->categoriesModel->getCategories();
+
         if(count($videoEncoding) > 0){
 
             $this->show('upload/form', ['videoEncoding' => $videoEncoding, 'categories' => $categories]);
-        }else {
+        } else {
             $this->show('upload/form', ['categories' => $categories]);
         }
-
-
     }
 
-    private function validateForm(){
+    private function validateForm() {
 
-        $videoModel = new VideoModel();
         $imageResize = new ImageManagerService();
 
         $errors = array();
@@ -115,7 +111,7 @@ class VideoController extends Controller
         if(empty($_POST['category'])){
             $errors['category'] = 'Vous devez entrer une catégorie';
 
-        }else {
+        } else {
             $category = $_POST['category'];
         }
 
@@ -136,21 +132,20 @@ class VideoController extends Controller
             $image = $this->uploadTmp.DIRECTORY_SEPARATOR.$_POST['image'];
         }
 
-        if(count($errors) == 0){
+        if(count($errors) == 0) {
             $shortTitle = uniqid();
             $output = $this->usersFolder.DIRECTORY_SEPARATOR.$shortTitle.DIRECTORY_SEPARATOR;
 
             if(!file_exists($output)){
                 mkdir($output,0755);
-
             }
 
             rename($image,$output.basename($image));
             rename($video,$output.basename($video));
 
-            $videoModel->setTable('video');
+            $this->videoModel->setTable('video');
 
-            $lastVideo = $videoModel->insert([
+            $lastVideo = $this->videoModel->insert([
                 'url' => basename($video),
                 'title' => $title,
                 'description' => $description,
@@ -172,8 +167,9 @@ class VideoController extends Controller
             $imageResize->resize($fullpath, null, 320, 240,false, $outputMedium, false);
             $imageResize->resize($fullpath, null, 1200, 1000,false, $outputLarge, false);
 
-            $videoModel->setTable('posters');
-            $videoModel->insert([
+            $this->videoModel->setTable('posters');
+
+            $this->videoModel->insert([
                 'id_video'  => $lastVideo['id'],
                 'poster_xs' => $imageInfo['filename'].'.xs.'.$imageInfo['extension'],
                 'poster_sm' => $imageInfo['filename'].'.sm.'.$imageInfo['extension'],
@@ -182,11 +178,10 @@ class VideoController extends Controller
             ]);
 
             //todo transcode
-
             unlink($fullpath);
 
             return array('success' => true, 'errors' => $errors);
-        }else{
+        } else {
             return array('success' => false, 'errors' => $errors);
         }
     }
@@ -208,19 +203,22 @@ class VideoController extends Controller
         curl_close($ch);
     }*/
 
-    private function getType($file){
+
+    public function getType($file){
+
         $type = mime_content_type($file);
 
         if(preg_match('/image/',$type)){
             return 'image';
-        }elseif (preg_match('/video/',$type)){
+        } elseif (preg_match('/video/',$type)){
             return 'video';
-        }else {
+        } else {
             return 'unknown';
         }
     }
 
-    private function handleDuplicate($file){
+
+    public function handleDuplicate($file){
 
         $helper = new HelperService();
         $info = pathinfo($file);
@@ -230,19 +228,19 @@ class VideoController extends Controller
             $name = $helper->create_slug($info['filename'].'-'.uniqid()).'.'.$info['extension'];
             return $this->uploadTmp.DIRECTORY_SEPARATOR.$name;
 
-        }else {
+        } else {
 
             $name = $helper->create_slug($info['filename']).'.'.$info['extension'];
             return $this->uploadTmp.DIRECTORY_SEPARATOR.$name;
         }
     }
 
-    public function watch(){
+    public function watch() {
         if (isset($_GET['video'])) {
             $url = $_GET['video'];
             //Tentative de vérification
-            $video = new VideoModel();
-            if($video->exist($url)){ // renvois toujours TRUE sans raison
+
+            if($this->videoModel->exist($url)){ // renvois toujours TRUE sans raison
                 $this->watchVideo($url);
             } else {
                 $this->redirectToRoute('default_home');
@@ -252,77 +250,72 @@ class VideoController extends Controller
         }
     }
 
+
     public function watchVideo($url){
-        $video = new VideoModel();
-        $result = $video->getVideo($url);
+
+        $result = $this->videoModel->getVideo($url);
+
         $this->show('video/watch', ['video' => $result]);
     }
 
-    public function deleteVideoById(){
+    public function deleteVideoById() {
 
 
         require_once __DIR__.'/../../vendor/perchten/rmrdir/src/rmrdir.php';
-
-        $videoModel = new VideoModel();
 
 
         if(isset($_POST['id']) && is_numeric($_POST['id'])) {
 
             $idVideo = $_POST['id'];
 
-            $videoModel->setTable('posters');
-            $poster = $videoModel->getPosterByIdVideo($idVideo);
-            $deletePoster = $videoModel->delete($poster['id']);
+            $this->videoModel->setTable('posters');
+            $poster = $this->videoModel->getPosterByIdVideo($idVideo);
+            $deletePoster = $this->videoModel->delete($poster['id']);
 
+            if($deletePoster) {
 
-
-
-            if($deletePoster){
-
-                $videoModel->setTable('video');
-                $video = $videoModel->find($idVideo);
+                $this->videoModel->setTable('video');
+                $video = $this->videoModel->find($idVideo);
 
 
                 $path =  __DIR__ . ''.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'users' . DIRECTORY_SEPARATOR.$video['id_user'].DIRECTORY_SEPARATOR.$video['shortTitle'];
 
-                $deleteVideo = $videoModel->delete($idVideo);
+                $deleteVideo = $this->videoModel->delete($idVideo);
 
-                if($deleteVideo){
+                if($deleteVideo) {
 
                    rmrdir($path);
                     $this->showJson(['sucess' => true]);
-                }else{
+                } else {
                     $this->showJson(['sucess' => false]);
                 }
-            }else{
+            } else {
                 $this->showJson(['sucess' => false]);
             }
 
-        }else {
+        } else {
             $this->redirectToRoute('default_home');
         }
     }
 
-    public function editVideo ($id){
+    public function editVideo ($id) {
 
-        if(!isset($_SESSION['user'])){
+        if(!isset($_SESSION['user'])) {
             $this->redirectToRoute('default_home');
         }
 
-        if(!empty($id) && is_numeric($id)){
+        if(!empty($id) && is_numeric($id)) {
 
-            $videoModel = new VideoModel();
-            $videoModel->setTable('video');
-            $video = $videoModel->find($id);
+            $this->videoModel->setTable('video');
+            $video = $this->videoModel->find($id);
 
             if($video){
-                $category = new CategoriesModel();
 
 
+                $this->videoModel->setTable('categories');
+                $currentCategory = $this->videoModel->find($video['id_category']);
+                $categories = $this->categoriesModel->getCategories();
 
-                $videoModel->setTable('categories');
-                $currentCategory = $videoModel->find($video['id_category']);
-                $categories = $category->getCategories();
 
                 $infoVideo = array(
                     'video'  => $video,
@@ -339,27 +332,17 @@ class VideoController extends Controller
                 }
 
                 $this->show('video/edit', ['infoVideo' => $infoVideo] );
-            }else{
+            } else {
                 $this->redirectToRoute('default_home');
-
             }
 
-        }else{
+        } else {
             $this->redirectToRoute('default_home');
-
         }
-
-
-
     }
 
-    private function validateEditVideo($id)
-    {
+    private function validateEditVideo($id) {
         $errors = array();
-
-        $videoModel = new VideoModel();
-        $category = new CategoriesModel();
-
 
         if (empty($_POST['title'])) {
             $errors['title'] = 'Vous devez entrer un titre';
@@ -371,7 +354,6 @@ class VideoController extends Controller
         }
 
         //vérification description
-
         if (empty($_POST['description'])) {
             $errors['description'] = 'Vous devez entrer une description';
 
@@ -381,31 +363,36 @@ class VideoController extends Controller
             $description = $_POST['description'];
         }
 
-        if(!is_numeric($_POST['category'])){
+        if(!is_numeric($_POST['category'])) {
             $errors['category'] = 'Cette catégory n\'est pas valide';
+
         }else{
-            $category->setTable('categories');
-            if(!$category->find($_POST['category'])){
+            $this->categoriesModel->setTable('categories');
+
+            if(!$this->categoriesModel->find($_POST['category'])){
+
+
                 $errors['category'] = 'Cette catégory n\'est pas valide';
             }
         }
-        if(empty($_POST['category'])){
+
+        if(empty($_POST['category'])) {
             $errors['category'] = 'Vous devez entrer une catégorie';
 
-        }else {
+        } else {
             $category = $_POST['category'];
         }
 
-        $videoModel->setTable('video');
+        $this->videoModel->setTable('video');
         if(count($errors) == 0){
-            $videoModel->update([
+            $this->videoModel->update([
                 'title' => $title,
                 'description' => $description,
                 'id_category' => $category
             ],$id);
 
             return array('success' => true, 'errors' => $errors);
-        }else{
+        } else {
             return array('success' => false, 'errors' => $errors);
         }
     }

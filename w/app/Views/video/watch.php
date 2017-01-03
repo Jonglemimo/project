@@ -10,6 +10,7 @@
 	<video id="mainVideo" src='<?= $url ?>' controls data-stitle='<?= $video['shortTitle'] ?>' poster='<?= $poster ?>'></video>
 	<h3>Mise en ligne par <?= $video['username'] ?></h3>
 	<h5><?= $video['date_created'] ?></h5>
+
 	<i style="font-size:1.5em;"	id="vote" data-vote='1' class="glyphicon glyphicon-star-empty"></i>
 	<i style="font-size:1.5em;"	id="vote" data-vote='2' class="glyphicon glyphicon-star-empty"></i>
 	<i style="font-size:1.5em;"	id="vote" data-vote='3' class="glyphicon glyphicon-star-empty"></i>
@@ -20,8 +21,20 @@
 		<p id="alertMessage"></p>
 	</div>
 	
+
 </section>
+
 <section class="commentary">
-	
+
+	<form action="#" method="post">
+		<label>Votre commentaire</label>
+		<textarea name="" id="" rows="3"></textarea>
+		<button class="buttons btn btn-default" type="submit">Envoyer</button>
+	</form>
+
+    <div class="comment-content">
+        <ul><!-- Comments here --></ul>
+    </div>
 </section>
+
 <?php $this->stop('main_content') ?>

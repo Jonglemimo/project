@@ -70,13 +70,14 @@ $this->start('main_content');
         
         <!-- already used email -->
         <?php if(isset($errors['email']['exist'])) : ?>
-            <p class="false">Cet email est déjà utilisé</p>
+            <p class="what">Cet email est déjà utilisé</p>
         <?php endif ?>
 
 
         <!-- PASSWORD -->
         <label for="pass1">Mot de passe</label>
-        <input class="body-inputs form-control" type="password" id="pass1" name="pass1" placeholder="Mot de passe">
+
+        <input class="body-inputs form-control" type="password" id="pass1" name="pass1">
 
         <?php if (isset($errors['empty']['pass1'])) : ?>
             <div class="what"><p><?=$errors['empty']['pass1']?></p></div>
@@ -94,7 +95,7 @@ $this->start('main_content');
 
         <!-- CONFIRM PASSWORD -->
         <label for="pass2">Confirmation du mot de passe</label>
-        <input class="body-inputs form-control" type="password" name="pass2" placeholder="Confirmation">
+        <input class="body-inputs form-control" type="password" name="pass2">
 
         <?php if (isset($errors['pass']['different'])) : ?>
             <div class="false"><p><?=$errors['pass']['different']?></p></div>

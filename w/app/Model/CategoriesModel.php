@@ -14,16 +14,15 @@ class CategoriesModel extends Model
         return $stmt->fetchAll();
     }
 
-    function getVideoByCategories($category){
-        $sql = 'SELECT title, shortTitle, url, posters.poster_xs,posters.poster_sm,posters.poster_lg
+    function getVideoByCategories($slug){
+        $sql = 'SELECT categories.name, video.title, video.shortTitle, video.url, video.description, posters.poster_xs, posters.poster_sm, posters.poster_lg
 	            FROM categories
-	            LEFT JOIN posters ON video.id = posters.id_video
-	            LEFT JOIN categoryVideo ON categories.id = categoryVideo.id_category
-	            LEFT JOIN video ON categoryVideo.id_video = video.id
-	            WHERE categories.name = :category AND encoding = 0
+	            LEFT JOIN video ON categories.id = video.id_category
+	            LEFT JOIN posters ON posters.id_video = video.id
+	            WHERE categories.slug = :slug AND video.encoding = 1
 	            ORDER BY date_created DESC';
         $stmt = $this->dbh->prepare($sql);
-        $stmt->bindParam(':category', $category);
+        $stmt->bindParam(':slug', $slug);
         $stmt->execute();
         return $stmt->fetchAll();
     }

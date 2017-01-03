@@ -32,6 +32,7 @@
 //7.0 - USER PAGE
 //7.1 - Main User page
 //7.2 - My Videos
+//7.3 - Upload Videos
 
 
 /*========  0.1 - COLORS  =========*/
@@ -115,141 +116,8 @@ html {
 }
 
 .paddingNone{
-    padding:0;
+    padding: 0;
 }
-
-.black{
-    color : black;
-}
-
-
-.progressBar{
-  display: inline-block;
-  height: 2rem;
-  width: 25rem;
-
-}
-
-#fileupload{
-	min-width: 100%;
-	min-height: 100%;
-	opacity: 0;
-	overflow: hidden;
-	position: absolute;
-	top:0;
-	right: 0;
-	filter:alpha(opacity=0);
-	cursor: pointer;
-}
-
-#uploadButton{
-	margin-top: 2rem;
-	width: 20rem;
-	height: 4rem;
-	position: relative;
-	display: inline-block;
-	background-color: #e74c3c;
-	cursor: pointer;
-	padding: 0.5rem 1rem;
-	font-weight: 700;
-	text-align: center;
-	line-height: 2.1;
-	border-radius: .4rem;
-	color:#FFF;
-	#UploadText{
-		padding-left: .5rem;
-		color:#FFF;
-	}
-
-	&:hover{
-		background-color: #c0392b;
-	}
-
-}
-
-#currentTranscoding{
-	height: 240px;
-	overflow-x: auto;
-	overflow-y: hidden;
-
-	.videoEncoding{
-		position: relative;
-		width: auto;
-		height: 100%;
-
-		.wrap-video{
-
-			width: 320px;
-			display: inline-block;
-			position: relative;
-
-			.overlay{
-				background-color: #111;
-				opacity: .9;
-				position: absolute;
-				width: 100%;
-				top:0;
-				right: 0;
-				bottom: 0;
-				z-index: 2;
-				transition: width 2s ease-in-out;
-			}
-			img{
-				position: relative;
-				z-index: 1;
-
-			}
-
-			.wrap-loader{
-				position: absolute;
-				z-index: 3;
-				left: 50%;
-				top:50%;
-				transform: translate(-25px,-25px);
-			}
-		}
-	}
-
-}
-
-
-.video {
-	.editVideo {
-		padding: 0;
-		position: absolute;
-		width: 3rem;
-		height: 3rem;
-		display: none;
-		text-align: center;
-		opacity: .8;
-		top: 2rem;
-		right: 2rem;
-	}
-
-	.deleteVideo {
-		padding: 0;
-		position: absolute;
-		width: 3rem;
-		height: 3rem;
-		display: none;
-		text-align: center;
-		opacity: .8;
-		top: 2rem;
-		right: 6rem;
-
-	}
-
-	&:hover{
-		.editVideo{
-			display: block;
-		}
-		.deleteVideo{
-			display: block;
-		}
-	}
-}
-
-.loader-circle{display:block;-webkit-animation:svg-rotate 8s linear infinite;animation:svg-rotate 8s linear infinite}.loader-circle circle{fill:transparent;stroke:#3ac39f;stroke-width:2;stroke-linecap:round;stroke-dasharray:0,150.79645%;-webkit-animation:stroke-dash 2s linear infinite,stroke-width 2s linear infinite,stroke-color 8s steps(4) infinite;animation:stroke-dash 2s linear infinite,stroke-width 2s linear infinite,stroke-color 8s steps(4) infinite}@-webkit-keyframes svg-rotate{to{-webkit-transform:rotate(360deg);transform:rotate(360deg)}}@keyframes svg-rotate{to{-webkit-transform:rotate(360deg);transform:rotate(360deg)}}@-webkit-keyframes stroke-width{0%,100%{stroke-width:0}45%,55%{stroke-width:1}50%{stroke-width:2}}@keyframes stroke-width{0%,100%{stroke-width:0}45%,55%{stroke-width:1}50%{stroke-width:2}}@-webkit-keyframes stroke-dash{0%{stroke-dasharray:0,150.79645%;stroke-dashoffset:0}50%{stroke-dasharray:150.79645%,0;stroke-dashoffset:0}100%{stroke-dasharray:150.79645%,150.79645%;stroke-dashoffset:-150.79645%}}@keyframes stroke-dash{0%{stroke-dasharray:0,150.79645%;stroke-dashoffset:0}50%{stroke-dasharray:150.79645%,0;stroke-dashoffset:0}100%{stroke-dasharray:150.79645%,150.79645%;stroke-dashoffset:-150.79645%}}@-webkit-keyframes stroke-color{from{stroke:#3ac39f}}@keyframes stroke-color{from{stroke:#3ac39f}}
 
 *,
 *:before,
@@ -304,18 +172,90 @@ a {
 	}
 }
 
+.video {
+	.editVideo {
+		padding: 0;
+		position: absolute;
+		width: 3rem;
+		height: 3rem;
+		display: none;
+		text-align: center;
+		opacity: .8;
+		top: 2rem;
+		right: 2rem;
+	}
+
+	.deleteVideo {
+		padding: 0;
+		position: absolute;
+		width: 3rem;
+		height: 3rem;
+		display: none;
+		text-align: center;
+		opacity: .8;
+		top: 2rem;
+		right: 6rem;
+
+	}
+
+	&:hover{
+		.editVideo{
+			display: block;
+		}
+		.deleteVideo{
+			display: block;
+		}
+	}
+}
+
+#uploadButton {
+	margin-top: 2rem;
+	width: 20rem;
+	height: 4rem;
+	position: relative;
+	display: inline-block;
+	background-color: #5DB804;
+	cursor: pointer;
+	padding: 0.5rem 1rem;
+	font-weight: 700;
+	text-align: center;
+	line-height: 2.1;
+	border-radius: .4rem;
+	border: 1px solid @grey5;
+	color: @white;
+	transition:.3s;
+
+	#UploadText{
+		padding-left: .5rem;
+		color:#FFF;
+	}
+
+	&:hover{
+		background-color: @correct;
+	}
+}
+
+
+
 /*=======  1.2 - Inputs  =======*/
 
 .body-inputs {
-	margin-bottom: 15px;
-	//Input widths for mobile
-	@media (max-width: 768px) {
-		width: 100%;
+
+		&.form-control {
+
+		&:focus {
+		outline: 0;
+		border-color: @turquoise3;
+		box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(58,195,159,.6);
+		}
 	}
+
+	margin-bottom: 15px;
+	width: 100%;
 
 	//Input widths for computers
 	@media (min-width: 768px) {
-		width: 400px;
+		width: 600px;
 	}
 }
 
@@ -344,6 +284,95 @@ span, label {
 	max-height: 180px;
 	max-width: 240px;
 }
+
+.progressBar{
+  display: inline-block;
+  height: 2rem;
+  width: 25rem;
+}
+
+#fileupload{
+	min-width: 100%;
+	min-height: 100%;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	top: 0;
+	right: 0;
+	filter: alpha(opacity=0);
+	cursor: pointer;
+}
+
+#currentTranscoding{
+	height: 240px;
+	overflow-x: auto;
+	overflow-y: hidden;
+
+	.videoEncoding{
+		position: relative;
+		width: auto;
+		height: 100%;
+
+		.wrap-video{
+
+			width: 320px;
+			display: inline-block;
+			position: relative;
+
+			.overlay{
+				background-color: #111;
+				opacity: .9;
+				position: absolute;
+				width: 100%;
+				top:0;
+				right: 0;
+				bottom: 0;
+				z-index: 2;
+				transition: width 2s ease-in-out;
+			}
+
+			img{
+				position: relative;
+				z-index: 1;
+
+			}
+
+			.wrap-loader{
+				position: absolute;
+				z-index: 3;
+				left: 50%;
+				top:50%;
+				transform: translate(-25px,-25px);
+			}
+		}
+	}
+}
+
+.loader-circle {
+	display:block;
+	-webkit-animation:svg-rotate 8s linear infinite;
+	animation:svg-rotate 8s linear infinite
+}
+
+.loader-circle circle {
+	fill: transparent;
+	stroke: @turquoise2;
+	stroke-width: 2;
+	stroke-linecap: round;
+	stroke-dasharray: 0,150.79645%;
+	-webkit-animation: stroke-dash 2s linear infinite,stroke-width 2s linear infinite,stroke-color 8s steps(4) infinite;
+	animation: stroke-dash 2s linear infinite,stroke-width 2s linear infinite,stroke-color 8s steps(4) infinite}@-webkit-keyframes svg-rotate{to {
+		-webkit-transform:rotate(360deg);
+		transform:rotate(360deg)} 
+		}@keyframes svg-rotate {to {
+			-webkit-transform:rotate(360deg);
+		transform:rotate(360deg)}}@-webkit-keyframes 
+		stroke-width{0%,100%{stroke-width:0}45%,55%{stroke-width:1}50%{stroke-width:2}}@keyframes 
+		stroke-width{0%,100%{stroke-width:0}45%,55%{stroke-width:1}50%{stroke-width:2}}@-webkit-keyframes 
+		stroke-dash{0%{stroke-dasharray:0,150.79645%;stroke-dashoffset:0}50%{stroke-dasharray:150.79645%,0;stroke-dashoffset:0}100%{stroke-dasharray:150.79645%,150.79645%;
+		stroke-dashoffset:-150.79645%}}@keyframes stroke-dash{0%{stroke-dasharray:0,150.79645%;stroke-dashoffset:0}50%{stroke-dasharray:150.79645%,0;stroke-dashoffset:0}100%{stroke-dasharray:150.79645%,150.79645%;
+		stroke-dashoffset:-150.79645%}}@-webkit-keyframes stroke-color{from{stroke:@turquoise2}}@keyframes stroke-color{from{stroke:@turquoise2}}
+
 
 /*====================================
 =            2.0 - HEADER            =
@@ -430,6 +459,8 @@ header nav.header-bar {
 /*======  2.2 - Navigation Bar ======*/
 
 .sidenav {
+	background-color: @grey2;
+	border-right: 1px solid @grey3;
     height: 100%;
     position: fixed;
 	z-index: 1020;
@@ -438,8 +469,14 @@ header nav.header-bar {
     transition: 0.4s;
     overflow-x: hidden;
     width: 0px;
-	background-color: @grey2;
-	border-right: 1px solid @grey3;
+
+    &.open {
+    	width: 200px;
+    }
+
+	@media (min-width: 768px) {
+		width: 200px;
+	}
 
     .buttons {
     	margin-bottom: 10px;
@@ -488,19 +525,6 @@ header nav.header-bar {
     }
 }
 
-//Nav bar disappearing for mobile
-@media (max-width: 768px) {
-  .sidenav {
-    width: 0;
-  }
-}
-
-//Nav appearing for computers
-@media (min-width: 768px) {
-  .sidenav {
-    width: 200px;
-  }
-}
 
 /*==================================
 =            3.0 - BODY            =
@@ -509,24 +533,14 @@ header nav.header-bar {
 /*=====  3.1 - Body Padding  ======*/
 
 .body-padding {
-	padding-top: 70px;
-	padding-right: 20px;
-	padding-bottom: 60px;
+	padding: 70px 20px 60px 20px;
+
+	//Left padding body and footer for computers
+	@media (min-width: 768px) {
+    	padding-left: 220px;
+	}
 }
 
-//Left padding body and footer for mobile
-@media (max-width: 768px) {
-  .body-padding {
-    padding-left: 20px;
-  }
-}
-
-//Left padding body and footer for computers
-@media (min-width: 768px) {
-  .body-padding {
-    padding-left: 220px;
-  }
-}
 
 /*=========  3.2 - Titles  =========*/
 
@@ -620,6 +634,10 @@ header nav.header-bar {
 /*========  5.4 - Sign in Success  ========*/
 
 .signin-success {
+	label {
+		color: @white;
+	}
+
 	p {
 		display: inline-block;
 	}
@@ -680,6 +698,14 @@ header nav.header-bar {
 	border: 1px solid @grey2;
 	margin: 15px 0px;
 
+	h3 {
+		display: inline-block;
+	}
+
+	.buttons.btn {
+		margin-top: 17px;
+	}
+
 	div {
 		text-align: center;
 		a {
@@ -687,6 +713,12 @@ header nav.header-bar {
 		margin: 15px 0px;
 		left: 50%;
 		}
+	}
+
+	.no-content {
+		display: inline-block;
+		margin-left: 15px;
+		margin-bottom: 0px;
 	}
 }
 
@@ -719,5 +751,42 @@ header nav.header-bar {
 			margin-right: 5px;
 			color: @grey6;
 		}
+	}
+}
+
+/*=========  7.3 - Upload Videos  =========*/
+
+.upload-video-back {	
+	display: inline-block;
+	margin-bottom: 10px;
+}
+
+#listItems {
+	.upload-name {
+		color: @white;
+		font-weight: @bold-main-font;
+	}
+
+	p {
+		display: inline-block;
+		margin: 0px 5px;
+	}
+
+	button {
+		margin-left: 10px;
+	}
+
+	.progress {
+		margin: 15px 0px;
+		width: 100%;
+
+		//Input widths for computers
+		@media (min-width: 768px) {
+			width: 600px;
+		}
+	}
+
+	.progress-bar-success {
+		background-color: @correct;
 	}
 }

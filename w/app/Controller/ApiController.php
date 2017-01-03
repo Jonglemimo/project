@@ -4,8 +4,7 @@ namespace Controller;
 use \Model\ApiModel;
 
 
-class ApiController
-{
+class ApiController {
     private $transcodeResult = false;
     private $request     = false;
     private $usersFolder = false;
@@ -15,8 +14,7 @@ class ApiController
 
 
 
-    function __construct()
-    {
+    function __construct() {
         $this->request = new ApiModel();
         $os = new \Tivie\OS\Detector();
 
@@ -27,33 +25,33 @@ class ApiController
         $this->usersFolder = dirname(dirname(dirname(__FILE__))).$ds.'public'.$ds.'assets'.DIRECTORY_SEPARATOR.'users'.$ds;
 
 
-        if($os->getType() == 33){
+        if($os->getType() == 33) {
             //OSX
             $this->ffmpegBin = $ffmpegPath.$ds.'osx'.$ds.'ffmpeg';
             $this->ffprobeBin = $ffmpegPath.$ds.'osx'.$ds.'ffprobe';
-        }else if($os->getType() == 10){
-            if(PHP_INT_SIZE == 8){
+        } else if($os->getType() == 10) {
+            if(PHP_INT_SIZE == 8) {
                 // Windows 64
                 $this->ffmpegBin = $ffmpegPath.$ds.'windows'.$ds.'64'.$ds.'ffmpeg.exe';
                 $this->ffprobeBin = $ffmpegPath.$ds.'windows'.$ds.'64'.$ds.'ffprobe.exe';
 
-            }else{
+            } else {
                 // Windows 32
                 $this->ffmpegBin = $ffmpegPath.$ds.'windows'.$ds.'32'.$ds.'ffmpeg.exe';
                 $this->ffprobeBin = $ffmpegPath.$ds.'windows'.$ds.'32'.$ds.'ffprobe.exe';
             }
-        }else{
+        } else {
             //unknown
         }
     }
 
-    function transcode(){
+    function transcode() {
 
 
-        if(!$this->request->checkCurrentTranscoding()){
+        if(!$this->request->checkCurrentTranscoding()) {
             $this->transcodeResult = $this->request->getNextNotTranscoded();
 
-            if($this->transcodeResult){
+            if($this->transcodeResult) {
 
                 $this->request->setTable('video');
                 $this->request->update([
@@ -64,6 +62,7 @@ class ApiController
                 if(!$this->ffprobeBin || !$this->ffmpegBin){
                     return false;
                 }
+
                 $ffmpeg = \FFMpeg\FFMpeg::create(array(
                     'ffmpeg.binaries' => $this->ffmpegBin,
                     'ffprobe.binaries' => $this->ffprobeBin,
@@ -114,7 +113,7 @@ class ApiController
         }
     }
 
-    public function getPercentage($id){
+    public function getPercentage($id) {
 
         $this->request->setTable('video');
         $video = $this->request->find($id);
@@ -123,7 +122,7 @@ class ApiController
             $percentage = 0;
             if($video['encoding'] == 1){
                 $percentage = 100;
-            }else if ($video['encoding'] == 2){
+            } else if ($video['encoding'] == 2){
                 $this->request->setTable('transcode');
                 $this->request->setPrimaryKey('id_video');
 
@@ -137,14 +136,13 @@ class ApiController
                 'id_video'   => $id,
                 'percentage' => $percentage
             ));
-        }else{
+        } else {
             $controller = new \W\Controller\Controller();
             $controller->showNotFound();
         }
     }
 
-    public function deleteTokens(){
-
+    public function deleteTokens() {
 
         $this->request->setTable('recoverytokens');
         $dateTokens = $this->request->findAll();
