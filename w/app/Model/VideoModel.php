@@ -2,17 +2,19 @@
 
 namespace Model;
 
+use \PDO;
 use \W\Model\Model;
 
 class VideoModel extends Model {
 
 	function getVideos() {
 
-		$sql = 'SELECT *, SUM(stars)/ COUNT(*) as note
+		$sql = 'SELECT *,video.id_user as userId , SUM(stars)/ COUNT(*) as note
 				FROM votesusers
 				INNER JOIN video
-				WHERE video.id = id_video
-				GROUP BY id_video
+				INNER JOIN posters
+				WHERE video.id = votesusers.id_video
+				GROUP BY votesusers.id_video
 				ORDER BY note DESC, title';
 
 		$stmt = $this->dbh->prepare($sql);
@@ -23,12 +25,13 @@ class VideoModel extends Model {
 
 	function getVideosSearch($search){
 
-		$sql = 'SELECT *, SUM(stars)/ COUNT(*) as note
+		$sql = 'SELECT *,video.id_user as userId , SUM(stars)/ COUNT(*) as note
 				FROM votesusers
 				INNER JOIN video
-				WHERE video.id = id_video 
+				INNER JOIN posters
+				WHERE video.id = votesusers.id_video 
 				AND (video.description LIKE :search OR video.title LIKE :search)
-				GROUP BY id_video
+				GROUP BY votesusers.id_video
 				ORDER BY note DESC, title';
 		$search = '%'.$search.'%';
 		$stmt = $this->dbh->prepare($sql);
@@ -39,10 +42,11 @@ class VideoModel extends Model {
 
 
 	function getVideo($url){
-		$sql = 'SELECT video.url ,video.title, video.description , video.date_created, video.poster, users.username, SUM(stars)/ COUNT(*) as note
+		$sql = 'SELECT video.url ,video.title, video.description , video.date_created, video.shortTitle, users.username, video.id_user as userId , posters.poster_lg, SUM(stars)/ COUNT(*) as note
 				FROM votesusers
 				INNER JOIN video
 				INNER JOIN users
+				INNER JOIN posters
 				WHERE video.shortTitle = :url 
 				AND video.id_user = users.id';
 		$stmt = $this->dbh->prepare($sql);
@@ -101,5 +105,48 @@ class VideoModel extends Model {
         return $stmt->fetch();
     }
 
+    public function findVideoByShort($shortTitle){
+    	$sql = 'SELECT * , video.id as idVideo 
+    			FROM video 
+    			WHERE shortTitle = :short';
+    	$stmt = $this->dbh->prepare($sql);
+    	$stmt->bindParam(':short' ,$shortTitle);
+    	$stmt->execute();
+    	return $stmt->fetch();
+    }
 
+    public function voteExist($idUser, $idVideo){
+    	$sql = 'SELECT * 
+    			FROM votesusers
+    			WHERE id_users = :idUser
+    			AND id_video = :idVideo';
+    	$stmt = $this->dbh->prepare($sql);
+		$stmt->bindParam(':idUser' , $idUser );
+		$stmt->bindParam(':idVideo' , $idVideo );
+		$stmt->execute();
+		return $stmt->fetch();
+    }
+
+    public function vote($idUser , $idVideo, $stars){
+    	$sql = "INSERT INTO votesusers (id, stars, id_users, id_video)
+    			VALUES (NULL ,?, ? , ? )";
+		$stmt = $this->dbh->prepare($sql);
+		$stmt->bindValue(1 , $stars );
+		$stmt->bindValue(2 , $idUser );
+		$stmt->bindValue(3 , $idVideo );
+		$stmt->execute();
+		return ;
+    }
+
+    public function updateVote($idUser , $idVideo, $stars){
+    	$sql = "UPDATE votesusers 
+    			SET stars = :stars
+    			WHERE id_users = :idUser 
+    			AND id_video = :idVideo";
+    	$stmt = $this->dbh->prepare($sql);
+		$stmt->bindValue(':stars' , $stars );
+		$stmt->bindValue(':idUser' , $idUser );
+		$stmt->bindValue(':idVideo' , $idVideo );
+		$stmt->execute();
+    }
 }

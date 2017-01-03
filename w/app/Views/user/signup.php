@@ -79,7 +79,6 @@ $this->start('main_content');
 
         <input class="body-inputs form-control" type="password" id="pass1" name="pass1">
 
-
         <?php if (isset($errors['empty']['pass1'])) : ?>
             <div class="what"><p><?=$errors['empty']['pass1']?></p></div>
         <?php endif; ?>

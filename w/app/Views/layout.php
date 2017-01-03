@@ -131,6 +131,7 @@
     <input id="category" type="hidden" value="<?= $this->url('categories_get')?>">
 	<input type="hidden" id="watch_route" value="<?= $this->url('watch') ?>">
 	<input type="hidden" id="ajax_search_route" value="<?= $this->url('search') ?>">
+    <input type="hidden" id="vote_route" value="<?= $this->url('vote') ?>">
 
 	<section class="body body-padding">
 		<h1><?= $this->e($title) ?></h1>
