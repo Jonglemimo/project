@@ -1,5 +1,5 @@
 <?php
-$this->layout('layout', ['title' => 'Ma page']);
+$this->layout('layout', ['title' => '']);
 $this->start('main_content');
 ?>
 
@@ -13,14 +13,15 @@ $this->start('main_content');
 
     <div>
         <p class="username"><?= $_SESSION['user']['username'] ?></p>
-        <a href="<?=$this->url('user_info')?>">Mes infos</a><br>
-        <a href="<?=$this->url('upload_form')?>">Ajouter une vidéo</a>
+        <a href="<?=$this->url('user_info')?>">Mes infos</a>
     </div>
 </div>
 
 <section class="container-fluid video-container">
 
-    <h3>Mes dernières vidéos</h3>
+    <h3>Mes vidéos</h3>
+
+    <a class="buttons btn btn-default pull-right" href="<?=$this->url('upload_form')?>">Ajouter une vidéo</a>
 
     <?php if(is_array($videos)):?>
 
@@ -39,20 +40,20 @@ $this->start('main_content');
                     <p><?= substr($video['description'], 0, 100); if(strlen($video['description']) > 100){ echo " [...]";} ?></p>
                 </div>
             <?php endforeach;?>
-
         </div>
 
     <div>
         <a href="<?=$this->url('user_video')?>">Voir plus</a>
     </div>
 
-    <?php else: echo $videos ?>
+    <?php else :?>
+        <p><?= $videos ?></p>
     <?php endif; ?>  
 </section>
 
 <section class="container-fluid comment-container">
 
-    <h3>Mes derniers commentaires</h3>
+    <h3>Mes commentaires</h3>
 
     <?php if(is_array($comments)):?>
         <?php foreach ($comments as $comment):?>
@@ -69,10 +70,10 @@ $this->start('main_content');
             </div>
         <?php endforeach;?>
 
-
     <div>
         <a href="<?=$this->url('user_comment')?>" class = "col-md-offset-7">Voir plus</a>
     </div>
+
     <?php else :?>
         <p><?= $comments ?></p>
     <?php endif; ?>
@@ -80,6 +81,7 @@ $this->start('main_content');
 
 <?php $this->stop('main_content') ?>
 <?php $this->start('script')?>
+
 <script src="<?=$this->assetUrl('js/edit-video.js')?>"></script>
 <script src="<?=$this->assetUrl('js/bootstrap-confirmation.min.js')?>"></script>
 

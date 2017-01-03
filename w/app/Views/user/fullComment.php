@@ -20,8 +20,8 @@ $this->start('main_content');
             </div>
 
         <?php endforeach;?>
-        <?php else: ?>
-        <p><?=$comments?></p>
+    <?php else: ?>
+        <p class="no-content"><?=$comments?></p>
     <?php endif; ?>
 </section>
 
