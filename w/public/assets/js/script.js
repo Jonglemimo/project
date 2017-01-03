@@ -31,7 +31,7 @@ jQuery(document).ready(function() {
 	$('#btnSearch').on('click', function(e){
 		e.preventDefault();
 		$.ajax({
-			url: $('#ajax_search_route').val() ,
+			url: $('#ajax_search_route').val(),
 			type: 'POST',
 			dataType: 'html',
 			data: {
@@ -96,7 +96,6 @@ jQuery(document).ready(function() {
 			console.log(r.responseText);
 		})
 		.always(function(r) {
-			debug(r);
 			if (r.change == true) {
 				alreadyVoted(r);
 			} else {
@@ -105,8 +104,26 @@ jQuery(document).ready(function() {
 		});
 	});
 
-	getVote();
+	$(document).on('click', '#modifyVote', function () {
+		$.ajax({
+			url: $('#vote_update_route').val(),
+			type: 'POST',
+			dataType: 'json',
+			data: {
+				shortTitle : $('#mainVideo').data('stitle'),
+				stars : $('#modifyVote').data('vote') ,
+			},
+		}).always(function(r) {
+			getVote();
+			hideAlert();
+		});
+	});
 
+	$(document).on('click', '#cancel', function () {
+		hideAlert();
+	});
+
+	getVote();
 
 	function unColorStar(nb){
 		if (nb < 6) {
@@ -125,7 +142,9 @@ jQuery(document).ready(function() {
 	}
 
 	function alreadyVoted(r){
-		var btnVote = '<p id="alertMessage"></p><button type="button" class="btn btn-default">Modifier</button> <button type="button" class="btn btn-default">Annuler</button>';
+		var btnVote = '<p id="alertMessage"></p>';
+		btnVote += '<button id="modifyVote" type="button" data-vote="'+r.vote+'" class="btn btn-default">Modifier</button>';
+		btnVote += '<button id="cancel" type="button" class="btn btn-default">Annuler</button>';
 		$('#alertVote').html(btnVote);
 		messageAlert(r.response);
 		showAlert();

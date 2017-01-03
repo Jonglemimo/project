@@ -137,4 +137,16 @@ class VideoModel extends Model {
 		$stmt->execute();
 		return ;
     }
+
+    public function updateVote($idUser , $idVideo, $stars){
+    	$sql = "UPDATE votesusers 
+    			SET stars = :stars
+    			WHERE id_users = :idUser 
+    			AND id_video = :idVideo";
+    	$stmt = $this->dbh->prepare($sql);
+		$stmt->bindValue(':stars' , $stars );
+		$stmt->bindValue(':idUser' , $idUser );
+		$stmt->bindValue(':idVideo' , $idVideo );
+		$stmt->execute();
+    }
 }

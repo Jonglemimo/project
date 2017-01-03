@@ -31,6 +31,7 @@
         ['GET|POST',            '/mapage/upload',                  'Video#uploadForm',             'upload_form'],
         ['GET|POST',            '/vote',                           'Video#vote',                   'vote'],
         ['GET|POST',            '/getVote',                        'Video#getVote',                'get_vote'],
+        ['GET|POST',            '/updateVote',                     'Video#updateVote',             'update_vote'],
 
 
         //Catégories

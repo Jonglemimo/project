@@ -2,6 +2,7 @@
 
 <?php $this->start('main_content') ?>
 <input type="hidden" id="get_vote_route" value="<?= $this->url('get_vote') ?>">
+<input type="hidden" id="vote_update_route" value="<?= $this->url('update_vote') ?>">
 <section id="watch">
 <?php
 	$url = $this->assetUrl('users/'.$video['userId'].'/'.$video['shortTitle'] .'/'.$video['url']);

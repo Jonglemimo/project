@@ -433,7 +433,7 @@ class VideoController extends Controller
                 $idVideo = $vote->findVideoByShort($_POST['shortTitle']);
                 $voteExist = $vote->voteExist($_SESSION['user']['id'], $idVideo['idVideo']);
                 if (count($voteExist) > 1 ) {
-                    $this->showJson(['response' => 'Vous avez déjà voté pour cette vidéo' ,'change' => true]);
+                    $this->showJson(['response' => 'Vous avez déjà voté pour cette vidéo' ,'change' => true, 'vote' => $_POST['stars']]);
                 } else {
                     $vote->vote($_SESSION['user']['id'] , $idVideo['idVideo'] , $_POST['stars']);
                     $this->showJson(['response' => 'Votre vote a bien été enregistré' , 'change' => false]);
@@ -445,5 +445,12 @@ class VideoController extends Controller
             $this->showJson(['response' => 'Veuillez vous connecter' , 'change' => false]);
         }
         
+    }
+
+    public function updateVote(){
+        $vote = new VideoModel();
+        $idVideo = $vote->findVideoByShort($_POST['shortTitle']);
+        $vote->updateVote($_SESSION['user']['id'] , $idVideo['idVideo'] , $_POST['stars']);
+        $this->showJson(['response' => 'Modification de vote enregistrée']);
     }
 }
