@@ -80,6 +80,10 @@ $this->start('main_content');?>
             <input class="btn btn-default" type="file" name="picture">
         </div>
 
+        <?php if (isset($errors['picture'])) : ?>
+            <div class="false"><p><?=$errors['picture']?></p></div>
+        <?php endif; ?>
+
         <!-- SENDING BUTTON -->
         <button class="buttons btn btn-default" type="submit" name="modifyInfo">Valider</button>
     </form>
