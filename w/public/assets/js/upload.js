@@ -19,12 +19,13 @@ var upload = {
             file = upload.files[key].files[0];
             html += '<li class="list-unstyled" data-name="'
                 + file.name + '"data-index="'
-                + key + '">' + '<span class="upload-name"> Nom du fichier :</span><p>'
+                + key + '">' + '<div class="upload-line"><span class="upload-name"> Nom du fichier :</span><p>'
                 + file.name + '</p><span class="upload-name">| Type du fichier :</span><p>'
                 + file.type +'</p><span class="upload-name">| Taille du fichier :</span><p> '
                 + parseFloat(file.size /1024/1024).toFixed(2) + 'mo</p>'
-                + '<button class="buttons btn btn-default removeItem"><i class="glyphicon glyphicon-trash"></i></button><div class="progress hide"><div class="progress-bar progress-bar-success progress-bar-striped progressBar" role="progressbar"></div></div></li>';
+                + '<button class="buttons btn btn-default removeItem"><i class="glyphicon glyphicon-trash"></i></button></div><div class="progress hide"><div class="progress-bar progress-bar-success progress-bar-striped progressBar" role="progressbar"></div></div></li>';
         };
+
 
         $('#listItems').html(html).removeClass('hide');
     },
@@ -130,7 +131,7 @@ $(function () {
         $('#submitUploadForm').removeClass('hide');
         $('#submitBtn').addClass('hide');
 
-        var index = parseInt($(this).parent().attr('data-index'));
+        var index = parseInt($(this).parent().parent().attr('data-index'));
         if(!isNaN(index)){
             upload.files.splice(index,1);
             upload.process();

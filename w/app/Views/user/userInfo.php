@@ -79,8 +79,8 @@ $this->start('main_content');
         <?php endif; ?>
 
         <div class="form-group">
-            <label for="picture">Avatar : </label>
-            <input class="btn btn-default" type="file" name="picture">
+            <label for="picture">Avatar</label>
+            <input type="file" name="picture">
         </div>
 
         <?php if (isset($errors['picture'])) : ?>
