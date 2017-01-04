@@ -9,14 +9,12 @@ class VideoModel extends Model {
 
 	function getVideos() {
 
-		$sql = 'SELECT *,video.id_user as userId , SUM(stars)/ COUNT(*) as note
-				FROM votesusers
-				INNER JOIN video
+		$sql = 'SELECT *,video.id_user as userId 
+				FROM video
 				INNER JOIN posters
-				WHERE video.id = votesusers.id_video
-				GROUP BY votesusers.id_video
-				ORDER BY note DESC, title';
-
+				WHERE video.id = posters.id_video
+				AND video.encoding = 1
+				ORDER BY date_created DESC, title';
 		$stmt = $this->dbh->prepare($sql);
 		$stmt->execute();
 		return $stmt->fetchAll();
@@ -25,14 +23,13 @@ class VideoModel extends Model {
 
 	function getVideosSearch($search){
 
-		$sql = 'SELECT *,video.id_user as userId , SUM(stars)/ COUNT(*) as note
-				FROM votesusers
-				INNER JOIN video
+		$sql = 'SELECT *,video.id_user as userId 
+				FROM video
 				INNER JOIN posters
-				WHERE video.id = votesusers.id_video 
+				WHERE video.id = posters.id_video
+				AND video.encoding = 1
 				AND (video.description LIKE :search OR video.title LIKE :search)
-				GROUP BY votesusers.id_video
-				ORDER BY note DESC, title';
+				ORDER BY date_created DESC, title';
 		$search = '%'.$search.'%';
 		$stmt = $this->dbh->prepare($sql);
 		$stmt->bindParam(':search' , $search);
@@ -43,7 +40,7 @@ class VideoModel extends Model {
 
 	function getVideo($url){
 		$sql = 'SELECT video.url ,video.title, video.description , video.date_created, video.shortTitle, users.username, video.id_user as userId , posters.poster_lg
-				FROM  video
+				FROM video
 				INNER JOIN users
 				INNER JOIN posters ON posters.id_video = video.id
 				WHERE video.shortTitle = :url 
@@ -147,5 +144,28 @@ class VideoModel extends Model {
 		$stmt->bindValue(':idUser' , $idUser );
 		$stmt->bindValue(':idVideo' , $idVideo );
 		$stmt->execute();
+    }
+
+    public function getNote($idVideo){
+    	$sql = 'SELECT *, SUM(stars)/ COUNT(*) as note
+    			FROM votesusers
+    			WHERE id_video = :idVideo
+    			GROUP BY id_video';
+    	$stmt = $this->dbh->prepare($sql);
+    	$stmt->bindValue(':idVideo' , $idVideo );
+    	$stmt->execute();
+    	$result = $stmt->fetch();
+    	return $result['note'];
+    }
+
+    public function updateNote($idVideo){
+    	$note = $this->getNote($idVideo);
+    	$sql = 'UPDATE video 
+    			SET note = :note
+    			WHERE video.id = :idVideo';
+    	$stmt = $this->dbh->prepare($sql);
+    	$stmt->bindValue(':note' , $note );
+    	$stmt->bindValue(':idVideo' , $idVideo );
+    	$stmt->execute();
     }
 }
