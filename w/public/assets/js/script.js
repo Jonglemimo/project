@@ -81,12 +81,6 @@ jQuery(document).ready(function() {
         $('.categories').html('Il n\'y a aucune catégories');
     });
 
-	$(document).on('click','#videoInfoSmall', function(){
-		var urlVideo = $(this).children('img').data('shorttitle');
-		var url = $('#watch_route').val();
-		url += "?video=" + urlVideo;
-		window.location.replace(url);
-	});
 
 	$(document).on({
 		mouseenter: function(){

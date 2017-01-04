@@ -239,8 +239,20 @@ class VideoController extends Controller {
         }
     }
 
-    public function watch() {
-        if (isset($_GET['video'])) {
+    public function watch($shortTitle) {
+        if(isset($shortTitle)){
+            $video = $this->videoModel->getVideo($shortTitle);
+            if(isset($video) && !empty($video)){
+                $this->show('video/watch', ['video' => $video]);
+            }else{
+                $this->redirectToRoute('default_home');
+            }
+        }else{
+            $this->redirectToRoute('default_home');
+        }
+
+
+/*        if (isset($_GET['video'])) {
             $url = $_GET['video'];
             //Tentative de vérification
 
@@ -251,7 +263,7 @@ class VideoController extends Controller {
             }
         } else {
             $this->redirectToRoute('default_home');
-        }
+        }*/
     }
 
 
