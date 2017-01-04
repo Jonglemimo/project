@@ -1,11 +1,10 @@
 <?php
-$this->layout('layout', ['title' => 'Mes vidéos']);
+$this->layout('layout', ['title' => 'Mes vidéos','categories' => $categories]);
 $this->start('main_content');
 ?>
 
 <section class="container-fluid main-video-container">
     <?php if(is_array($videos)):?>
-
         <div class="row col-md-12">
             <?php foreach ($videos as $video):?>
                 <div class="col-md-4">
@@ -31,6 +30,6 @@ $this->start('main_content');
 
 <?php $this->stop('main_content');?>
 <?php $this->start('script')?>
+<script src="<?=$this->assetUrl('js/bootstrap-confirmation.min.js')?>"></script>
 <script src="<?=$this->assetUrl('js/edit-video.js')?>"></script>
-
 <?php $this->stop('script')?>

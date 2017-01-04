@@ -1,6 +1,6 @@
 <?php
 
-$this->layout('layout', ['title' => 'Inscription réussie !']);
+$this->layout('layout', ['title' => 'Inscription réussie !','categories' => $categories]);
 $this->start('main_content') ?>
 
 <section class="signin-success">

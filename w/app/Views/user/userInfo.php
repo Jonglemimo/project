@@ -1,5 +1,5 @@
 <?php
-$this->layout('layout', ['title' => 'Modifier vos informations']);
+$this->layout('layout', ['title' => 'Modifier vos informations','categories' => $categories]);
 $this->start('main_content');
 ?>
 

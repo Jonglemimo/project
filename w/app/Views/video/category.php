@@ -1,5 +1,5 @@
 
-<?php $this->layout('layout',  ['title' => 'Catégorie : '.$videosByCategory[0]['name']  ]);
+<?php $this->layout('layout',  ['title' => 'Catégorie : '.$videosByCategory[0]['name'],'categories' => $categories  ]);
 
 
 $this->start('main_content');
@@ -10,12 +10,12 @@ $this->start('main_content');
 
 <section class="container-fluid main-video-container">
     <?php if(isset($videosByCategory) && count($videosByCategory) > 0):?>
-        <div class="row col-md-12 lastest-video">
+        <div class="row col-md-12">
             <?php foreach ($videosByCategory as $video): ?>
                 <div class="col-md-4">
                     <div class="video">
                         <a href="<?=$this->url('watch',['shortTitle' => $video['shortTitle']])?>">
-                            <img class="video-medium" src="<?=$this->assetUrl('users'.DIRECTORY_SEPARATOR.$_SESSION['user']['id'].DIRECTORY_SEPARATOR.$video['shortTitle'].DIRECTORY_SEPARATOR.$video['poster_sm']) ?>" alt="<?=$video['title']?>"></img>
+                            <img class="video-medium" src="<?=$this->assetUrl('users'.DIRECTORY_SEPARATOR.$video['id_user'].DIRECTORY_SEPARATOR.$video['shortTitle'].DIRECTORY_SEPARATOR.$video['poster_sm']) ?>" alt="<?=$video['title']?>"></img>
                     </div>
                     <h4><?=$video['title'] ?></h4>
                     </a>

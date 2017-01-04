@@ -2,12 +2,12 @@
 
 namespace Controller;
 
-use W\Controller\Controller;
 use \Model\UsersModel;
+use Services\PhpMailerService;
 use W\Security\AuthentificationModel;
 use Services\ImageManagerService;
 
-class UserController extends Controller {
+class UserController extends \Controller\DefaultController {
 
     private $usersFolder = false;
     private $uploadTmp   = false;
@@ -510,4 +510,60 @@ class UserController extends Controller {
         return $string;
     }
 
+    public function contact(){
+        if($this->authModel->getLoggedUser()){
+           if(isset($_POST['contact'])){
+             $returnFormContact = $this->validateContact($_POST['contact']);
+
+             if(count($returnFormContact['errors']) == 0){
+
+                $this->send($returnFormContact['subject'],$returnFormContact['content']);
+
+             }else{
+                 $this->show('user/contact', ['errors' => $returnFormContact['errors']]);
+             }
+           }else{
+               $this->show('user/contact');
+           }
+        }else{
+            $this->redirectToRoute('user_login');
+        }
+    }
+
+    private function validateContact(){
+
+        $errors = array();
+
+        if(!empty($_POST['subject'])){
+            $subject = trim($_POST['subject']);
+            $subject = htmlspecialchars($subject);
+        }else{
+            $errors['subject']['empty'] = 'Votre sujet ne peut pas être vide';
+        }
+
+        if(!empty($_POST['content'])){
+            $content = trim($_POST['content']);
+            $content = htmlspecialchars($content);
+
+        }else{
+            $errors['content']['empty'] = 'Votre message ne peut pas être vide';
+        }
+
+        return array('errors' => $errors, 'subject' => isset($subject)? $subject : null, 'content' => isset($content)? $content : null);
+    }
+
+    private function send($subject, $content){
+        $mail = new PhpMailerService();
+        $this->userModel->setTable('users');
+        $user = $this->userModel->find($_SESSION['user']['id']);
+        $subject = 'Tutomotion : '.$subject;
+        $bodyHtml = 'Bonjour, <br>'.$user['firstname'].' '.$user['lastname'].' (' .ucfirst($user['username']). ') vous a envoyé un email : <br><br> '.$content. '<br><br>Voici l\'adresse mail de '.$user['firstname']. ' '.$user['lastname'] .' : '.$user['email'] ;
+        $bodyPlain = 'Bonjour, '.$user['firstname'].' '.$user['lastname'].' (' .ucfirst($user['username']). ') vous a envoyé un email :  '.ucfirst($content). ' Voici l\'adresse mail de '.$user['firstname']. ' '.$user['lastname'] .' : '.$user['email'] ;
+        if($mail->sendMail('victor.tarrieu@yahoo.fr', $subject, $bodyHtml, $bodyPlain)){
+            $this->show('user/contact', ['success' => 'Votre message a bien été envoyé']);
+        }else{
+            $this->show('user/contact', ['fail' => 'il y a eu un problème lors de l\'envoi de votre message]']);
+
+        }
+    }
 }

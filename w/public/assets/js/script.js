@@ -47,17 +47,6 @@ jQuery(document).ready(function() {
 
 	});
 
-	$.ajax({
-		url : $('#category').val(),
-		type : 'POST',
-		dataType : 'html',
-	}).done( function (r) {
-		$('.categories').html(r);
-    }).fail(function (r) {
-        $('.categories').html('Il n\'y a aucune catégories');
-    });
-
-
 	$(document).on({
 		mouseenter: function(){
 			var nb = $(this).data('vote');

@@ -1,5 +1,5 @@
 <?php
-$this->layout('layout', ['title' => 'Réinitialiser votre mot de passe']);
+$this->layout('layout', ['title' => 'Réinitialiser votre mot de passe','categories' => $categories]);
 $this->start('main_content');
 ?>
 

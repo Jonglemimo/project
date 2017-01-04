@@ -1,4 +1,4 @@
-<?php $this->layout('layout', ['title' => $video['title']]) ?>
+<?php $this->layout('layout', ['title' => $video['title'],'categories' => $categories]) ?>
 
 <?php $this->start('main_content') ?>
 <input type="hidden" id="get_vote_route" value="<?= $this->url('get_vote') ?>">

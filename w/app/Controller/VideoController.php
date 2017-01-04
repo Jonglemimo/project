@@ -2,14 +2,13 @@
 
 namespace Controller;
 
-use W\Controller\Controller;
 use Model\VideoModel;
 use Services\ImageManagerService;
 use Services\HelperService;
 use \Model\CategoriesModel;
 
 
-class VideoController extends Controller {
+class VideoController extends \Controller\DefaultController {
 	private $uploadTmp   = false;
     private $usersFolder = false;
     private $videoModel  = false;
@@ -163,7 +162,7 @@ class VideoController extends Controller {
 
             $fullpath = $output.basename($image);
 
-            $imageResize->resize($fullpath ,null, 180, 135,false, $outputMin, false);
+            $imageResize->resize($fullpath ,null, 200, 170,false, $outputMin, false);
             $imageResize->resize($fullpath, null, 320, 240,false, $outputMedium, false);
             $imageResize->resize($fullpath, null, 1200, 1000,false, $outputLarge, false);
 
