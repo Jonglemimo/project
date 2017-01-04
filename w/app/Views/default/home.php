@@ -5,11 +5,9 @@
 $this->start('main_content');
 
 ?>
-<input type="hidden" id="ajax_search_route" value="<?= $this->url('search') ?>">
-
 
 <section class="container-fluid video-container">
-    <div id="best" class="col-md-12 row">
+    <div id="resultSearch" class="col-md-12 row">
 
     </div>
 </section>
