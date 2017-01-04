@@ -7,7 +7,13 @@
 <?php
 	$url = $this->assetUrl('users/'.$video['userId'].'/'.$video['shortTitle'] .'/'.$video['url']);
 	$poster = $this->assetUrl('users/'.$video['userId'].'/'.$video['shortTitle'] .'/'.$video['poster_lg']);?>
-	<video id="mainVideo" src='<?= $url ?>' controls data-stitle='<?= $video['shortTitle'] ?>' poster='<?= $poster ?>'></video>
+	<video class="video-js vjs-default-skin vjs-big-play-centered" id="mainVideo" controls preload="auto" data-stitle='<?= $video['shortTitle'] ?>' poster='<?= $poster ?>'>
+        <source src='<?= $url ?>' type="video/webm">
+        <p class="vjs-no-js">
+            Pour regarder cette vidéo, activer JavaScript et mettez à jours votre Navigateur
+            <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+        </p>
+    </video>
 	<h3>Mise en ligne par <?= $video['username'] ?></h3>
 	<h5><?= $video['date_created'] ?></h5>
 
@@ -38,3 +44,12 @@
 </section>
 
 <?php $this->stop('main_content') ?>
+<?php $this->start('script')?>
+<!-- VIDEO JS CDN -->
+<script src="http://vjs.zencdn.net/5.8.8/video.js"></script>
+<script>
+    videojs('mainVideo',{},function () {
+    })
+</script>
+<?php $this->stop('script')?>
+

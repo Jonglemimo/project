@@ -355,7 +355,7 @@ class UserController extends Controller {
                     $imageInfo = pathinfo(basename($returnValidate['temporaryImg']));
                     $output = $this->usersFolder.DIRECTORY_SEPARATOR;
                     $outputAvatar = $output.$imageInfo['filename'].'.'.$imageInfo['extension'];
-                    $imageResize->resize($returnValidate['temporaryImg'] ,null, 180, 135,false, $outputAvatar, false);
+                    $imageResize->resize($returnValidate['temporaryImg'] ,null, 120, 120,false, $outputAvatar, false);
                     unlink($returnValidate['temporaryImg']);
                     $insertAvatar = $this->userModel->update([
                         'avatar'   => $imageInfo['filename'].'.'.$imageInfo['extension']

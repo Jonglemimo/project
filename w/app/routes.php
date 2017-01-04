@@ -23,8 +23,8 @@
 
 
         //Video
-        ['GET|POST', 		'/search',			   'Video#search', 		   'search'],
-        ['GET|POST',            '/watch',                          'Video#watch',                  'watch'],
+        ['GET|POST', 		    '/search',			               'Video#search', 		           'search'],
+        ['GET|POST',            '/watch/[:shortTitle]',            'Video#watch',                  'watch'],
         ['GET|POST',            '/watchAjax',                      'Video#watchVideo',             'watch_ajax'],
         ['GET|POST',            '/mapage/video/delete',            'Video#deleteVideoById',        'delete_video'],
         ['GET|POST',            '/mapage/video/edit/[i:id]',       'Video#editVideo',              'edit_video'],
