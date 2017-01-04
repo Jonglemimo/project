@@ -14,6 +14,7 @@ class VideoModel extends Model {
 				INNER JOIN video
 				INNER JOIN posters
 				WHERE video.id = votesusers.id_video
+				AND video.id = posters.id_video
 				GROUP BY votesusers.id_video
 				ORDER BY note DESC, title';
 
@@ -30,6 +31,7 @@ class VideoModel extends Model {
 				INNER JOIN video
 				INNER JOIN posters
 				WHERE video.id = votesusers.id_video 
+				AND video.id = posters.id_video
 				AND (video.description LIKE :search OR video.title LIKE :search)
 				GROUP BY votesusers.id_video
 				ORDER BY note DESC, title';
