@@ -56,7 +56,7 @@ var upload = {
 
        if(this.files.length > 2){
 
-           $('#status').html('<p class="meh">Vous devez uploader une image et une vidéo uniquement</p>').removeClass('hide');
+           $('#status').html('<p class="false">Vous devez uploader une image et une vidéo uniquement</p>').removeClass('hide');
 
            var notGoodNumber = true
 
