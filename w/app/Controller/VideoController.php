@@ -435,28 +435,32 @@ class VideoController extends \Controller\DefaultController {
                 $idVideo = $this->getIdVideo($_POST['shortTitle']);
                 $voteExist = $vote->voteExist($_SESSION['user']['id'], $idVideo);
                 if (count($voteExist) > 1 ) {
-                    $this->showJson(['response' => 'Vous avez déjà voté pour cette vidéo' ,'change' => true, 'vote' => $_POST['stars']]);
+                    $this->showJson(['response' => '<p class="what">Vous avez déjà voté pour cette vidéo</p>' ,'change' => true, 'vote' => $_POST['stars']]);
                 } else {
+
+                  
                     $vote->vote($_SESSION['user']['id'] , $idVideo , $_POST['stars']);
                     $this->updateNote($idVideo);
-                    $this->showJson(['response' => 'Votre vote a bien été enregistré' , 'change' => false]);
+                    $this->showJson(['response' => '<p class="correct">Votre vote a bien été enregistré</p>' , 'change' => false]);
                 } 
             } else {
                 $this->showJson(['response' => false]);
             }
         } else {
-            $this->showJson(['response' => 'Veuillez vous connecter' , 'change' => false]);
+            $this->showJson(['response' => '<p class="meh">Veuillez vous connecter</p>' , 'change' => false]);
         }
         
     }
 
     public function updateVote(){
         $vote = new VideoModel();
+
         $idVideo = $this->getIdVideo($_POST['shortTitle']);
         $vote->updateVote($_SESSION['user']['id'] , $idVideo , $_POST['stars']);
         $this->updateNote($idVideo);
         $note = $this->getNote($idVideo);
-        $this->showJson(['response' => 'Modification de vote enregistrée']);
+        $this->showJson(['response' => '<p class="correct">Modification de vote enregistrée</p>']);
+
     }
 
     public function updateNote($idVideo){

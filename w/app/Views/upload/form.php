@@ -58,11 +58,9 @@ $this->start('main_content');
             <label for="description">Description</label>
             <textarea class="body-inputs form-control description" name="description" rows="5"></textarea>
         </div>
-
         
-            <ul class="hide paddingNone upload-line" id="listItems">
-            </ul>
-
+        <ul class="hide paddingNone upload-line" id="listItems">
+        </ul>
 
         <div class="form-group">
             <div id="submitUploadForm">

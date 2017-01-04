@@ -1,12 +1,9 @@
-
 <?php $this->layout('layout',  ['title' => 'Catégorie : '.$videosByCategory[0]['name'],'categories' => $categories  ]);
 
-
 $this->start('main_content');
-
 ?>
-<input type="hidden" id="ajax_search_route" value="<?= $this->url('search') ?>">
 
+<input type="hidden" id="ajax_search_route" value="<?= $this->url('search') ?>">
 
 <section class="container-fluid main-video-container">
     <?php if(isset($videosByCategory) && count($videosByCategory) > 0):?>
@@ -15,7 +12,9 @@ $this->start('main_content');
                 <div class="col-md-4">
                     <div class="video">
                         <a href="<?=$this->url('watch',['shortTitle' => $video['shortTitle']])?>">
+
                             <img class="video-medium" src="<?=$this->assetUrl('users'.DIRECTORY_SEPARATOR.$video['id_user'].DIRECTORY_SEPARATOR.$video['shortTitle'].DIRECTORY_SEPARATOR.$video['poster_sm']) ?>" alt="<?=$video['title']?>"></img>
+
                     </div>
                     <h4><?=$video['title'] ?></h4>
                     </a>
@@ -24,7 +23,7 @@ $this->start('main_content');
             <?php endforeach;?>
         </div>
     <?php else: ?>
-        <p>Cette catégorie ne contient aucune vidéo</p>
+        <p class="no-content">Cette catégorie ne contient aucune vidéo</p>
     <?php endif; ?>
 </section>
 
