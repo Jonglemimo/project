@@ -49,7 +49,6 @@
 <script src="http://vjs.zencdn.net/5.8.8/video.js"></script>
 <script>
     videojs('mainVideo',{},function () {
-        console.log('videoJs ready');
     })
 </script>
 <?php $this->stop('script')?>

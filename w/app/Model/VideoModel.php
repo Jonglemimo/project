@@ -42,11 +42,10 @@ class VideoModel extends Model {
 
 
 	function getVideo($url){
-		$sql = 'SELECT video.url ,video.title, video.description , video.date_created, video.shortTitle, users.username, video.id_user as userId , posters.poster_lg, SUM(stars)/ COUNT(*) as note
-				FROM votesusers
-				INNER JOIN video
+		$sql = 'SELECT video.url ,video.title, video.description , video.date_created, video.shortTitle, users.username, video.id_user as userId , posters.poster_lg
+				FROM  video
 				INNER JOIN users
-				INNER JOIN posters
+				INNER JOIN posters ON posters.id_video = video.id
 				WHERE video.shortTitle = :url 
 				AND video.id_user = users.id';
 		$stmt = $this->dbh->prepare($sql);

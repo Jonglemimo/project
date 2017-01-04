@@ -128,8 +128,6 @@
         </div>
     </div>
 </section>
-
-
     <input id="category" type="hidden" value="<?= $this->url('categories_get')?>">
 	<input type="hidden" id="watch_route" value="<?= $this->url('watch') ?>">
 	<input type="hidden" id="ajax_search_route" value="<?= $this->url('search') ?>">

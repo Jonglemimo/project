@@ -6,6 +6,7 @@ use W\Controller\Controller;
 
 class CategoriesController extends Controller {
 
+
     public function categories() {
 
         $category = new CategoriesModel();
@@ -20,5 +21,7 @@ class CategoriesController extends Controller {
         $videosByCategory =$category->getVideoByCategories($slug);
         $this->show('video/category', ['videosByCategory' => $videosByCategory]);
     }
+
+
 }
 
