@@ -1,5 +1,5 @@
 <?php
-$this->layout('layout', ['title' => '']);
+$this->layout('layout', ['title' => '','categories' => $categories]);
 $this->start('main_content');
 ?>
 <div class="userpage-banner">
@@ -11,7 +11,7 @@ $this->start('main_content');
 
 
     <div>
-        <p class="username"><?= $_SESSION['user']['username'] ?></p>
+        <p class="username"><?= ucfirst($_SESSION['user']['username'])?></p>
         <a href="<?=$this->url('user_info')?>">Mes infos</a>
     </div>
 </div>
@@ -21,10 +21,8 @@ $this->start('main_content');
     <h3>Mes vidéos</h3>
 
     <a class="buttons btn btn-default pull-right" href="<?=$this->url('upload_form')?>">Ajouter une vidéo</a>
-
     <?php if(is_array($videos)):?>
-
-        <div class="latest-video row col-md-12">
+        <div class="row col-md-12">
             <?php foreach ($videos as $video):?>
                 <div class="col-md-4">
                     <div class="video">
@@ -36,10 +34,9 @@ $this->start('main_content');
                         <?php endif; ?>
                         <a href="<?=$this->url('watch',['shortTitle' => $video['shortTitle']])?>">
                             <img class="video-medium" src="<?=$this->assetUrl('users'.DIRECTORY_SEPARATOR.$_SESSION['user']['id'].DIRECTORY_SEPARATOR.$video['shortTitle'].DIRECTORY_SEPARATOR.$video['poster_sm']) ?>" alt="<?=$video['title']?>"></img>
-                    </div>
                             <h4><?=$video['title'] ?></h4>
                         </a>
-                    <p><?= substr($video['description'], 0, 100); if(strlen($video['description']) > 100){ echo " [...]";} ?></p>
+                    </div>
                 </div>
             <?php endforeach;?>
         </div>
@@ -84,7 +81,7 @@ $this->start('main_content');
 <?php $this->stop('main_content') ?>
 <?php $this->start('script')?>
 
-<script src="<?=$this->assetUrl('js/edit-video.js')?>"></script>
 <script src="<?=$this->assetUrl('js/bootstrap-confirmation.min.js')?>"></script>
+<script src="<?=$this->assetUrl('js/edit-video.js')?>"></script>
 
 <?php $this->stop('script')?>

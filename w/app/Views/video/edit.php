@@ -1,5 +1,5 @@
 <?php
-$this->layout('layout', ['title' => 'Edition de votre vidéo']);
+$this->layout('layout', ['title' => 'Edition de votre vidéo','categories' => $categories]);
 $this->start('main_content');
 ?>
 

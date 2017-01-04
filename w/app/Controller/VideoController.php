@@ -2,14 +2,13 @@
 
 namespace Controller;
 
-use W\Controller\Controller;
 use Model\VideoModel;
 use Services\ImageManagerService;
 use Services\HelperService;
 use \Model\CategoriesModel;
 
 
-class VideoController extends Controller {
+class VideoController extends \Controller\DefaultController {
 	private $uploadTmp   = false;
     private $usersFolder = false;
     private $videoModel  = false;
@@ -29,7 +28,7 @@ class VideoController extends Controller {
         }
     }
 
-    function search() {
+    public function search() {
 
 
 		if (!empty($_POST['search'])) {
@@ -42,6 +41,10 @@ class VideoController extends Controller {
 		
 		$this->show('video/displayVideo', ['videos' => $result]);
 	}
+
+    public function switchSearch(){
+        $this->show('video/search');
+    }
 
     public function uploadForm() {
 
@@ -163,7 +166,7 @@ class VideoController extends Controller {
 
             $fullpath = $output.basename($image);
 
-            $imageResize->resize($fullpath ,null, 180, 135,false, $outputMin, false);
+            $imageResize->resize($fullpath ,null, 200, 170,false, $outputMin, false);
             $imageResize->resize($fullpath, null, 320, 240,false, $outputMedium, false);
             $imageResize->resize($fullpath, null, 1200, 1000,false, $outputLarge, false);
 
@@ -413,8 +416,8 @@ class VideoController extends Controller {
         if (isset($_SESSION['user']['id'])) {
             if (!empty($_POST['shortTitle'])) {
                 $vote = new VideoModel();
-                $idVideo = $vote->findVideoByShort($_POST['shortTitle']);
-                $voteExist = $vote->voteExist($_SESSION['user']['id'], $idVideo['idVideo']);
+                $idVideo = $this->getIdVideo($_POST['shortTitle']);
+                $voteExist = $vote->voteExist($_SESSION['user']['id'], $idVideo);
                 if (isset($voteExist['stars'])) {
                     $stars = $voteExist['stars'];
                     $this->showJson(['vote' => $stars]);
@@ -429,12 +432,15 @@ class VideoController extends Controller {
         if (isset($_SESSION['user']['id'])) {
             if (!empty($_POST['shortTitle'])) {
                 $vote = new VideoModel();
-                $idVideo = $vote->findVideoByShort($_POST['shortTitle']);
-                $voteExist = $vote->voteExist($_SESSION['user']['id'], $idVideo['idVideo']);
+                $idVideo = $this->getIdVideo($_POST['shortTitle']);
+                $voteExist = $vote->voteExist($_SESSION['user']['id'], $idVideo);
                 if (count($voteExist) > 1 ) {
                     $this->showJson(['response' => '<p class="what">Vous avez déjà voté pour cette vidéo</p>' ,'change' => true, 'vote' => $_POST['stars']]);
                 } else {
-                    $vote->vote($_SESSION['user']['id'] , $idVideo['idVideo'] , $_POST['stars']);
+
+                  
+                    $vote->vote($_SESSION['user']['id'] , $idVideo , $_POST['stars']);
+                    $this->updateNote($idVideo);
                     $this->showJson(['response' => '<p class="correct">Votre vote a bien été enregistré</p>' , 'change' => false]);
                 } 
             } else {
@@ -448,8 +454,31 @@ class VideoController extends Controller {
 
     public function updateVote(){
         $vote = new VideoModel();
-        $idVideo = $vote->findVideoByShort($_POST['shortTitle']);
-        $vote->updateVote($_SESSION['user']['id'] , $idVideo['idVideo'] , $_POST['stars']);
+
+        $idVideo = $this->getIdVideo($_POST['shortTitle']);
+        $vote->updateVote($_SESSION['user']['id'] , $idVideo , $_POST['stars']);
+        $this->updateNote($idVideo);
+        $note = $this->getNote($idVideo);
         $this->showJson(['response' => '<p class="correct">Modification de vote enregistrée</p>']);
+
+    }
+
+    public function updateNote($idVideo){
+        $note = new VideoModel();
+        $note->updateNote($idVideo);
+    }
+
+    public function getNote(){
+        $note = new VideoModel();
+        $idVideo = $this->getIdVideo($_POST['shortTitle']);
+        $getNote = $note->getNote($idVideo);
+        $this->showJson(['note' => $getNote]);
+    }
+
+    public function getIdVideo($shortTitle){
+        $find = new videoModel();
+        $video = $find->findVideoByShort($_POST['shortTitle']);
+        $idVideo = $video['idVideo'];
+        return $idVideo;
     }
 }

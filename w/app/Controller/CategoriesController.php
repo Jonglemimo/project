@@ -2,18 +2,8 @@
 namespace Controller;
 
 use Model\CategoriesModel;
-use W\Controller\Controller;
 
-class CategoriesController extends Controller {
-
-
-    public function categories() {
-
-        $category = new CategoriesModel();
-        $categories = $category->getCategories();
-        $this->show('default/categories', ['categories' => $categories]);
-    }
-
+class CategoriesController extends \Controller\DefaultController {
 
     public function categoryVideos($slug){
 

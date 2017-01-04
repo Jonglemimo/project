@@ -128,7 +128,9 @@
                 <!-- CATEGORIES -->
                 <div class="panel-body">
                     <ul class="categories">
-
+                        <?php foreach ($categories as $category):?>
+                        <li><a href="<?=$this->url('category_videos',['slug' => $category['slug']])?>"><?=$category['name']?></a></li>
+                        <?php endforeach; ?>
                     </ul>
                 </div>
             </div>
@@ -156,7 +158,9 @@
     <div class="footer-links">
         <a href="#">Conditions d'utilisation</a>
         -
-        <a href="#">Nous contacter</a>
+        <a href="#">Confidentialité</a>
+        -
+        <a href="<?=$this->url('user_contact')?>">Nous contacter</a>
     </div>
 
 </footer>

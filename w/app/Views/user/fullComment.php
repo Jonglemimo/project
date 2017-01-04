@@ -1,5 +1,5 @@
 <?php
-$this->layout('layout', ['title' => 'Mes commentaires']);
+$this->layout('layout', ['title' => 'Mes commentaires','categories' => $categories]);
 $this->start('main_content');
 ?>
 

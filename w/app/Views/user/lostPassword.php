@@ -1,5 +1,5 @@
 <?php 
-$this->layout('layout', ['title' => 'Mot de passe oublié ?']);
+$this->layout('layout', ['title' => 'Mot de passe oublié ?','categories' => $categories]);
 $this->start('main_content');
 ?>
 
