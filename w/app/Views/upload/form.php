@@ -1,6 +1,6 @@
 <?php
 
-$this->layout('layout', ['title' => isset($videoEncoding)?'Vidéos en cours de transcodages' : 'Ajouter une vidéo']);
+$this->layout('layout', ['title' => isset($videoEncoding)?'Vidéos en cours de transcodages' : 'Ajouter une vidéo','categories' => $categories]);
 
 $this->start('main_content');
 ?>

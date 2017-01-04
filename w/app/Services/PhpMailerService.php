@@ -18,9 +18,9 @@ class PhpMailerService {
 
 /*        $phpMailer->SMTPDebug = 2;*/
 
-        $phpMailer->setFrom('wf3.mail@gmail.com', 'Réinitialisation du mot de passe', false);
+        $phpMailer->setFrom('wf3.mail@gmail.com', 'Service client Tutomotion', false);
         $phpMailer->addAddress($address);     		                // Ajouter un destinataire
-        $phpMailer->addReplyTo('wf3.mailer@gmail.com', 'Réinitialisation du mot de passe');
+        $phpMailer->addReplyTo('wf3.mailer@gmail.com', 'Service client Tutomotion');
 
         $phpMailer->isHTML(true);                                  	 // Set email format to HTML
 

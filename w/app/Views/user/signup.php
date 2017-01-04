@@ -1,5 +1,5 @@
 <?php
-$this->layout('layout', ['title' => 'Créer un nouveau compte']);
+$this->layout('layout', ['title' => 'Créer un nouveau compte','categories' => $categories]);
 $this->start('main_content');
 ?>
 

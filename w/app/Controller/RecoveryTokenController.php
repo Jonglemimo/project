@@ -3,14 +3,13 @@
 namespace Controller;
 
 use Services\PhpMailerService;
-use W\Controller\Controller;
 use \Model\RecoveryTokenModel;
 use W\Security\AuthentificationModel;
 
 
 
 
-class RecoveryTokenController extends Controller {
+class RecoveryTokenController extends \Controller\DefaultController {
 
     function lostPassword () {
 

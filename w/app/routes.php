@@ -20,6 +20,7 @@
         ['GET|POST',            '/mapage/info',                    'User#userInfo',                'user_info'],
         ['GET',                 '/mapage/video',                   'User#userFullVideos',          'user_video'],
         ['GET',                 '/mapage/comment',                 'User#userFullComments',        'user_comment'],
+        ['GET|POST',            '/contact',                        'User#contact',                 'user_contact'],
 
 
         //Video

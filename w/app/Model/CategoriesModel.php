@@ -15,7 +15,7 @@ class CategoriesModel extends Model
     }
 
     function getVideoByCategories($slug){
-        $sql = 'SELECT categories.name, video.title, video.shortTitle, video.url, video.description, posters.poster_xs, posters.poster_sm, posters.poster_lg
+        $sql = 'SELECT categories.name, video.title,video.id_user, video.shortTitle, video.url, video.description, posters.poster_xs, posters.poster_sm, posters.poster_lg
 	            FROM categories
 	            LEFT JOIN video ON categories.id = video.id_category
 	            LEFT JOIN posters ON posters.id_video = video.id

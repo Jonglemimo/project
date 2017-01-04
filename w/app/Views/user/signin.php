@@ -1,5 +1,5 @@
 <?php
-$this->layout('layout', ['title' => 'Connexion']);
+$this->layout('layout', ['title' => 'Connexion','categories' => $categories]);
 $this->start('main_content');
 ?>
 
