@@ -4,7 +4,14 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    
+    <!-- FAVICON -->
+    <link rel="apple-touch-icon" sizes="180x180" href="<?= $this->assetUrl('favicons/apple-touch-icon.png')?>">
+    <link rel="icon" type="image/png" href="<?= $this->assetUrl('favicons/favicon-32x32.png')?>" sizes="32x32">
+    <link rel="icon" type="image/png" href="<?= $this->assetUrl('favicons/favicon-16x16.png')?>" sizes="16x16">
+    <link rel="manifest" href="<?= $this->assetUrl('favicons/manifest.json')?>">
+    <link rel="mask-icon" href="<?= $this->assetUrl('favicons/safari-pinned-tab.svg')?>" color="#2be9b9">
+    <meta name="theme-color" content="#ffffff">
 
     <title><?= $title ?></title>
 
@@ -148,10 +155,6 @@
 
     <div class="footer-links">
         <a href="#">Conditions d'utilisation</a>
-        -
-        <a href="#">Confidentialité</a>
-        -
-        <a href="#">Foire aux questions</a>
         -
         <a href="#">Nous contacter</a>
     </div>
