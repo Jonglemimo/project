@@ -23,7 +23,8 @@
 
 
         //Video
-        ['GET|POST', 		    '/search',			               'Video#search', 		           'search'],
+        ['GET|POST', 		'/search',			   'Video#search', 		   'search'],
+        ['GET|POST',            '/recherche',                      'Video#switchSearch',           'switch_search'],
         ['GET|POST',            '/watch',                          'Video#watch',                  'watch'],
         ['GET|POST',            '/watchAjax',                      'Video#watchVideo',             'watch_ajax'],
         ['GET|POST',            '/mapage/video/delete',            'Video#deleteVideoById',        'delete_video'],
@@ -31,6 +32,7 @@
         ['GET|POST',            '/mapage/upload',                  'Video#uploadForm',             'upload_form'],
         ['GET|POST',            '/vote',                           'Video#vote',                   'vote'],
         ['GET|POST',            '/getVote',                        'Video#getVote',                'get_vote'],
+        ['GET|POST',            '/getNote',                        'Video#getNote',                'get_note'],
         ['GET|POST',            '/updateVote',                     'Video#updateVote',             'update_vote'],
 
 

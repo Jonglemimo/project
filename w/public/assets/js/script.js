@@ -1,5 +1,16 @@
 
 jQuery(document).ready(function() {
+	var url = $(location).attr('href');
+	var urlSplit = url.split('?');
+	if (url == "http://localhost/projet/Final/w/public/"){
+		getBest();
+	}
+
+	if (urlSplit[0] == "http://localhost/projet/Final/w/public/recherche"){
+		var search = urlSplit[1].split('=')[1];
+		$('#search').val(search);
+		getResultSearch(search);
+	}
 
 	function getVote(){
 		$.ajax({
@@ -17,34 +28,47 @@ jQuery(document).ready(function() {
 		});
 	}
 
-	$.ajax({
-		url: $('#ajax_search_route').val() ,
-		dataType: 'html',
-	})
-	.done(function(r) {
-		$('#best').html(r);
-	})
-	.fail(function() {
-		console.log("error");
-	});
-
-	$('#btnSearch').on('click', function(e){
-		e.preventDefault();
+	function getBest(){
 		$.ajax({
-			url: $('#ajax_search_route').val(),
-			type: 'POST',
+			url: $('#ajax_search_route').val() ,
 			dataType: 'html',
-			data: {
-				search: $('#search').val()
-			},
 		})
 		.done(function(r) {
-			$('#best').html(r);
+			$('#resultSearch').html(r);
 		})
 		.fail(function() {
 			console.log("error");
 		});
+	}
 
+	function getResultSearch(search){
+		var route = $('#ajax_search_route').val();
+		$.ajax({
+			url: route,
+			type: 'POST',
+			dataType: 'html',
+			data: {
+				search: search
+			},
+		})
+		.done(function(r) {
+			debug(r);
+			$('#resultSearch').html(r);
+		})
+		.fail(function() {
+			console.log("error");
+		});
+	}
+
+	$('#btnSearch').on('click', function(e){
+		e.preventDefault();
+		var search = $('#search').val();
+		if (urlSplit[0] != "http://localhost/projet/Final/w/public/recherche") {
+			window.location.href = "http://localhost/projet/Final/w/public/recherche?search="+search;
+		} else {
+			history.pushState("", "", "recherche?search="+search);
+			getResultSearch(search);
+		}
 	});
 
 	$.ajax({
@@ -99,7 +123,7 @@ jQuery(document).ready(function() {
 			if (r.change == true) {
 				alreadyVoted(r);
 			} else {
-				voted(r.response);
+				voted(r);
 			}
 		});
 	});
@@ -114,6 +138,7 @@ jQuery(document).ready(function() {
 				stars : $('#modifyVote').data('vote') ,
 			},
 		}).always(function(r) {
+			showNote();
 			getVote();
 			hideAlert();
 		});
@@ -124,6 +149,7 @@ jQuery(document).ready(function() {
 	});
 
 	getVote();
+	showNote();
 
 	function unColorStar(nb){
 		if (nb < 6) {
@@ -150,12 +176,35 @@ jQuery(document).ready(function() {
 		showAlert();
 	}
 
-	function voted(message){
+	function voted(r){
+		var message = r.response;
+		debug(r);
+		showNote();
 		messageAlert(message);
 		showAlert();
 		setTimeout(function(){
 			hideAlert();
 		}, 8000);
+	}
+
+	function showNote(){
+		$.ajax({
+			url: $('#get_note_route').val(),
+			type: 'POST',
+			dataType: 'json',
+			data: {
+				shortTitle : $('#mainVideo').data('stitle')
+			},
+		})
+		.done(function() {
+			console.log("success");
+		})
+		.always(function(r) {
+			var note = parseFloat(r.note);
+			$('#note').html(note);
+		});
+		
+		
 	}
 
 	function messageAlert(message){
