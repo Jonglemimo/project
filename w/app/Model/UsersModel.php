@@ -5,7 +5,7 @@ use \W\Model\UsersModel as UModel;
 
 class UsersModel extends UModel {
 
-    public function findVideoById($id, $limit = null) {
+    public function findVideoById($id,$offset,$nb) {
 
         if (!is_numeric($id)) {
             return false;
@@ -13,14 +13,14 @@ class UsersModel extends UModel {
 
         $sql = 'SELECT * FROM ' . $this->table . ' 
         LEFT JOIN posters ON posters.id_video = video.id
-        WHERE id_user  = :id_user AND encoding = 1 ORDER BY date_created DESC';
-
-        if($limit != null) {
-            $sql .= ' LIMIT '.$limit.'';
-        }
+        WHERE id_user  = :id_user AND encoding = 1 
+        ORDER BY date_created DESC
+        LIMIT :offset,:nb';
 
         $sth = $this->dbh->prepare($sql);
         $sth->bindValue(':id_user', $id);
+        $sth->bindValue(':offset', $offset,\PDO::PARAM_INT);
+        $sth->bindValue(':nb', $nb,\PDO::PARAM_INT);
         $sth->execute();
 
         return $sth->fetchAll();
@@ -49,6 +49,16 @@ class UsersModel extends UModel {
         $sth->execute();
 
         return $sth->fetchAll();
+    }
+
+    function getTotalVideos($id){
+        $sql = 'SELECT count(*) as total FROM video
+                WHERE id_user = :id';
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->bindValue(':id', $id);
+        $stmt->execute();
+        return $stmt->fetch();
+
     }
 
 }

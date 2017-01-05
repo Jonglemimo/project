@@ -1,4 +1,4 @@
-<?php $this->layout('layout', ['title' => 'Erreur 404']) ?>
+<?php $this->layout('layout', ['title' => 'Erreur 404','categories' => $categories]) ?>
 
 <?php $this->start('main_content'); ?>
 

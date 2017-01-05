@@ -28,18 +28,45 @@ class VideoController extends \Controller\DefaultController {
         }
     }
 
-    public function search() {
+    public function search($page = false) {
 
 
 		if (!empty($_POST['search'])) {
 			$search = trim($_POST['search']);
-			$result = $this->videoModel->getVideosSearch($search);
+            $totalVideos = (int)$this->videoModel->countVideosSearch($search)['total'];
+/*			$result = $this->videoModel->getVideosSearch($search);*/
 		} else {
 			$search = NULL;
-			$result = $this->videoModel->getVideos();
+            $totalVideos = (int)$this->videoModel->countVideos()['total'];
+/*			$result = $this->videoModel->getVideos();*/
+
 		}
-		
-		$this->show('video/displayVideo', ['videos' => $result]);
+
+        $totalPages = ceil($totalVideos/$this->nbElements);
+
+
+        if($page !== false){
+            $page = (int)$page;
+        }
+
+        if($page === 0){
+            $this->showNotFound();
+        }else if($page === 1){
+
+            $this->redirectToRoute('search');
+        }else if($page > $totalPages){
+            $this->showNotFound();
+        }
+
+        if($page === false){
+            $page = 1;
+        }
+
+        $offset  = $page * $this->nbElements - $this->nbElements;
+		$result = !empty($_POST['search'])?$this->videoModel->getVideosSearch($search,$offset,$this->nbElements):$this->videoModel->getVideos($offset,$this->nbElements);
+
+
+        $this->show('video/displayVideo', ['videos' => $result, 'pagination' => array('total' => $totalPages, 'current' => $page)]);
 	}
 
     public function switchSearch(){
@@ -53,35 +80,43 @@ class VideoController extends \Controller\DefaultController {
             $this->redirectToRoute('default_home');
         }
 
+        // si des fichiers ont été envoyés
         if(isset($_FILES['files'])) {
+            //on initialise les variabels de retours
             $info = ['success' => false, 'file' => false, 'type' => false];
+            // on catch le nom tmp
             $name = $_FILES['files']['name'][0];
+            //on lance handleDuplicate pour check les doublons dans le dossier temporaire d'upload
             $destination = $this->handleDuplicate($this->uploadTmp.DIRECTORY_SEPARATOR.$name);
+            //si ok on deplace les element vers le dossier tmp
             if(move_uploaded_file($_FILES['files']['tmp_name'][0], $destination)){
+                // on défini les variables de retours
                 $info['success'] = true;
                 $info['file'] = basename($destination);
                 $info['type'] = $this->getType($destination);
             }
+            // on envoi la réponse en json
             header('Content-Type: application/json');
             echo json_encode($info);
             die;
         }
 
         if(!empty($_POST)) {
-
+            // si tout le formulaire a été envoyé on lance la validation du formulaire pour enregistrement definitif
             header('Content-Type: application/json');
             echo json_encode($this->validateForm());
             die;
         }
 
+        // on recupere les vidéo en cours d'encodage
         $videoEncoding = $this->videoModel->getWhileEncoding($_SESSION['user']['id']);
-        $categories = $this->categoriesModel->getCategories();
+
 
         if(count($videoEncoding) > 0){
-
-            $this->show('upload/form', ['videoEncoding' => $videoEncoding, 'categories' => $categories]);
+            // si video encoding est sup à 0 on envoi les vidéos en cours d'encodage/attente à la vue
+            $this->show('upload/form', ['videoEncoding' => $videoEncoding]);
         } else {
-            $this->show('upload/form', ['categories' => $categories]);
+            $this->show('upload/form');
         }
     }
 
@@ -168,7 +203,7 @@ class VideoController extends \Controller\DefaultController {
 
             $imageResize->resize($fullpath ,null, 200, 170,false, $outputMin, false);
             $imageResize->resize($fullpath, null, 320, 240,false, $outputMedium, false);
-            $imageResize->resize($fullpath, null, 1200, 1000,false, $outputLarge, false);
+            $imageResize->resize($fullpath, null, 103, 634,false, $outputLarge, false);
 
             $this->videoModel->setTable('posters');
 
@@ -209,6 +244,7 @@ class VideoController extends \Controller\DefaultController {
 
     public function getType($file){
 
+        //recupere le type de fichier
         $type = mime_content_type($file);
 
         if(preg_match('/image/',$type)){
@@ -250,20 +286,6 @@ class VideoController extends \Controller\DefaultController {
         }else{
             $this->redirectToRoute('default_home');
         }
-
-
-/*        if (isset($_GET['video'])) {
-            $url = $_GET['video'];
-            //Tentative de vérification
-
-            if($this->videoModel->exist($url)){ // renvois toujours TRUE sans raison
-                $this->watchVideo($url);
-            } else {
-                $this->redirectToRoute('default_home');
-            }
-        } else {
-            $this->redirectToRoute('default_home');
-        }*/
     }
 
 

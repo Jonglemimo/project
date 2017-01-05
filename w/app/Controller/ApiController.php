@@ -55,7 +55,6 @@ class ApiController {
 
     function transcode() {
 
-
         if(!$this->request->checkCurrentTranscoding()){
             $this->transcodeResult = $this->request->getNextNotTranscoded();
 
@@ -74,6 +73,7 @@ class ApiController {
                 ));
 
                 $file = $this->usersFolder.$this->transcodeResult['id_user'].DIRECTORY_SEPARATOR.$this->transcodeResult['shortTitle'].DIRECTORY_SEPARATOR.$this->transcodeResult['url'];
+
                 $info = pathinfo($file);
 
                 $output = dirname($file).DIRECTORY_SEPARATOR.$info['filename'].'.webm';
@@ -93,7 +93,6 @@ class ApiController {
                     'percentage' => 0,
                     'id_video'  => $this->transcodeResult['id']
                 ]);
-                $this->transcodeId = $this->transcodeId['id'];
 
 
                 $format->on('progress', function ($video, $format, $percentage) {
@@ -101,7 +100,7 @@ class ApiController {
                    $this->request->update([
                        'percentage' => $percentage,
                        'id_video'   => $this->transcodeResult['id']
-                   ],$this->transcodeId);
+                   ],$this->transcodeId['id']);
                 });
 
                 if(!is_writable(dirname($output))){
@@ -111,7 +110,7 @@ class ApiController {
 
                 $video->save($format, $output);
 
-                $this->request->delete($this->transcodeId);
+                $this->request->delete($this->transcodeId['id']);
 
                 $this->request->setTable('video');
                 $this->request->update([

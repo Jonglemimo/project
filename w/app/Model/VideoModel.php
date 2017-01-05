@@ -7,21 +7,48 @@ use \W\Model\Model;
 
 class VideoModel extends Model {
 
-	function getVideos() {
+    function countVideos(){
+        $sql = 'SELECT count(*) as total
+				FROM video
+				WHERE video.encoding = 1
+				ORDER BY date_created DESC, title';
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetch();
+    }
+
+	function getVideos($offset,$nb) {
 
 		$sql = 'SELECT *,video.id_user as userId 
 				FROM video
 				INNER JOIN posters
 				WHERE video.id = posters.id_video
 				AND video.encoding = 1
-				ORDER BY date_created DESC, title';
+				ORDER BY date_created DESC, title
+				LIMIT :offset, :nb';
 		$stmt = $this->dbh->prepare($sql);
+        $stmt->bindParam(':offset' , $offset, \PDO::PARAM_INT);
+        $stmt->bindParam(':nb' , $nb, \PDO::PARAM_INT);
 		$stmt->execute();
 		return $stmt->fetchAll();
 	}
 
+    function countVideosSearch($search){
 
-	function getVideosSearch($search){
+        $sql = 'SELECT count(*) as total
+				FROM video
+				WHERE video.encoding = 1
+				AND (video.description LIKE :search OR video.title LIKE :search)
+				ORDER BY date_created DESC, title';
+        $search = '%'.$search.'%';
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->bindParam(':search' , $search);
+        $stmt->execute();
+        return $stmt->fetch();
+    }
+
+
+    function getVideosSearch($search,$offset,$nb){
 
 		$sql = 'SELECT *,video.id_user as userId 
 				FROM video
@@ -29,10 +56,13 @@ class VideoModel extends Model {
 				WHERE video.id = posters.id_video
 				AND video.encoding = 1
 				AND (video.description LIKE :search OR video.title LIKE :search)
-				ORDER BY date_created DESC, title';
+				ORDER BY date_created DESC, title
+				LIMIT :offset, :nb';
 		$search = '%'.$search.'%';
 		$stmt = $this->dbh->prepare($sql);
 		$stmt->bindParam(':search' , $search);
+		$stmt->bindParam(':offset' , $offset, \PDO::PARAM_INT);
+		$stmt->bindParam(':nb' , $nb, \PDO::PARAM_INT);
 		$stmt->execute();
 		return $stmt->fetchAll();
 	}

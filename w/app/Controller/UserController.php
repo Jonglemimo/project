@@ -261,7 +261,8 @@ class UserController extends \Controller\DefaultController {
         }
 
         $this->userModel->setTable('video');
-        $videos = $this->userModel->findVideoById($_SESSION['user']['id'], 4);
+        $totalVideos = (int)$this->userModel->getTotalVideos($_SESSION['user']['id'])['total'];
+        $videos = $this->userModel->findVideoById($_SESSION['user']['id'],$totalVideos - 4,4);
         $comments = $this->userModel->findVideoByComment($_SESSION['user']['id']);
 
         $this->userModel->setTable('users');
@@ -285,7 +286,7 @@ class UserController extends \Controller\DefaultController {
 
     }
 
-    function userFullVideos() {
+    function userFullVideos($page = false) {
 
         if($this->authModel->getLoggedUser() == null) {
             $this->redirectToRoute('user_login');
@@ -293,10 +294,33 @@ class UserController extends \Controller\DefaultController {
 
         $this->userModel->setTable('video');
 
-        $videos = $this->userModel->findVideoById($_SESSION['user']['id']);
+        $totalVideos = (int)$this->userModel->getTotalVideos($_SESSION['user']['id'])['total'];
+        $totalPages = ceil($totalVideos/$this->nbElements);
 
-        if(isset($videos[0]['id'])) {
-            $this->show('user/fullVideo', ['videos' => $videos]);
+        if($page !== false){
+            $page = (int)$page;
+        }
+
+        if($page === 0){
+            $this->showNotFound();
+        }else if($page === 1){
+
+            $this->redirectToRoute('user_video');
+        }else if($page > $totalPages){
+            $this->showNotFound();
+        }
+
+        if($page === false){
+            $page = 1;
+        }
+
+        $offset  = $page * $this->nbElements - $this->nbElements;
+
+
+        $videos = $this->userModel->findVideoById($_SESSION['user']['id'], $offset,$this->nbElements);
+
+        if(count($videos) > 0 ) {
+            $this->show('user/fullVideo', ['videos' => $videos, 'pagination' => array('total' => $totalPages, 'current' => $page)]);
         } else {
             $this->show('user/fullVideo', ['videos' => 'Vous n\'avez pas de vidéo']);
         }
@@ -312,7 +336,7 @@ class UserController extends \Controller\DefaultController {
 
         $comments = $this->userModel->findVideoByComment($_SESSION['user']['id']);
 
-        if(isset($comments[0]['content'])) {
+        if(count($comments) > 0) {
             $this->show('user/fullComment', ['comments' => $comments]);
 
         }else{

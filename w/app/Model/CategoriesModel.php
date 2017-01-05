@@ -14,15 +14,19 @@ class CategoriesModel extends Model
         return $stmt->fetchAll();
     }
 
-    function getVideoByCategories($slug){
+    function getVideoByCategories($slug,$offset,$nb){
         $sql = 'SELECT categories.name, video.title ,video.id_user, video.shortTitle, video.url, video.description, posters.poster_xs, posters.poster_sm, posters.poster_lg
 	            FROM categories
 	            LEFT JOIN video ON categories.id = video.id_category
 	            LEFT JOIN posters ON posters.id_video = video.id
 	            WHERE categories.slug = :slug AND video.encoding = 1
-	            ORDER BY date_created DESC';
+	            ORDER BY date_created DESC
+	            LIMIT :offset,:nb';
+
         $stmt = $this->dbh->prepare($sql);
         $stmt->bindParam(':slug', $slug);
+        $stmt->bindParam(':offset', $offset, \PDO::PARAM_INT);
+        $stmt->bindParam(':nb', $nb, \PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetchAll();
     }
@@ -41,6 +45,14 @@ class CategoriesModel extends Model
 
         $stmt->execute();
         return $stmt->fetchAll();
+    }
+
+    function getTotalVideos(){
+        $sql = 'SELECT count(*) as total FROM video';
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetch();
+
     }
 }
 

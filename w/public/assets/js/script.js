@@ -1,6 +1,6 @@
 
 jQuery(document).ready(function() {
-	var urlBase = "http://127.0.0.1:12"+homeUrl //WARNING ONLY FOR CORALIE
+	var urlBase = 'http://localhost'+homeUrl; //WARNING ONLY FOR CORALIE
 	var url = $(location).attr('href');
 	var urlSplit = url.split('?');
 	if (url == urlBase){
@@ -91,9 +91,14 @@ jQuery(document).ready(function() {
 			getVote();
 		}
 	}, '#vote');
-		
 
-	
+	$(document).on('click', '.pagination.ajax a', function (e) {
+		e.preventDefault();
+		var url = $(this).attr('href');
+		$.get(url, function (data) {
+            $('#resultSearch').html(data);
+        })
+    });
 
 	$(document).on('click', '#vote', function(){
 		var nb = $(this).data('vote');
@@ -192,8 +197,6 @@ jQuery(document).ready(function() {
 			var note = parseFloat(r.note);
 			$('#note').html(note);
 		});
-		
-		
 	}
 
 	function messageAlert(message){
@@ -229,9 +232,10 @@ jQuery(document).ready(function() {
 		.done(function() {
 			getComment();
 			$('#comment').val('');
+            $('.errorComment').addClass('hide');
 		})
 		.fail(function() {
-			console.log("error");
+			$('.errorComment').removeClass('hide').html('Vous devez être connecté pour publier votre commentaire');
 		})
 		
 	}
@@ -256,16 +260,12 @@ jQuery(document).ready(function() {
 		.always(function(r) {
 			console.log(r);
 		});
-		
 	}
 
 	function debug(i){
 		console.log(i);
 	}
 });
-
-
-
 
 $(function() {
 

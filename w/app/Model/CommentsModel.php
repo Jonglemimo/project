@@ -14,7 +14,7 @@ class CommentsModel extends VideoModel
 	
 	function postComment($text, $idVideo, $idUser)
 	{
-		$sql = 'INSERT INTO comments(content, id_user ,id_video)
+		$sql = 'INSERT INTO comments(content, id_user ,id_video) 
 				VALUES (?, ?, ?) ';
 		$stmt = $this->dbh->prepare($sql);
 		$stmt->bindValue(1 , $text );
@@ -24,7 +24,7 @@ class CommentsModel extends VideoModel
 	}
 
 	public function getCommentsByVideo($idVideo){
-		$sql = 'SELECT content, date_posted, username
+		$sql = 'SELECT content, date_posted, username, users.avatar, users.id
 				FROM comments
 				INNER JOIN users ON id_user = users.id 
 				WHERE id_video = :idVideo

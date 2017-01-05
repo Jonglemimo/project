@@ -1,4 +1,4 @@
-<?php $this->layout('layout',  ['title' => 'Catégorie : '.ucfirst($currentCategory),'categories' => $categories  ]);
+<?php $this->layout('layout',  ['title' => 'Catégorie : '.ucfirst($currentCategory), 'categories' => $categories]);
 
 $this->start('main_content');
 ?>
@@ -19,9 +19,22 @@ $this->start('main_content');
                 </div>
             <?php endforeach;?>
         </div>
+        <?php if($pagination['total'] > 1): ?>
+            <div class="row col-md-12 text-center">
+                <ul class="pagination">
+                    <?php for($i = 1; $i <= $pagination['total']; $i ++):?>
+                        <li<?= $i == $pagination['current'] ? ' class="active"':''?>>
+                            <a href="<?=$this->url('user_videos_page',['slug' => $currentCategory, 'page' => $i])?>"><?=$i?></a>
+                        </li>
+                    <?php endfor; ?>
+                </ul>
+            </div>
+        <?php endif; ?>
+
     <?php else: ?>
         <p class="no-content">Cette catégorie ne contient aucune vidéo</p>
     <?php endif; ?>
+
 </section>
 
 

@@ -1,7 +1,10 @@
 
 
 var upload = {
-    files : [],
+    files : [], //element à upload
+    /*
+     * vérification de la validité des params
+     */
     checkParams : function (data) {
         if(typeof data == 'undefined' || typeof data.files != 'object'){
             return true;
@@ -13,6 +16,9 @@ var upload = {
         });
         return error;
     },
+    /*
+     * Si fichier valide affiche eleme dans la vue
+     */
     process : function () {
         var html = '';
         for(var key in upload.files){
@@ -30,6 +36,10 @@ var upload = {
         $('#listItems').html(html).removeClass('hide');
     },
     timeout : false,
+
+    /*
+     *  vérifie avant envoi definitif de la validité des data pour enregestriment en base de donnée
+     */
     validateForm : function () {
         var error = '';
 
@@ -99,6 +109,10 @@ var upload = {
         return true;
 
     },
+    /*
+     * envoi des données au serveur pour traitement
+     */
+
     sendForm : function () {
         if($('#imageFile').val() == '' || $('#videoFile').val() == '' ){
             return;
@@ -124,7 +138,9 @@ var upload = {
 };
 
 $(function () {
-
+    /*
+     * gestion de la suppréssion des elements
+     */
     $(document).on('mousedown','.removeItem',function (e) {
 
         var type = {
@@ -154,6 +170,10 @@ $(function () {
 
     });
 
+    /*
+     * upload des fichiers dans le repertoire tmp
+     */
+
     $(document).on('submit','#formUpload',function (e) {
         e.preventDefault();
 
@@ -164,6 +184,10 @@ $(function () {
         };
     });
 
+    /*
+     * gestion du pluggin d'upload, ajout des fichiers dans notre objet upload si checkparams ok et regex ok et maj bouton
+     */
+
     $('#fileupload').fileupload({
         dataType: 'json',
         add: function (e,data) {
@@ -173,7 +197,7 @@ $(function () {
             }else{
                 $('#status').addClass('hide')
             }
-            console.log(upload);
+
             var type = {
                 regexImg : /image/gi,
                 regexVideo : /video/gi
@@ -221,6 +245,10 @@ $(function () {
             upload.timeout = setTimeout(upload.process,500);
 
         },
+
+        /*
+         * Mise à jour des élèments du formulaire (chemin vers fichier tmp) si ok envoi du formulaire pour enregistrement def
+         */
         done: function (e, data) {
             if(data.result.success){
 
@@ -234,9 +262,13 @@ $(function () {
             }else{
                 $('.status').html('<p class="false">Erreur lors de l\'upload du fichier: ' + data.files[0].name + ' </p>').removeClass('hide');
             }
-          console.log('done',data);
 
         },
+
+        /*
+         * Gestion des barres de progress
+         */
+
         progress: function (e,data) {
             var element = $('#listItems').find('li[data-name="'+data.files[0].name+'"] > .progress');
             if(element.length > 0){
