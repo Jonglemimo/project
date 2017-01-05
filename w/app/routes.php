@@ -46,9 +46,11 @@
 
         ['GET',                 '/api/transcode',                  'Api#transcode',               'cron_transcode'],
         ['GET',                 '/api/get-percentage/[:id]',       'Api#getpercentage',           'get_percentage'],
-        ['GET',                 '/recovery-tokens/delete',         'Api#deleteTokens',            'delete_recoveryTokens']
+        ['GET',                 '/recovery-tokens/delete',         'Api#deleteTokens',            'delete_recoveryTokens'],
 
-
+        //Commentaires
+        ['GET|POST',            '/postComment',                     'Comments#postComment',                'post_comment'],
+        ['GET|POST',            '/getComment',                      'Comments#getVideoComment',                 'get_comment'],
       
 	);
 

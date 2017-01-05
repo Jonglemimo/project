@@ -166,7 +166,7 @@
 </footer>
 
 <script>
-    var currentUrl = '<?= $this->url('default_home')?>';
+    var homeUrl = '<?= $this->url('default_home')?>';
     window.HELP_IMPROVE_VIDEOJS = false;
 </script>
 <!-- JQUERY 3.1.1 -->
