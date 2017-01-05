@@ -41,7 +41,7 @@ $this->start('main_content');
         </div>
 
     <div>
-        <a href="<?=$this->url('user_video')?>">Voir plus</a>
+        <a class="see-more" href="<?=$this->url('user_video')?>">Voir plus</a>
     </div>
 
     <?php else :?>
