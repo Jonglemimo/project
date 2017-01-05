@@ -64,7 +64,7 @@
                     <a href="<?=$this->url('watch',['shortTitle' => $videoByCategory['shortTitle']]) ?>">
                         <img class="video-small" src="<?=$this->assetUrl('users'.DIRECTORY_SEPARATOR.$videoByCategory['id_user'].DIRECTORY_SEPARATOR.$videoByCategory['shortTitle'] .DIRECTORY_SEPARATOR.$videoByCategory['poster_xs'])?>" alt="<?= strtolower($videoByCategory['title'])?>">
                     </a>
-                    <h4 class="text-center"><?=$videoByCategory['title']?></h4>
+                    <h4 class="text-center"><?=ucfirst(strtolower($videoByCategory['title']))?></h4>
                 <?php endforeach;?>
 			</section>
 		</div>
