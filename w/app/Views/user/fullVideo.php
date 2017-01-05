@@ -12,18 +12,26 @@ $this->start('main_content');
                 <div class="col-md-3">
                     <div class="video">
                         <div class="relative-buttons">
+
+                            <!-- MODIFY OR DELETE VIDEO BUTTONS -->
                             <?php if ($video['id_user'] === $_SESSION['user']['id']):?>
                                     <input class="deleteId" type="hidden" value="<?=$this->url('delete_video')?>">
                                     <button class="btn btn-danger glyphicon glyphicon-trash deleteVideo" data-toggle="confirmation"  data-title="Supprimer la vidéo ?" data-btn-ok-label="Supprimer"  data-btn-ok-class="btn-danger"  data-btn-cancel-class="btn-default" data-btn-cancel-label="Annuler" data-placement="top" data-delete="<?=$video['id_video']?>" ></button>
                                     <button class="btn btn-default glyphicon glyphicon-edit editVideo"  data-edit="<?=$this->url('edit_video', ['id'=> $video['id_video']])?>"></button>
                             <?php endif; ?>
-                            <h4 class="video-title"><a href="<?=$this->url('watch',['shortTitle' => $video['shortTitle']])?>"> <img class="video-medium" src="<?=$this->assetUrl('users'.DIRECTORY_SEPARATOR.$_SESSION['user']['id'].DIRECTORY_SEPARATOR.$video['shortTitle'].DIRECTORY_SEPARATOR.$video['poster_sm']) ?>" alt="<?=$video['title']?>"><?=$video['title'] ?> </a>
-                            </h4>
+
+                            <!-- LATEST VIDEOS WITH TITLES -->
+                            <a href="<?=$this->url('watch',['shortTitle' => $video['shortTitle']])?>">
+                                <img class="video-medium" src="<?=$this->assetUrl('users'.DIRECTORY_SEPARATOR.$_SESSION['user']['id'].DIRECTORY_SEPARATOR.$video['shortTitle'].DIRECTORY_SEPARATOR.$video['poster_sm']) ?>" alt="<?=$video['title']?>">
+                                <h4 class="video-title"><?=$video['title'] ?></h4>
+                            </a>
                         </div>
                     </div>
                 </div>
             <?php endforeach;?>
         </div>
+
+    <!-- IF NO VIDEOS -->
     <?php else: ?>
         <p class="no-content"><?=$videos ?></p>
     <?php endif; ?>

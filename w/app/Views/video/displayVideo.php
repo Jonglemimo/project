@@ -8,4 +8,5 @@
                 </h4>
             </div>
         </div>
-    <?php endforeach; ?>
+    </div>
+<?php endforeach; ?>

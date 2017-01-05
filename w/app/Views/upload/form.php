@@ -1,12 +1,12 @@
 <?php
-
 $this->layout('layout', ['title' => isset($videoEncoding)?'Vidéos en cours de transcodages' : 'Ajouter une vidéo','categories' => $categories]);
-
 $this->start('main_content');
 ?>
 
 <h1><?=isset($videoEncoding)?'Vidéos en cours de transcodage' : 'Ajouter une vidéo'?></h1>
 
+
+<!-- SHOWING LOADING VIDEOS -->
 <?php if(isset($videoEncoding)):?>
 <div id="currentTranscoding">
     <div class="videoEncoding" style="width: <?= count($videoEncoding)*324?>px">
@@ -27,6 +27,7 @@ $this->start('main_content');
 </div>
 <?php endif; ?>
 
+<!-- UPLOAD A VIDEO -->
 <?= isset($videoEncoding) ? '<h1>Ajouter une vidéo</h1>' : '' ?>
 
 <a class="upload-video-back" href="<?=$this->url('user_admin')?>">< Retour à ma page</a>
