@@ -33,7 +33,7 @@ class CommentsController extends \Controller\DefaultController
 		$this->show('comment/displayComments', ['comments' => $allComment]);
 	}
 
-	public function getPersonnalComment($idUser){
-
+	public function deleteCommentary(){
+		
 	}
 }
