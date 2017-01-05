@@ -1,5 +1,5 @@
 <?php
-$this->layout('layout', ['title' => '','categories' => $categories]);
+$this->layout('layout', ['title' => 'Ma page','categories' => $categories]);
 $this->start('main_content');
 ?>
 <div class="userpage-banner">
@@ -32,10 +32,9 @@ $this->start('main_content');
 
                             <button class="btn btn-default glyphicon glyphicon-edit editVideo"  data-edit="<?=$this->url('edit_video', ['id'=> $video['id_video']])?>"></button>
                         <?php endif; ?>
-                        <a href="<?=$this->url('watch',['shortTitle' => $video['shortTitle']])?>">
-                            <img class="video-medium" src="<?=$this->assetUrl('users'.DIRECTORY_SEPARATOR.$_SESSION['user']['id'].DIRECTORY_SEPARATOR.$video['shortTitle'].DIRECTORY_SEPARATOR.$video['poster_sm']) ?>" alt="<?=$video['title']?>"></img>
-                            <h4><?=$video['title'] ?></h4>
-                        </a>
+
+                        <h4><a href="<?=$this->url('watch',['shortTitle' => $video['shortTitle']])?>"><img class="video-medium" src="<?=$this->assetUrl('users'.DIRECTORY_SEPARATOR.$_SESSION['user']['id'].DIRECTORY_SEPARATOR.$video['shortTitle'].DIRECTORY_SEPARATOR.$video['poster_sm']) ?>" alt="<?=$video['title']?>"><br><?=$video['title'] ?></a></h4>
+
                     </div>
                 </div>
             <?php endforeach;?>
@@ -47,7 +46,7 @@ $this->start('main_content');
 
     <?php else :?>
         <p><?= $videos ?></p>
-    <?php endif; ?>  
+    <?php endif; ?>
 </section>
 
 <section class="container-fluid comment-container">

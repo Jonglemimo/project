@@ -3,6 +3,8 @@ $this->layout('layout', ['title' => 'Réinitialiser votre mot de passe','categor
 $this->start('main_content');
 ?>
 
+<h1>Réinitialiser votre mot de passe</h1>
+
 <form action="#" id="changePassword" method="POST">
 
     <!-- EDITING PASSWORD -->

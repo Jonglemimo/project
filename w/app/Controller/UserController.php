@@ -511,23 +511,23 @@ class UserController extends \Controller\DefaultController {
     }
 
     public function contact(){
-        if($this->authModel->getLoggedUser()){
-           if(isset($_POST['contact'])){
-             $returnFormContact = $this->validateContact($_POST['contact']);
 
-             if(count($returnFormContact['errors']) == 0){
+        if($user = $this->authModel->getLoggedUser());
 
-                $this->send($returnFormContact['subject'],$returnFormContact['content']);
+        if(isset($_POST['contact'])){
+         $returnFormContact = $this->validateContact($_POST['contact']);
 
-             }else{
-                 $this->show('user/contact', ['errors' => $returnFormContact['errors']]);
-             }
-           }else{
-               $this->show('user/contact');
-           }
-        }else{
-            $this->redirectToRoute('user_login');
-        }
+         if(count($returnFormContact['errors']) == 0){
+
+            $this->send($returnFormContact,$user);
+
+         }else{
+             $this->show('user/contact', ['form' => $returnFormContact,'user' => isset($user)?$user:null]);
+         }
+       }else{
+           $this->show('user/contact',['user' => isset($user)?$user:null]);
+       }
+
     }
 
     private function validateContact(){
@@ -549,20 +549,38 @@ class UserController extends \Controller\DefaultController {
             $errors['content']['empty'] = 'Votre message ne peut pas être vide';
         }
 
-        return array('errors' => $errors, 'subject' => isset($subject)? $subject : null, 'content' => isset($content)? $content : null);
+
+        if(!empty($_POST['email'])){
+            $email = trim($_POST['email']);
+            if(!filter_var($email,FILTER_VALIDATE_EMAIL)){
+                $errors['email']['wrong'] = 'Cette adresse email n\'est pas valide';
+            }
+        }else{
+            $errors['email']['empty'] = 'Votre message ne peut pas être vide';
+        }
+
+        return array('errors' => $errors, 'subject' => isset($subject)? $subject : null, 'content' => isset($content)? $content : null,'email' => isset($email)?$email:null);
     }
 
-    private function send($subject, $content){
+    private function send($returnFormContact, $user){
         $mail = new PhpMailerService();
         $this->userModel->setTable('users');
-        $user = $this->userModel->find($_SESSION['user']['id']);
-        $subject = 'Tutomotion : '.$subject;
-        $bodyHtml = 'Bonjour, <br>'.$user['firstname'].' '.$user['lastname'].' (' .ucfirst($user['username']). ') vous a envoyé un email : <br><br> '.$content. '<br><br>Voici l\'adresse mail de '.$user['firstname']. ' '.$user['lastname'] .' : '.$user['email'] ;
-        $bodyPlain = 'Bonjour, '.$user['firstname'].' '.$user['lastname'].' (' .ucfirst($user['username']). ') vous a envoyé un email :  '.ucfirst($content). ' Voici l\'adresse mail de '.$user['firstname']. ' '.$user['lastname'] .' : '.$user['email'] ;
+        $subject = 'Tutomotion : '.$returnFormContact['subject'];
+
+        if($this->authModel->getLoggedUser()){
+
+            $bodyHtml = 'Bonjour, <br>'.$user['firstname'].' '.$user['lastname'].' (' .ucfirst($user['username']). ') vous a envoyé un email, voici son contenu : <br><br> '.ucfirst($returnFormContact['content']). '<br><br>Voici l\'adresse mail de '.$user['firstname']. ' '.$user['lastname'] .' : '.$returnFormContact['email'] ;
+            $bodyPlain = 'Bonjour, '.$user['firstname'].' '.$user['lastname'].' (' .ucfirst($user['username']). ') vous a envoyé un email, vpoci spn contenu :  '.ucfirst($returnFormContact['content']). ' Voici l\'adresse mail de '.$user['firstname']. ' '.$user['lastname'] .' : '.$returnFormContact['email'] ;
+        }else{
+
+            $bodyHtml = 'Bonjour, <br> L\'utilisateur ayant l\'adresse email : '.$returnFormContact['email']. ' vous a envoyé le message suivant : <br><br>'.$returnFormContact['content'].'<br><br> Cordialement, Tutomotion';
+            $bodyPlain = 'Bonjour, <br> L\'utilisateur ayant l\'adresse email : '.$returnFormContact['email']. ' vous a envoyé le message suivant :  '.$returnFormContact['content'].' Cordialement, Tutomotion';
+        }
+
         if($mail->sendMail('victor.tarrieu@yahoo.fr', $subject, $bodyHtml, $bodyPlain)){
             $this->show('user/contact', ['success' => 'Votre message a bien été envoyé']);
         }else{
-            $this->show('user/contact', ['fail' => 'il y a eu un problème lors de l\'envoi de votre message]']);
+            $this->show('user/contact', ['fail' => 'il y a eu un problème lors de l\'envoi de votre message']);
 
         }
     }

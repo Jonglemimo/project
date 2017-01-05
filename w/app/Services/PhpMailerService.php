@@ -10,17 +10,17 @@ class PhpMailerService {
         $phpMailer->isSMTP();                                      	// On va se servir de SMTP
         $phpMailer->Host = 'smtp.gmail.com';  						// Serveur SMTP
         $phpMailer->SMTPAuth = true;                               	// Active l'autentification SMTP
-        $phpMailer->Username = 'wf3.mailer@gmail.com';             	// SMTP username
-        $phpMailer->Password = '$NJ27^^4q7';                   		// SMTP password
+        $phpMailer->Username = 'tutomotionwf3@gmail.com';             	// SMTP username
+        $phpMailer->Password = 'webforce3';                   		// SMTP password
         $phpMailer->SMTPSecure = 'tls';                            	// TLS Mode
         $phpMailer->Port = 587;
         $phpMailer->CharSet = 'UTF-8';
 
 /*        $phpMailer->SMTPDebug = 2;*/
 
-        $phpMailer->setFrom('wf3.mail@gmail.com', 'Service client Tutomotion', false);
+        $phpMailer->setFrom('tutomotionwf3@gmail.com', 'Service client Tutomotion', false);
         $phpMailer->addAddress($address);     		                // Ajouter un destinataire
-        $phpMailer->addReplyTo('wf3.mailer@gmail.com', 'Service client Tutomotion');
+        $phpMailer->addReplyTo('tutomotionwf3@gmail.com', 'Service client Tutomotion');
 
         $phpMailer->isHTML(true);                                  	 // Set email format to HTML
 

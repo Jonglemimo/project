@@ -3,6 +3,8 @@ $this->layout('layout', ['title' => 'Mot de passe oublié ?','categories' => $ca
 $this->start('main_content');
 ?>
 
+<h1>Mot de passe oublié ?</h1>
+
 <form class="lost-password" action="#" id="insert-user" method="POST">
     
     <!-- RETURN TO HOMEPAGE -->

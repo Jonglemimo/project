@@ -241,8 +241,9 @@ class VideoController extends \Controller\DefaultController {
     public function watch($shortTitle) {
         if(isset($shortTitle)){
             $video = $this->videoModel->getVideo($shortTitle);
+            $videoByCategories = $this->categoriesModel->getVideoByCategoriesWithoutCurrent($video['slug'],$video['id']);
             if(isset($video) && !empty($video)){
-                $this->show('video/watch', ['video' => $video]);
+                $this->show('video/watch', ['video' => $video, 'videoByCategories' => $videoByCategories]);
             }else{
                 $this->redirectToRoute('default_home');
             }

@@ -3,6 +3,8 @@
 $this->start('main_content');
 ?>
 
+<h1>Catégorie : <?=$videosByCategory[0]['name']?></h1>
+
 <input type="hidden" id="ajax_search_route" value="<?= $this->url('search') ?>">
 
 <section class="container-fluid main-video-container">
