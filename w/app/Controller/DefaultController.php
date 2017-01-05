@@ -7,12 +7,6 @@ use \W\Controller\Controller;
 class DefaultController extends Controller {
 
 
-    function __construct()
-    {
-
-
-    }
-
     public function show($file, array $data = array())
     {
         $category = new \Model\CategoriesModel();
