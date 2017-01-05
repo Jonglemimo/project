@@ -1,16 +1,25 @@
 
 jQuery(document).ready(function() {
+	var urlBase = "http://localhost"+homeUrl
 	var url = $(location).attr('href');
 	var urlSplit = url.split('?');
-	if (url == 'http://localhost'+homeUrl){
+	if (url == urlBase){
 		getBest();
 	}
 
-	if (urlSplit[0] == 'http://localhost'+homeUrl+'recherche'){
+	if (urlSplit[0] == urlBase+"recherche"){
+
 		var search = urlSplit[1].split('=')[1];
 		$('#search').val(search);
 		getResultSearch(search);
 	}
+
+	if (urlSplit[0] == urlBase+"watch/"+$('#mainVideo').data('stitle')){
+		getVote();
+		showNote();
+		getComment();
+		setInterval(getComment, 30000);
+	};
 
 	function getVote(){
 		$.ajax({
@@ -52,7 +61,6 @@ jQuery(document).ready(function() {
 			},
 		})
 		.done(function(r) {
-			debug(r);
 			$('#resultSearch').html(r);
 		})
 		.fail(function() {
@@ -63,13 +71,14 @@ jQuery(document).ready(function() {
 	$('#btnSearch').on('click', function(e){
 		e.preventDefault();
 		var search = $('#search').val();
-		if (urlSplit[0] != "http://localhost/projet/Final/w/public/recherche") {
-			window.location.href = "http://localhost/projet/Final/w/public/recherche?search="+search;
+		if (urlSplit[0] != urlBase+"recherche") {
+			window.location.href = urlBase+"recherche?search="+search;
 		} else {
 			history.pushState("", "", "recherche?search="+search);
 			getResultSearch(search);
 		}
 	});
+
 
 	$(document).on({
 		mouseenter: function(){
@@ -131,9 +140,6 @@ jQuery(document).ready(function() {
 		hideAlert();
 	});
 
-	getVote();
-	showNote();
-
 	function unColorStar(nb){
 		if (nb < 6) {
 			$('#vote[data-vote="'+nb+'"]').removeClass('glyphicon-star').addClass('glyphicon-star-empty');
@@ -152,8 +158,8 @@ jQuery(document).ready(function() {
 
 	function alreadyVoted(r){
 		var btnVote = '<p id="alertMessage"></p>';
-		btnVote += '<button id="modifyVote" type="button" data-vote="'+r.vote+'" class="btn buttons btn-default">Modifier</button>';
-		btnVote += '<button id="cancel" type="button" class="btn buttons btn-default">Annuler</button>';
+		btnVote += '<button id="modifyVote" type="button" data-vote="'+r.vote+'" class="btn btn-default">Modifier</button>';
+		btnVote += '<button id="cancel" type="button" class="btn btn-default">Annuler</button>';
 		$('#alertVote').html(btnVote);
 		messageAlert(r.response);
 		showAlert();
@@ -180,7 +186,6 @@ jQuery(document).ready(function() {
 			},
 		})
 		.done(function() {
-			console.log("success");
 		})
 		.always(function(r) {
 			var note = parseFloat(r.note);
@@ -202,6 +207,56 @@ jQuery(document).ready(function() {
 		$('#alertVote').hide()
 	}
 
+	$('#btnComment').on('click', function(e){
+		e.preventDefault();
+		comment();
+	})
+
+	function comment(){
+		var comment = $('#comment').val();
+		var shortTitle = $('#mainVideo').data('stitle');
+		var route = $('#comment_route').val();
+		$.ajax({
+			url: route,
+			type: 'POST',
+			dataType: 'json',
+			data: {
+				text: comment,
+				shortTitle: shortTitle
+			},
+		})
+		.done(function() {
+			getComment();
+			$('#comment').val('');
+		})
+		.fail(function() {
+			console.log("error");
+		})
+		
+	}
+
+	function getComment(){
+		var shortTitle = $('#mainVideo').data('stitle');
+		var route = $('#get_comment_route').val();
+		$.ajax({
+			url: route,
+			type: 'POST',
+			dataType: 'html',
+			data: {
+				shortTitle: shortTitle
+			},
+		})
+		.done(function(r) {
+			$('.comment-content').html(r);
+		})
+		.fail(function() {
+			console.log("error");
+		})
+		.always(function(r) {
+			console.log(r);
+		});
+		
+	}
 
 	function debug(i){
 		console.log(i);
