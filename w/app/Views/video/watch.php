@@ -1,8 +1,7 @@
-
-
-<?php $this->layout('layout', ['title' => $video['title'],'categories' => $categories]);
-  $this->start('main_content') ?>
-
+<?php
+$this->layout('layout', ['title' => $video['title'],'categories' => $categories]);
+$this->start('main_content');
+?>
 
 <input type="hidden" id="get_vote_route" value="<?= $this->url('get_vote') ?>">
 <input type="hidden" id="get_note_route" value="<?= $this->url('get_note') ?>">
@@ -38,7 +37,7 @@
 					<i style="font-size:1.5em;"	id="vote" data-vote='4' class="glyphicon glyphicon-star-empty"></i>
 					<i style="font-size:1.5em;"	id="vote" data-vote='5' class="glyphicon glyphicon-star-empty"></i>
 				</div>
-				<h4>Note moyenne : <span id="note"></span></h4>
+				<h4>Note moyenne : <span id="note"></span>/5</h4>
 				<div id="alertVote" class="alert-vote">
 					<p id="alertMessage"></p>
 				</div>
@@ -47,7 +46,7 @@
 			<section class="commentary">
 				<form method="POST">
 					<label>Votre commentaire</label><br>
-					<textarea class="body-inputs form-control description" name="" id="comment" rows="3"></textarea>
+					<textarea class="body-inputs form-control description" id="comment" rows="3"></textarea>
 					<button id="btnComment" class="buttons btn btn-default">Envoyer</button>
 				</form>
 

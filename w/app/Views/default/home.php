@@ -1,14 +1,12 @@
-
-<?php $this->layout('layout', ['title' => 'Accueil' , 'categories' => $categories]);
-
+<?php
+$this->layout('layout', ['title' => 'Accueil' , 'categories' => $categories]);
 $this->start('main_content');
 ?>
-<h1>Accueil</h1>
+
+<!-- SHOWING LATEST FAMOUS VIDEOS -->
 <section class="container-fluid video-container">
-    <div id="resultSearch" class="row col-md-12">
-
-
-    </div>
+	<h2>Les plus populaires</h2>
+    <div id="resultSearch" class="row col-md-12"></div>
 </section>
 
 <?php $this->stop('main_content') ?>
