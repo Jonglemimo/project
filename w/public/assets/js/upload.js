@@ -173,7 +173,7 @@ $(function () {
             }else{
                 $('#status').addClass('hide')
             }
-
+            console.log(upload);
             var type = {
                 regexImg : /image/gi,
                 regexVideo : /video/gi
@@ -186,15 +186,22 @@ $(function () {
 
             }
 
-            if (type.regexVideo.test(data.files[0].type) && upload.files.length == 0) {
+            if (type.regexVideo.test(data.files[0].type) == true && upload.files.length == 0) {
                 $('#order').html('<p class="what">Vous devez ajouter une image en premier</p>').removeClass('hide');
                 return;
             } else {
                 $('#status').addClass('hide')
             }
 
-            if(data.files[0].type.match(type.regexImg) !== null && upload.files.length == 1){
+            if(upload.files.length == 1 && upload.files[0].files[0].type.match(type.regexImg) != null && data.files[0].type.match(type.regexImg) != null){
                 $('#status').html('<p class="meh">Vous devez ajouter une vidéo</p>').removeClass('hide');
+                return;
+            } else {
+                $('#status').addClass('hide')
+            }
+
+            if(upload.files.length == 1 && upload.files[0].files[0].type.match(type.regexVideo) != null && data.files[0].type.match(type.regexVideo) != null){
+                $('#status').html('<p class="meh">Vous devez ajouter une image</p>').removeClass('hide');
                 return;
             } else {
                 $('#status').addClass('hide')
