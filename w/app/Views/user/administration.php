@@ -61,7 +61,7 @@ $this->start('main_content');
                 </div>
 
                 <div class="video-comments col-sm-12 col-md-6">
-                    <h5>Sur : <a href="<?=$this->url('watch',['shortTitle' => $comment['shortTitle']])?>"><p></p><?=$comment['title'] ?></a></h5>
+                    <h5>Sur : <a class="comment-title" href="<?=$this->url('watch',['shortTitle' => $comment['shortTitle']])?>"><?=$comment['title'] ?></a></h5>
                     <p><?= substr($comment['content'], 0, 220); if(strlen($comment['content']) > 220){ echo " [...]";} ?></p>
                 </div>
             </div>
