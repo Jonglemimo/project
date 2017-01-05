@@ -1,6 +1,6 @@
 
 jQuery(document).ready(function() {
-	var urlBase = "http://localhost"+homeUrl
+	var urlBase = "http://127.0.0.1:12"+homeUrl //WARNING ONLY FOR CORALIE
 	var url = $(location).attr('href');
 	var urlSplit = url.split('?');
 	if (url == urlBase){
@@ -10,6 +10,7 @@ jQuery(document).ready(function() {
 	if (urlSplit[0] == urlBase+"recherche"){
 
 		var search = urlSplit[1].split('=')[1];
+		search = decodeURI(search);
 		$('#search').val(search);
 		getResultSearch(search);
 	}
@@ -158,8 +159,8 @@ jQuery(document).ready(function() {
 
 	function alreadyVoted(r){
 		var btnVote = '<p id="alertMessage"></p>';
-		btnVote += '<button id="modifyVote" type="button" data-vote="'+r.vote+'" class="btn btn-default">Modifier</button>';
-		btnVote += '<button id="cancel" type="button" class="btn btn-default">Annuler</button>';
+		btnVote += '<button id="modifyVote" type="button" data-vote="'+r.vote+'" class="btn buttons btn-default">Modifier</button>';
+		btnVote += '<button id="cancel" type="button" class="btn buttons btn-default">Annuler</button>';
 		$('#alertVote').html(btnVote);
 		messageAlert(r.response);
 		showAlert();

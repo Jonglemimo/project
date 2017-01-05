@@ -4,7 +4,7 @@ $this->start('main_content');
 ?>
 
 <section class="container-fluid">
-
+    
     <a href="<?=$this->url('user_admin')?>">< Retour à ma page</a>
     <?php if(isset($success)):?>
         <p class="correct"><?=$success?></p>
@@ -27,11 +27,11 @@ $this->start('main_content');
 
 
     <form method="POST">
-        <label for="subject">Sujet </label>
+        <label for="subject">Sujet</label>
         <input class="body-inputs form-control" type="text" name="subject" value="<?=isset($form['subject'])?$form['subject']:null?>" >
-        <label for="email">Email </label>
+        <label for="email">Email</label>
         <input class="body-inputs form-control" type="email" name="email" value="<?=isset($user['email'])?$user['email']:null?>">
-        <label for="content">Contenu </label>
+        <label for="content">Contenu</label>
         <textarea class="body-inputs form-control" name="content" cols="30" rows="10"><?=isset($form['content'])?$form['content']:null?></textarea>
         <!-- SENDING BUTTON -->
         <button class="buttons btn btn-default" type="submit" name="contact">Valider</button>

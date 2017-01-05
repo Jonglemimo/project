@@ -34,6 +34,7 @@
 //7.2 - My Videos
 //7.3 - Upload Videos
 //7.4 - Edit Videos
+//7.5 - My Comments
 
 //8.0 - WATCH VIDEO
 
@@ -175,8 +176,36 @@ a {
 	}
 }
 
-a.video-title {
+.video-title {
 		color: @grey7;
+	width: 100%;
+		font-size: 16px;
+	& > a {
+		display: block!important;
+		span{
+			display: inline-block;
+			width: 100%;
+			height: 2rem;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+	}
+
+	&:hover {
+		color: @grey7;
+	}
+	&:focus {
+		color: @grey7;
+	}
+	&:active {
+		color: @grey7;
+	}
+}
+
+.comment-title {
+		color: @grey7;
+		font-size: 14px;
 	&:hover {
 		color: @grey7;
 	}
@@ -228,6 +257,14 @@ a.video-title {
 			color: @false;
 		}
 	}
+}
+
+.popover {
+	width: 220px;
+}
+
+.popover.top>.arrow:after {
+	border-top-color: @grey2;
 }
 
 #uploadButton {
@@ -1015,6 +1052,20 @@ h1.condition-generales-title{
 	}
 }
 
+/*=========  7.5 - My Comments  =========*/
+
+.video-comments {
+	
+	span {
+		margin: 0;
+		margin-right: 10px;
+	}
+
+	h4 {
+		display: inline-block;
+	}
+}
+
 /*=========================================
 =            8.0 - WATCH VIDEO            =
 =========================================*/
@@ -1039,6 +1090,10 @@ h1.condition-generales-title{
 
 	h5 {
 		display: inline-block;
+	}
+
+	#note {
+		color: @turquoise2;
 	}
 
 	.stars {
@@ -1068,6 +1123,49 @@ h1.condition-generales-title{
 	}
 }
 
+.watch-comments {
+	padding-top: 10px;
+
+	.avatar-comments {
+		display: inline-block;
+		margin: 10px 10px 10px 0;
+		img {
+			height: 50px;
+			width: 50px;
+			object-fit: cover;
+			border: 1px solid @turquoise3;
+		}
+	}
+
+	.date-user-comments {
+		vertical-align:middle;
+		display: inline-block;
+
+		.title-date {
+			margin-top: 0;
+		}
+
+		span {
+			margin-bottom: 0;
+		}
+
+		h5 {
+			display: block;
+			margin-bottom: 0;
+			p {
+				display: inline-block;
+				color: @turquoise2;
+				margin: 0;
+			}
+		}
+	}
+
+	.text-comments {
+		margin-left: 25px;
+	}
+}
+
+
 .video-suggestions {
 	margin-top: 15px;
 	padding: 15px;
@@ -1081,9 +1179,9 @@ h1.condition-generales-title{
 	}
 }
 
-/*=========================================
+/*=======================================
 =            9.0 - HOME PAGE            =
-=========================================*/
+========================================*/
 
 .homepage-container{
 	margin: 15px 0;
