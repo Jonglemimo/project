@@ -143,7 +143,6 @@
     <input type="hidden" id="vote_route" value="<?= $this->url('vote') ?>">
 
 	<section class="body body-padding">
-		<h1><?= $this->e($title) ?></h1>
 		<section>
 			<?= $this->section('main_content') ?>
 		</section>
@@ -156,7 +155,7 @@
     </div>
 
     <div class="footer-links">
-        <a href="#">Conditions d'utilisation</a>
+        <a href="<?=$this->url('default_condition')?>">Conditions d'utilisation</a>
         -
         <a href="#">Confidentialité</a>
         -

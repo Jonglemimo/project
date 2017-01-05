@@ -2,6 +2,7 @@
 $this->layout('layout', ['title' => 'Connexion','categories' => $categories]);
 $this->start('main_content');
 ?>
+<h1>Connexion</h1>
 
 <section class="login">
     <form class="form-group" method="post">

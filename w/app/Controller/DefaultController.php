@@ -7,12 +7,6 @@ use \W\Controller\Controller;
 class DefaultController extends Controller {
 
 
-    function __construct()
-    {
-
-
-    }
-
     public function show($file, array $data = array())
     {
         $category = new \Model\CategoriesModel();
@@ -24,6 +18,10 @@ class DefaultController extends Controller {
 	public function home() {
 		$this->show('default/home');
 	}
+
+	public function conditionGeneral(){
+        $this->show('default/condition-general');
+    }
 
 
 }

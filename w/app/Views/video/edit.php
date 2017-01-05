@@ -2,7 +2,7 @@
 $this->layout('layout', ['title' => 'Edition de votre vidéo','categories' => $categories]);
 $this->start('main_content');
 ?>
-
+<h1>Edition de votre vidéo</h1>
 <a class="edit-videos-a" href="<?=$this->url('user_admin')?>">< Retour à ma page</a>
 
 <form id="edit" method="POST" enctype="multipart/form-data">

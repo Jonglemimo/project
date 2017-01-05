@@ -176,6 +176,7 @@ a {
 }
 
 .video {
+	position: relative;
 	.editVideo,.deleteVideo {
 		padding: 0;
 		position: absolute;
@@ -184,15 +185,15 @@ a {
 		display: none;
 		text-align: center;
 		z-index: 1020;
-		top: 3rem;
+		top: 2rem;
 	}
 
 	.editVideo {
-		right: 6.5rem;
+		right: 20%;
 	}
 
 	.deleteVideo {
-		right: 10rem;
+		right: 27%;
 	}
 
 	&:hover {
@@ -759,6 +760,10 @@ header nav.header-bar {
 	}
 }
 
+h1.condition-generales-title{
+	margin-bottom: 4rem;
+}
+
 /*========================================
 =            5.0 - LOG SYSTEM            =
 ========================================*/
@@ -865,7 +870,6 @@ header nav.header-bar {
 
 	h3:not(.popover-title) {
 		display: inline-block;
-
 	}
 
 	.buttons.btn {
@@ -884,6 +888,10 @@ header nav.header-bar {
 		display: inline-block;
 		margin-left: 15px;
 		margin-bottom: 0px;
+	}
+
+	.see-more {
+		margin: 15px 0px;
 	}
 }
 
@@ -981,6 +989,14 @@ header nav.header-bar {
 	}
 }
 
+.popover{
+	background-color:@grey2 ;
+	.popover-title{
+		background-color:@grey1 ;
+		color:#FFF;
+	}
+}
+
 /*=========================================
 =            8.0 - WATCH VIDEO            =
 =========================================*/
@@ -1029,6 +1045,9 @@ header nav.header-bar {
 			border-top: 1px solid @grey5;
 		}
 	}
+	.date{
+		color: @turquoise1;
+	}
 }
 
 .video-suggestions {
@@ -1042,4 +1061,12 @@ header nav.header-bar {
 	@media (min-width: 768px) {
 		margin-left: 1%; 
 	}
+}
+
+/*=========================================
+=            9.0 - HOME PAGE            =
+=========================================*/
+
+.homepage-container{
+	margin: 15px 0;
 }

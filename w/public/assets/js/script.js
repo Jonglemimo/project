@@ -8,6 +8,7 @@ jQuery(document).ready(function() {
 	}
 
 	if (urlSplit[0] == urlBase+"recherche"){
+
 		var search = urlSplit[1].split('=')[1];
 		$('#search').val(search);
 		getResultSearch(search);
@@ -39,7 +40,7 @@ jQuery(document).ready(function() {
 	function getBest(){
 		$.ajax({
 			url: $('#ajax_search_route').val() ,
-			dataType: 'html',
+			dataType: 'html'
 		})
 		.done(function(r) {
 			$('#resultSearch').html(r);

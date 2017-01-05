@@ -2,7 +2,7 @@
 
 $this->layout('layout', ['title' => 'Inscription réussie !','categories' => $categories]);
 $this->start('main_content') ?>
-
+<h1>Inscription réussie !</h1>
 <section class="signin-success">
 
     <!-- USERNAME -->

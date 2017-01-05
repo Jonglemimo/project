@@ -3,9 +3,9 @@
 
 $this->start('main_content');
 ?>
-
+<h1>Accueil</h1>
 <section class="container-fluid video-container">
-    <div id="resultSearch" class="col-md-12 row">
+    <div id="resultSearch" class="row col-md-12">
 
 
     </div>

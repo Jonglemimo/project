@@ -15,7 +15,7 @@ class CategoriesModel extends Model
     }
 
     function getVideoByCategories($slug){
-        $sql = 'SELECT categories.name, video.title,video.id_user, video.shortTitle, video.url, video.description, posters.poster_xs, posters.poster_sm, posters.poster_lg
+        $sql = 'SELECT categories.name, video.title ,video.id_user, video.shortTitle, video.url, video.description, posters.poster_xs, posters.poster_sm, posters.poster_lg
 	            FROM categories
 	            LEFT JOIN video ON categories.id = video.id_category
 	            LEFT JOIN posters ON posters.id_video = video.id
@@ -23,6 +23,22 @@ class CategoriesModel extends Model
 	            ORDER BY date_created DESC';
         $stmt = $this->dbh->prepare($sql);
         $stmt->bindParam(':slug', $slug);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
+    function getVideoByCategoriesWithoutCurrent($slug,$id_video){
+        $sql = 'SELECT categories.name, video.title ,video.id_user, video.shortTitle, video.url, video.description, posters.poster_xs, posters.poster_sm, posters.poster_lg
+	            FROM categories
+	            LEFT JOIN video ON categories.id = video.id_category
+	            LEFT JOIN posters ON posters.id_video = video.id
+	            WHERE categories.slug = :slug AND video.encoding = 1
+	            AND video.id != :id_video
+	            ORDER BY date_created DESC';
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->bindParam(':slug', $slug);
+        $stmt->bindParam(':id_video', $id_video);
+
         $stmt->execute();
         return $stmt->fetchAll();
     }

@@ -1,8 +1,8 @@
 <?php $this->layout('layout', ['title' => 'Votre recherche', 'categories' => $categories]); 
 
-$this->start('main_content');
+$this->start('main_content');?>
 
-?>
+<h1>Votre recherche ...</h1>
 
 <section id="resultSearch">
 
