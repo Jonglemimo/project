@@ -157,7 +157,7 @@
     <div class="footer-links">
         <a href="<?=$this->url('default_condition')?>">Conditions d'utilisation</a>
         -
-        <a href="#">Confidentialité</a>
+        <a href="<?=$this->url('default_confidentialite')?>">Confidentialité</a>
         -
         <a href="<?=$this->url('user_contact')?>">Nous contacter</a>
     </div>

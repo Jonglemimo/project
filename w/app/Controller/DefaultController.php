@@ -23,5 +23,9 @@ class DefaultController extends Controller {
         $this->show('default/condition-general');
     }
 
+    public function confidentialite(){
+	    $this->show('default/confidentialite');
+    }
+
 
 }

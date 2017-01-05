@@ -30,6 +30,7 @@
 			    </div>
 				<h3>Mise en ligne par <p><?= $video['username'] ?></p></h3>
 				<h5>Le <span class="date"><?= $video['date_created'] ?></span></h5>
+                <p><?=$video['description']?></p><br>
 
 				<div class="stars pull-right">
 					<i style="font-size:1.5em;"	id="vote" data-vote='1' class="glyphicon glyphicon-star-empty"></i>
