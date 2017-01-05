@@ -14,6 +14,7 @@ $this->start('main_content');
                 </div>
 
                 <div class="video-comments col-sm-12 col-md-6">
+                <button class="btn btn-danger glyphicon glyphicon-trash deleteVideo" data-toggle="confirmation"  data-btn-ok-label="Supprimer"  data-btn-ok-class="btn-danger"  data-btn-cancel-class="btn-default" data-btn-cancel-label="Annuler" data-placement="top" data-delete="<?=$comment['id']?>"></button>
                     <h5><p>Sur : </p><?=$comment['title'] ?></h5>
                     <p><?= substr($comment['content'], 0, 220); if(strlen($comment['content']) > 220){ echo " [...]";} ?></p>
                 </div>

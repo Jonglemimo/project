@@ -32,7 +32,7 @@ class UsersModel extends UModel {
             return false;
         }
 
-        $sql = 'SELECT content, date_posted, id_video, video.url, video.title, video.shortTitle
+        $sql = 'SELECT comments.id ,content, date_posted, id_video, video.url, video.title, video.shortTitle
                 FROM comments
                 LEFT JOIN video ON comments.id_video = video.id
                 LEFT JOIN users ON comments.id_user = users.id

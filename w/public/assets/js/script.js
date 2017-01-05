@@ -10,6 +10,7 @@ jQuery(document).ready(function() {
 	if (urlSplit[0] == urlBase+"recherche"){
 
 		var search = urlSplit[1].split('=')[1];
+		search = decodeURI(search);
 		$('#search').val(search);
 		getResultSearch(search);
 	}
