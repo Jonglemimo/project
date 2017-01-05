@@ -9,7 +9,7 @@ class CategoriesController extends \Controller\DefaultController {
 
         $category = new CategoriesModel();
         $videosByCategory =$category->getVideoByCategories($slug);
-        $this->show('video/category', ['videosByCategory' => $videosByCategory]);
+        $this->show('video/category', ['videosByCategory' => $videosByCategory , 'currentCategory' => $slug]);
     }
 
 

@@ -32,10 +32,12 @@ class UsersModel extends UModel {
             return false;
         }
 
-        $sql = 'SELECT comments.id ,content, date_posted, id_video, video.url, video.title, video.shortTitle
+        $sql = 'SELECT comments.id ,comments.content, comments.date_posted, comments.id_video, users.id AS id_user ,video.title, video.url, video.title, video.shortTitle,posters.poster_sm
+
                 FROM comments
-                LEFT JOIN video ON comments.id_video = video.id
+                LEFT JOIN posters ON comments.id_video = posters.id_video
                 LEFT JOIN users ON comments.id_user = users.id
+                LEFT JOIN video ON comments.id_video = video.id
                 WHERE :id_user = comments.id_user AND encoding = 1 ORDER BY date_posted DESC';
 
         if($limit != null) {

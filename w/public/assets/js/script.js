@@ -211,7 +211,7 @@ jQuery(document).ready(function() {
 	$('#btnComment').on('click', function(e){
 		e.preventDefault();
 		comment();
-	})
+	});
 
 	function comment(){
 		var comment = $('#comment').val();
