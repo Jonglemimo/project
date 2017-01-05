@@ -1,9 +1,9 @@
-<?php $this->layout('layout',  ['title' => 'Catégorie : '.$videosByCategory[0]['name'],'categories' => $categories  ]);
+<?php $this->layout('layout',  ['title' => 'Catégorie : '.ucfirst($currentCategory),'categories' => $categories  ]);
 
 $this->start('main_content');
 ?>
 
-<h1>Catégorie : <?=$videosByCategory[0]['name']?></h1>
+<h1>Catégorie : <?=ucfirst($currentCategory)?></h1>
 
 <input type="hidden" id="ajax_search_route" value="<?= $this->url('search') ?>">
 
