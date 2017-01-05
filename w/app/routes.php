@@ -6,6 +6,7 @@
 
 	    ['GET',                 '/',                               'Default#home',                 'default_home'],
         ['GET',                 '/condition-general-utilisation',  'Default#conditionGeneral',     'default_condition'],
+        ['GET',                 '/polithique-confidentialite',     'Default#confidentialite',      'default_confidentialite'],
 
         //Connexion
         ['GET',                 '/logout',                         'User#logout',                  'user_logout'],

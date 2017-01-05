@@ -3,8 +3,8 @@ $this->layout('layout', ['title' => isset($videoEncoding)?'Vidéos en cours de t
 $this->start('main_content');
 ?>
 
-<!-- VIDEO UPLOADING -->
-<h1><?=isset($videoEncoding)?'Vidéos en cours de transcodages' : 'Ajouter une vidéo'?></h1>
+<h1><?=isset($videoEncoding)?'Vidéos en cours de transcodage' : 'Ajouter une vidéo'?></h1>
+
 
 <!-- SHOWING LOADING VIDEOS -->
 <?php if(isset($videoEncoding)):?>

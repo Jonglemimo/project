@@ -20,11 +20,13 @@ $this->start('main_content');
                 
                 <!-- VIDEO TITLE AND COMMENT -->
                 <div class="video-comments col-sm-12 col-md-6">
-                    <a href="<?=$this->url('watch',['shortTitle' => $comment['shortTitle']])?>">
-                        <span>Sur : </span><h4 class="comment-title"><?=$comment['title'] ?></h4>
-                    </a>
 
-                    <p><?= substr($comment['content'], 0, 150); if(strlen($comment['content']) > 150){ echo " [...]";} ?></p>
+
+                <button class="btn btn-danger glyphicon glyphicon-trash deleteVideo" data-toggle="confirmation"  data-btn-ok-label="Supprimer"  data-btn-ok-class="btn-danger"  data-btn-cancel-class="btn-default" data-btn-cancel-label="Annuler" data-placement="top" data-delete="<?=$comment['id']?>"></button>
+                    <h5><a href="<?=$this->url('watch',['shortTitle' => $comment['shortTitle']])?>"><p>Sur : </p><?=$comment['title'] ?></a></h5>
+
+                    <p><?= substr($comment['content'], 0, 220); if(strlen($comment['content']) > 220){ echo " [...]";} ?></p>
+
                 </div>
             </div>
         <?php endforeach;?>
