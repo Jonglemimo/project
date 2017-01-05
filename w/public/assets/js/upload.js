@@ -104,7 +104,7 @@ var upload = {
             return;
         }
 
-        $.post(currentUrl + '/mapage/upload',{
+        $.post(homeUrl + '/mapage/upload',{
             'title' : $('input[name="title"]').val(),
             'description' : $('textarea[name="description"]').val(),
             'image' : $('#imageFile').val(),

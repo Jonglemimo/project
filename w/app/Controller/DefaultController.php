@@ -19,5 +19,9 @@ class DefaultController extends Controller {
 		$this->show('default/home');
 	}
 
+	public function conditionGeneral(){
+        $this->show('default/condition-general');
+    }
+
 
 }

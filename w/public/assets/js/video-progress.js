@@ -9,7 +9,7 @@ $(function () {
                 return;
             }
 
-            $.get(currentUrl + 'api/get-percentage/'+ id, function (data) {
+            $.get(homeUrl + 'api/get-percentage/'+ id, function (data) {
 
                 if(typeof data != 'undefined' && typeof data.percentage != 'undefined' && !isNaN(parseInt(data.percentage))){
 

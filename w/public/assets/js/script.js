@@ -2,11 +2,11 @@
 jQuery(document).ready(function() {
 	var url = $(location).attr('href');
 	var urlSplit = url.split('?');
-	if (url == "http://localhost/projet/Final/w/public/"){
+	if (url == 'http://localhost'+homeUrl){
 		getBest();
 	}
 
-	if (urlSplit[0] == "http://localhost/projet/Final/w/public/recherche"){
+	if (urlSplit[0] == 'http://localhost'+homeUrl+'recherche'){
 		var search = urlSplit[1].split('=')[1];
 		$('#search').val(search);
 		getResultSearch(search);
@@ -31,7 +31,7 @@ jQuery(document).ready(function() {
 	function getBest(){
 		$.ajax({
 			url: $('#ajax_search_route').val() ,
-			dataType: 'html',
+			dataType: 'html'
 		})
 		.done(function(r) {
 			$('#resultSearch').html(r);

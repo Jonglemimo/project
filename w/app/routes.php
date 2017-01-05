@@ -3,7 +3,9 @@
 
         $w_routes = array(
 
-        ['GET',                 '/',                               'Default#home',                 'default_home'],
+
+	    ['GET',                 '/',                               'Default#home',                 'default_home'],
+        ['GET',                 '/condition-general-utilisation',  'Default#conditionGeneral',     'default_condition'],
 
         //Connexion
         ['GET',                 '/logout',                         'User#logout',                  'user_logout'],
@@ -23,7 +25,9 @@
         ['GET|POST',            '/contact',                        'User#contact',                 'user_contact'],
 
         //Video
-        ['GET|POST',            '/search',                         'Video#search',                 'search'],
+
+
+        ['GET|POST', 		    '/search',			                   'Video#search', 		             'search'],
         ['GET|POST',            '/recherche',                      'Video#switchSearch',           'switch_search'],
         ['GET|POST',            '/watch/[:shortTitle]',            'Video#watch',                  'watch'],
         ['GET|POST',            '/watchAjax',                      'Video#watchVideo',             'watch_ajax'],

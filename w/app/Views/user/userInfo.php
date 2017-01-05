@@ -2,7 +2,7 @@
 $this->layout('layout', ['title' => 'Modifier vos informations','categories' => $categories]);
 $this->start('main_content');
 ?>
-
+<h1>Modifier vos informations</h1>
 <section class="user-info">
 
     <a href="<?=$this->url('user_admin')?>">< Retour à ma page</a>

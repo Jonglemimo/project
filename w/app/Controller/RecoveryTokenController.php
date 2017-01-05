@@ -39,8 +39,8 @@ class RecoveryTokenController extends \Controller\DefaultController {
                         $token = bin2hex(openssl_random_pseudo_bytes(40));
                         $userModel->createToken($id_user, $token);
                         $subject = 'Réinitialisation du mot de passe';
-                        $bodyHtml = 'Voici le lien de réinitialisation http://localhost/Formation/Cours/group-project/project/w/public/signin/reset_pass/' . $token;
-                        $bodyPlain = 'Voici le lien de réinitialisation http://localhost/Formation/Cours/group-project/project/w/public/signin/reset_pass/' . $token;
+                        $bodyHtml = 'Bonjour '.$user['username'].', <br>Voici le lien de réinitialisation http://localhost/Formation/Cours/group-project/project/w/public/signin/reset_pass/' . $token;
+                        $bodyPlain = 'Bonjour '.$user['username'].', Voici le lien de réinitialisation http://localhost/Formation/Cours/group-project/project/w/public/signin/reset_pass/' . $token;
                         $mail->sendMail($userMail, $subject, $bodyHtml, $bodyPlain);
                         $this->show('user/lostPassword',['success' => 'Votre email de réinitialisation a été envoyé']);
 
