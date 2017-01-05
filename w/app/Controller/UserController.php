@@ -261,7 +261,7 @@ class UserController extends \Controller\DefaultController {
         }
 
         $this->userModel->setTable('video');
-        $videos = $this->userModel->findVideoById($_SESSION['user']['id'], 3);
+        $videos = $this->userModel->findVideoById($_SESSION['user']['id'], 4);
         $comments = $this->userModel->findVideoByComment($_SESSION['user']['id']);
 
         $this->userModel->setTable('users');

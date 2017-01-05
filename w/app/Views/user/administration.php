@@ -24,7 +24,7 @@ $this->start('main_content');
     <?php if(is_array($videos)):?>
         <div class="row col-md-12 latest-video">
             <?php foreach ($videos as $video):?>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="video">
                         <div class="relative-buttons">
                             <?php if ($video['id_user'] === $_SESSION['user']['id']):?>
@@ -50,26 +50,25 @@ $this->start('main_content');
 </section>
 
 <section class="container-fluid comment-container">
-
     <h3>Mes commentaires</h3>
-
     <?php if(is_array($comments)):?>
+    <div class="row col-md-12 latest-video">
         <?php foreach ($comments as $comment):?>
-
             <div class="col-md-6">
                 <div class="col-sm-12 col-md-6">
-                    <video class="video-small" src="<?=$video['url']?>" controls poster="<?= $video['poster'] ?>"></video>
+                    <a href="<?=$this->url('watch',['shortTitle' => $comment['shortTitle']])?>"> <img class="video-medium" src="<?=$this->assetUrl('users'.DIRECTORY_SEPARATOR.$comment['id_user'].DIRECTORY_SEPARATOR.$comment['shortTitle'].DIRECTORY_SEPARATOR.$comment['poster_sm']) ?>" alt="<?=$comment['title']?>">
+                    </a>
                 </div>
 
                 <div class="video-comments col-sm-12 col-md-6">
-                    <h5><p>Sur : </p><?=$comment['title'] ?></h5>
+                    <h5>Sur : <a href="<?=$this->url('watch',['shortTitle' => $comment['shortTitle']])?>"><p></p><?=$comment['title'] ?></a></h5>
                     <p><?= substr($comment['content'], 0, 220); if(strlen($comment['content']) > 220){ echo " [...]";} ?></p>
                 </div>
             </div>
         <?php endforeach;?>
-
+    </div>
     <div>
-        <a href="<?=$this->url('user_comment')?>" class = "col-md-offset-7">Voir plus</a>
+        <a href="<?=$this->url('user_comment')?>" class = "see-more">Voir plus</a>
     </div>
 
     <?php else :?>

@@ -9,7 +9,7 @@ $this->start('main_content');
     <?php if(is_array($videos)):?>
         <div class="row col-md-12">
             <?php foreach ($videos as $video):?>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="video">
                         <div class="relative-buttons">
                             <?php if ($video['id_user'] === $_SESSION['user']['id']):?>

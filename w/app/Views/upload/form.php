@@ -5,7 +5,7 @@ $this->layout('layout', ['title' => isset($videoEncoding)?'Vidéos en cours de t
 $this->start('main_content');
 ?>
 
-<h1><?=isset($videoEncoding)?'Vidéos en cours de transcodages' : 'Ajouter une vidéo'?></h1>
+<h1><?=isset($videoEncoding)?'Vidéos en cours de transcodage' : 'Ajouter une vidéo'?></h1>
 
 <?php if(isset($videoEncoding)):?>
 <div id="currentTranscoding">
