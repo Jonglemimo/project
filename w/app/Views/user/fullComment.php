@@ -3,6 +3,8 @@ $this->layout('layout', ['title' => 'Mes commentaires','categories' => $categori
 $this->start('main_content');
 ?>
 
+<h1>Mes commentaires</h1>
+
 <section class="container-fluid main-comment-container">
 
     <?php if(is_array($comments)):?>
