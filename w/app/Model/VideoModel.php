@@ -39,12 +39,12 @@ class VideoModel extends Model {
 
 
 	function getVideo($url){
-		$sql = 'SELECT video.url ,video.title, video.description , video.date_created, video.shortTitle, users.username, video.id_user as userId , posters.poster_lg
+		$sql = 'SELECT video.id,video.url ,video.title, video.description , video.date_created, video.shortTitle, users.username, video.id_user as userId , posters.poster_lg, categories.slug
 				FROM video
-				INNER JOIN users
-				INNER JOIN posters ON posters.id_video = video.id
-				WHERE video.shortTitle = :url 
-				AND video.id_user = users.id';
+				LEFT JOIN users ON video.id_user = users.id
+				LEFT JOIN categories ON video.id_category = categories.id
+				LEFT JOIN posters ON posters.id_video = video.id
+				WHERE video.shortTitle = :url';
 		$stmt = $this->dbh->prepare($sql);
 		$stmt->bindParam(':url', $url);
 		$stmt->execute();

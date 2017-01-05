@@ -2,7 +2,7 @@
 $this->layout('layout', ['title' => 'Créer un nouveau compte','categories' => $categories]);
 $this->start('main_content');
 ?>
-
+<h1>Créer un nouveau compte</h1>
 <section class="signup">
 
     <a href="<?=$this->url('default_home')?>">< Retour à la page d'accueil</a>
@@ -50,7 +50,7 @@ $this->start('main_content');
         
         <!-- unvalid username -->
         <?php if(isset($errors['username']['exist'])) : ?>
-            <p class="false">Cet username existe déjà</p>
+            <p class="false">Ce pseudonyme est déjà utilisé</p>
         <?php endif ?>
         
 
@@ -70,7 +70,7 @@ $this->start('main_content');
         
         <!-- already used email -->
         <?php if(isset($errors['email']['exist'])) : ?>
-            <p class="what">Cet email est déjà utilisé</p>
+            <p class="false">Cet email est déjà utilisé</p>
         <?php endif ?>
 
 
