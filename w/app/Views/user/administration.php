@@ -22,25 +22,19 @@ $this->start('main_content');
 
     <a class="buttons btn btn-default pull-right" href="<?=$this->url('upload_form')?>">Ajouter une vidéo</a>
     <?php if(is_array($videos)):?>
-        <div class="row col-md-12">
+        <div class="row col-md-12 latest-video">
             <?php foreach ($videos as $video):?>
                 <div class="col-md-4">
                     <div class="video">
-                        <a href="<?=$this->url('watch',['shortTitle' => $video['shortTitle']])?>">
-                            
-                            <div class="relative-buttons">
-
-                                <?php if ($video['id_user'] === $_SESSION['user']['id']):?>
-                                        <input class="deleteId" type="hidden" value="<?=$this->url('delete_video')?>">
-                                        <button class="btn btn-danger glyphicon glyphicon-trash deleteVideo" data-toggle="confirmation"  data-title="Supprimer la vidéo ?" data-btn-ok-label="Supprimer"  data-btn-ok-class="btn-danger"  data-btn-cancel-class="btn-default" data-btn-cancel-label="Annuler" data-placement="top" data-delete="<?=$video['id_video']?>" ></button>
-                                        <button class="btn btn-default glyphicon glyphicon-edit editVideo"  data-edit="<?=$this->url('edit_video', ['id'=> $video['id_video']])?>"></button>
-                                <?php endif; ?>
-                                
-                                <img class="video-medium" src="<?=$this->assetUrl('users'.DIRECTORY_SEPARATOR.$_SESSION['user']['id'].DIRECTORY_SEPARATOR.$video['shortTitle'].DIRECTORY_SEPARATOR.$video['poster_sm']) ?>" alt="<?=$video['title']?>">
-                            </div>
-
-                            <h4 class="video-title"><?=$video['title'] ?></h4>
-                        </a>
+                        <div class="relative-buttons">
+                            <?php if ($video['id_user'] === $_SESSION['user']['id']):?>
+                                    <input class="deleteId" type="hidden" value="<?=$this->url('delete_video')?>">
+                                    <button class="btn btn-danger glyphicon glyphicon-trash deleteVideo" data-toggle="confirmation"  data-title="Supprimer la vidéo ?" data-btn-ok-label="Supprimer"  data-btn-ok-class="btn-danger"  data-btn-cancel-class="btn-default" data-btn-cancel-label="Annuler" data-placement="top" data-delete="<?=$video['id_video']?>" ></button>
+                                    <button class="btn btn-default glyphicon glyphicon-edit editVideo"  data-edit="<?=$this->url('edit_video', ['id'=> $video['id_video']])?>"></button>
+                            <?php endif; ?>
+                            <h4 class="video-title"><a href="<?=$this->url('watch',['shortTitle' => $video['shortTitle']])?>"> <img class="video-medium" src="<?=$this->assetUrl('users'.DIRECTORY_SEPARATOR.$_SESSION['user']['id'].DIRECTORY_SEPARATOR.$video['shortTitle'].DIRECTORY_SEPARATOR.$video['poster_sm']) ?>" alt="<?=$video['title']?>"><?=$video['title'] ?> </a>
+                            </h4>
+                        </div>
                     </div>
                 </div>
             <?php endforeach;?>

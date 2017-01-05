@@ -13,7 +13,8 @@ $(function () {
                 data:{
                     id: id
                 }
-            }).done(function () {
+            }).done(function (r) {
+                console.log(r);
                 deleteElement(id);
                 if($(".latest-video").children().length === 0){
                     window.location.reload();
@@ -25,7 +26,8 @@ $(function () {
         // other options
     });
 
-    $(document).on('click', '.editVideo',function () {
+    $(document).on('click', '.editVideo',function (r) {
+        console.log(r);
         var href = $(this).data('edit');
         document.location.href= href;
     });
@@ -33,7 +35,7 @@ $(function () {
 });
 
 var deleteElement = function (id) {
-    var container = $('.deleteVideo[data-delete="'+id+'"]').parent().parent();
+    var container = $('.deleteVideo[data-delete="'+id+'"]').parent().parent().parent();
     if(container.length > 0){
         container.remove();
     }
