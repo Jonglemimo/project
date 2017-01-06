@@ -5,7 +5,7 @@
 	<div class="watch-comments">
 		<div class="avatar-comments">
 			<!-- USER AVATAR -->
-			<img src="http://i2.kym-cdn.com/entries/icons/original/000/020/641/DVA.png" alt="Votre avatar">
+			<img src="<?=$this->assetUrl('users'.DIRECTORY_SEPARATOR.$comment['id'].DIRECTORY_SEPARATOR.$comment['avatar'])?>" alt="Votre avatar">
 	    </div>
 		
 		<!-- DATE OF THE COMMENT AND AUTHOR -->

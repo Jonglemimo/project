@@ -9,7 +9,7 @@ $this->start('main_content');
     <?php if(is_array($videos)):?>
         <div class="row col-md-12">
             <?php foreach ($videos as $video):?>
-                <div class="col-md-3">
+                <div class="col-md-3 col-sm-12">
                     <div class="video">
                         <div class="relative-buttons">
 
@@ -21,16 +21,25 @@ $this->start('main_content');
                             <?php endif; ?>
 
                             <!-- LATEST VIDEOS WITH TITLES -->
-                            <a href="<?=$this->url('watch',['shortTitle' => $video['shortTitle']])?>">
-                                <img class="video-medium" src="<?=$this->assetUrl('users'.DIRECTORY_SEPARATOR.$_SESSION['user']['id'].DIRECTORY_SEPARATOR.$video['shortTitle'].DIRECTORY_SEPARATOR.$video['poster_sm']) ?>" alt="<?=$video['title']?>">
-                                <h4 class="video-title"><?=$video['title'] ?></h4>
-                            </a>
+
+                            <h4 class="video-title"><a href="<?=$this->url('watch',['shortTitle' => $video['shortTitle']])?>"><img class="video-medium" src="<?=$this->assetUrl('users'.DIRECTORY_SEPARATOR.$_SESSION['user']['id'].DIRECTORY_SEPARATOR.$video['shortTitle'].DIRECTORY_SEPARATOR.$video['poster_sm']) ?>" alt="<?=$video['title']?>"><span><?=$video['title'] ?></span></a>
+                            </h4>
                         </div>
                     </div>
                 </div>
             <?php endforeach;?>
         </div>
-
+        <?php if($pagination['total'] > 1): ?>
+            <div class="row col-md-12 text-center">
+                <ul class="pagination">
+                    <?php for($i = 1; $i <= $pagination['total']; $i ++):?>
+                        <li<?= $i == $pagination['current'] ? ' class="active"':''?>>
+                            <a href="<?=$this->url('user_video_page',['page' => $i])?>"><?=$i?></a>
+                        </li>
+                    <?php endfor; ?>
+                </ul>
+            </div>
+         <?php endif; ?>
     <!-- IF NO VIDEOS -->
     <?php else: ?>
         <p class="no-content"><?=$videos ?></p>

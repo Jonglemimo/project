@@ -28,7 +28,7 @@ $this->start('main_content');
     <?php if(is_array($videos)):?>
         <div class="row col-md-12 latest-video">
             <?php foreach ($videos as $video):?>
-                <div class="col-md-3">
+                <div class="col-md-3 col-sm-12">
                     <div class="video">
                         <div class="relative-buttons">
                             <!-- MODIFY OR DELETE VIDEO BUTTONS -->
@@ -39,10 +39,8 @@ $this->start('main_content');
                             <?php endif; ?>
                             
                             <!-- LATEST VIDEOS WITH TITLES -->
-                            <a href="<?=$this->url('watch',['shortTitle' => $video['shortTitle']])?>">
-                                <img class="video-medium" src="<?=$this->assetUrl('users'.DIRECTORY_SEPARATOR.$_SESSION['user']['id'].DIRECTORY_SEPARATOR.$video['shortTitle'].DIRECTORY_SEPARATOR.$video['poster_sm']) ?>" alt="<?=$video['title']?>">
-                                <h4 class="video-title"><?=$video['title'] ?></h4>
-                            </a>
+                            <h4 class="video-title"><a href="<?=$this->url('watch',['shortTitle' => $video['shortTitle']])?>"><img class="video-medium" src="<?=$this->assetUrl('users'.DIRECTORY_SEPARATOR.$_SESSION['user']['id'].DIRECTORY_SEPARATOR.$video['shortTitle'].DIRECTORY_SEPARATOR.$video['poster_sm']) ?>" alt="<?=$video['title']?>"><span><?=$video['title'] ?></span></a>
+                            </h4>
                         </div>
                     </div>
                 </div>
@@ -76,8 +74,7 @@ $this->start('main_content');
                 
                 <!-- VIDEO TITLE AND COMMENT -->
                 <div class="video-comments col-sm-12 col-md-6">
-
-                    <h5>Sur : <a href="<?=$this->url('watch',['shortTitle' => $comment['shortTitle']])?>"><p></p><?=$comment['title'] ?></a></h5>
+                    <h5>Sur : <a  href="<?=$this->url('watch',['shortTitle' => $comment['shortTitle']])?>"><span class="comment-title"><?=$comment['title'] ?></span></a></h5>
                     <p><?= substr($comment['content'], 0, 220); if(strlen($comment['content']) > 220){ echo " [...]";} ?></p>
                 </div>
             </div>

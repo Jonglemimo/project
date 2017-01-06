@@ -47,6 +47,7 @@ $this->start('main_content');
 			<section class="commentary">
 				<form method="POST">
 					<label>Votre commentaire</label><br>
+                    <p class="errorComment false"></p>
 					<textarea class="body-inputs form-control description" id="comment" rows="3"></textarea>
 					<button id="btnComment" class="buttons btn btn-default">Envoyer</button>
 				</form>
@@ -64,7 +65,7 @@ $this->start('main_content');
                     <a href="<?=$this->url('watch',['shortTitle' => $videoByCategory['shortTitle']]) ?>">
                         <img class="video-small" src="<?=$this->assetUrl('users'.DIRECTORY_SEPARATOR.$videoByCategory['id_user'].DIRECTORY_SEPARATOR.$videoByCategory['shortTitle'] .DIRECTORY_SEPARATOR.$videoByCategory['poster_xs'])?>" alt="<?= strtolower($videoByCategory['title'])?>">
                     </a>
-                    <h4 class="text-center"><?=ucfirst(strtolower($videoByCategory['title']))?></h4>
+                    <h5 class="text-center"><?=ucfirst(strtolower($videoByCategory['title']))?></h5>
                 <?php endforeach;?>
 			</section>
 		</div>

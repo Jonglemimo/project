@@ -3,7 +3,7 @@
 
 $this->start('main_content');
 ?>
-<h1 class="condition-generales-title">Conditions générales d'utilisations</h1>
+<h1 class="condition-generales-title text-center">Conditions générales d'utilisations</h1>
 
 <strong>La seule contrepartie à l'utilisation de ces mentions légales, est l'engagement total à laisser le lien crédit subdelirium sur cette page de mentions légales.</strong><br><br>
 <p>Vos mentions légales :</p>
