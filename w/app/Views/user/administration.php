@@ -39,7 +39,7 @@ $this->start('main_content');
                             <?php endif; ?>
                             
                             <!-- LATEST VIDEOS WITH TITLES -->
-                            <h4 class="video-title"><a href="<?=$this->url('watch',['shortTitle' => $video['shortTitle']])?>"><img class="video-medium" src="<?=$this->assetUrl('users'.DIRECTORY_SEPARATOR.$_SESSION['user']['id'].DIRECTORY_SEPARATOR.$video['shortTitle'].DIRECTORY_SEPARATOR.$video['poster_sm']) ?>" alt="<?=$video['title']?>"><span><?=$video['title'] ?></span></a>
+                            <h4 class="video-title"><a href="<?=$this->url('watch',['shortTitle' => $video['shortTitle']])?>"><img class="video-medium" src="<?=$this->assetUrl('users'.DIRECTORY_SEPARATOR.$video['id_user'].DIRECTORY_SEPARATOR.$video['shortTitle'].DIRECTORY_SEPARATOR.$video['poster_sm']) ?>" alt="<?=$video['title']?>"><span><?=$video['title'] ?></span></a>
                             </h4>
                         </div>
                     </div>
@@ -62,22 +62,28 @@ $this->start('main_content');
 <section class="container-fluid comment-container">
     <h3>Mes commentaires</h3>
     <?php if(is_array($comments)):?>
-
     <div class="row col-md-12 latest-video">
-        <?php foreach ($comments as $comment):?>
-            <div class="col-md-6">
-                <div class="col-sm-12 col-md-6">
-                    <a href="<?=$this->url('watch',['shortTitle' => $comment['shortTitle']])?>"> <img class="video-medium" src="<?=$this->assetUrl('users'.DIRECTORY_SEPARATOR.$comment['id_user'].DIRECTORY_SEPARATOR.$comment['shortTitle'].DIRECTORY_SEPARATOR.$comment['poster_sm']) ?>" alt="<?=$comment['title']?>">
+        <?php foreach ($comments as $comment) : ?>
 
-                    </a>
-                </div>
-                
-                <!-- VIDEO TITLE AND COMMENT -->
-                <div class="video-comments col-sm-12 col-md-6">
-                    <h5>Sur : <a  href="<?=$this->url('watch',['shortTitle' => $comment['shortTitle']])?>"><span class="comment-title"><?=$comment['title'] ?></span></a></h5>
-                    <p><?= substr($comment['content'], 0, 220); if(strlen($comment['content']) > 220){ echo " [...]";} ?></p>
-                </div>
+        <!-- COMMENTS APPEARING UNDER FULL VIDEO PAGE -->
+        <div class="watch-comments col-md-4">
+            <div class="avatar-comments">
+                <!-- USER AVATAR -->
+                <a href="<?=$this->url('watch',['shortTitle' => $video['shortTitle']])?>"> <img src="<?=$this->assetUrl('users'.DIRECTORY_SEPARATOR.$comment['id_user'].DIRECTORY_SEPARATOR.$comment['shortTitle'].DIRECTORY_SEPARATOR.$comment['poster_sm'])?>" alt="Votre avatar"></a>
+
             </div>
+
+            <!-- DATE OF THE COMMENT AND AUTHOR -->
+            <div class="date-user-comments">
+
+                <h5 class="title-date"><a href="<?=$this->url('watch',['shortTitle' => $video['shortTitle']])?>">Le <span class="date"><?= $comment['date_posted'] ?></span> sur la video : <?=$comment['title']?></a></h5>
+
+            </div>
+
+            <!-- COMMENT CONTENT -->
+            <p class="text-comments"><?= $comment['content'] ?></p>
+        </div>
+
         <?php endforeach;?>
     </div>
     <div>
