@@ -6,7 +6,7 @@ use \W\Controller\Controller;
 
 class DefaultController extends Controller {
 
-    protected $nbElements = 8;
+    protected $nbElements = 2;
 
 
     public function show($file, array $data = array())
